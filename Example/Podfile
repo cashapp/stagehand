@@ -1,0 +1,21 @@
+use_frameworks!
+
+platform :ios, '10.0'
+
+target 'Stagehand_Example' do
+  pod 'Stagehand', :path => '../'
+
+  target 'Stagehand-UnitTests' do
+    inherit! :search_paths
+
+    pod 'StagehandTesting', :path => '../'
+  end
+
+  target 'Stagehand-PerformanceTests' do
+    inherit! :search_paths
+
+    pod 'Stagehand', :path => '../'
+  end
+end
+
+install! 'cocoapods', disable_input_output_paths: true

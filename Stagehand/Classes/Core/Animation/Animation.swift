@@ -1,0 +1,901 @@
+//
+//  Copyright 2019 Square Inc.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+import UIKit
+
+/// An `Animation` is the core data structure that defines an animation that can be applied to any elements of a
+/// specific type (`ElementType`). Animations consist of a series of keyframes, property assignments, and execution
+/// blocks.
+///
+/// Most simple animations can be made using keyframes. Keyframes defines the value of a given property at a specific
+/// point in the animation. During the animation, the value of each property is interpolated between the values in the
+/// animation's keyframes.
+///
+/// Property assignments also specify the value of a given property at a specific point in the animation, but do not
+/// interpolate the value between these points. Property assignments can be used for values that cannot be interpolated,
+/// or should change in discrete assignments, rather than continuosly over the course of the animation.
+///
+/// Execution blocks enable code to be executed at a specific point in the animation. Execution blocks are similar to
+/// property assignments in that they enable discrete changes, except in a slightly more free-form manner. For even less
+/// structured changes, per-frame execution blocks can be added to be executed every time the animation renders a frame.
+///
+/// Animations are composable. Complex animations can be composed of smaller logical pieces by constructing a hierarchy
+/// of child animations.
+public struct Animation<ElementType: AnyObject> {
+
+    // MARK: - Public Types
+
+    public struct FrameContext {
+
+        /// The element being animated.
+        public let element: ElementType
+
+        /// Value in the range [0, 1] representing the uncurved progress of the animation.
+        public let uncurvedProgress: Double
+
+        /// Value representing the progress into the animation, adjusted based on the animation's curve.
+        public let progress: Double
+
+    }
+
+    public typealias PerFrameExecutionBlock = (FrameContext) -> Void
+
+    // MARK: - Life Cycle
+
+    public init() { }
+
+    // MARK: - Public Properties
+
+    /// The duration of the animation.
+    ///
+    /// More specifically, this is the duration of one cycle of the animation. An animation that repeats will take a
+    /// total duration equal to the duration of one cycle (the animation's `duration`) multiplied by the number of
+    /// cycles (as specified by the animation's `repeatStyle`).
+    ///
+    /// When animations are composed, the duration is controlled by the top-most parent animation. The `duration` of any
+    /// child animations are ignored.
+    public var duration: TimeInterval = 1
+
+    /// The way in which the animation should repeat.
+    ///
+    /// When animations are composed, the repeat style is controlled by the top-most parent animation. The `repeatStyle`
+    /// of any child animations are ignored.
+    public var repeatStyle: AnimationRepeatStyle = .none
+
+    /// The curve applied to the animation.
+    ///
+    /// Curves in child animations are applied on top of the curve(s) already applied by their parent(s). This allows
+    /// each child animation to have a different animation curve.
+    public var curve: AnimationCurve = LinearAnimationCurve()
+
+    // MARK: - Internal Computed Properties
+
+    internal var propertiesWithKeyframes: Set<PartialKeyPath<ElementType>> {
+        var properties = Set(keyframeSeriesByProperty.keys)
+
+        for child in children {
+            properties.formUnion(child.animation.propertiesWithKeyframes)
+        }
+
+        return properties
+    }
+
+    internal var keyframeRelativeTimestamps: [Double] {
+        var keyframeRelativeTimestamps = Set(keyframeSeriesByProperty.flatMap { $0.value.keyframeRelativeTimestamps })
+
+        for child in children {
+            let childKeyframeRelativeTimestamps = child.animation.keyframeRelativeTimestamps
+            let adjustedRelativeTimestamps = childKeyframeRelativeTimestamps.map { childRelativeTimestamp in
+                return child.relativeStartTimestamp + childRelativeTimestamp * child.relativeDuration
+            }
+            keyframeRelativeTimestamps.formUnion(Set(adjustedRelativeTimestamps))
+        }
+
+        return keyframeRelativeTimestamps.sorted()
+    }
+
+    // MARK: - Internal Properties
+
+    internal var keyframeSeriesByProperty: [PartialKeyPath<ElementType>: AnyKeyframeSeries] = [:]
+
+    internal private(set) var collectionKeyframeSeriesByProperty: [CollectionKeyframeSeriesKey: AnyCollectionKeyframeSeries] = [:]
+
+    internal private(set) var assignments: [Assignment] = []
+
+    internal private(set) var executionBlocks: [ExecutionBlock] = []
+
+    internal private(set) var perFrameExecutionBlocks: [PerFrameExecutionBlock] = []
+
+    internal var children: [ChildAnimation] = []
+
+    // MARK: - Public Methods - Construction
+
+    /// Add a keyframe for the given `property` with a fixed value.
+    ///
+    /// - parameter property: The key path for the property to be animated.
+    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
+    /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter value: The value of the property at this keyframe.
+    public mutating func addKeyframe<PropertyType: AnimatableProperty>(
+        for property: WritableKeyPath<ElementType, PropertyType>,
+        at relativeTimestamp: Double,
+        value: PropertyType
+    ) {
+        addKeyframe(for: property, at: relativeTimestamp, relativeValue: { _ in value })
+    }
+
+    /// Add a keyframe for the given `property` with a fixed value.
+    ///
+    /// - parameter property: The key path for the property to be animated.
+    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
+    /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter value: The value of the property at this keyframe.
+    public mutating func addKeyframe<PropertyType: AnimatableOptionalProperty>(
+        for property: WritableKeyPath<ElementType, PropertyType?>,
+        at relativeTimestamp: Double,
+        value: PropertyType
+    ) {
+        // This method shouldn't be necessary to define, since the property type is really `Optional`. Unfortunately,
+        // Swift sometimes has trouble resolving inferred key paths (i.e. key paths that don't specify the class name)
+        // for optional property types with a non-optional value. This makes inferred key paths work in this situation,
+        // since this method will be preferred.
+
+        addKeyframe(for: property, at: relativeTimestamp, relativeValue: { _ in value })
+    }
+
+    /// Add a keyframe for the given `property` with a value relative to the property's value at the beginning of the
+    /// animation.
+    ///
+    /// - parameter property: The key path for the property to be animated.
+    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
+    /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter relativeValue: The value of the property at this keyframe, determined from the `initialValue` of the
+    /// property when the animation begins.
+    public mutating func addKeyframe<PropertyType: AnimatableProperty>(
+        for property: WritableKeyPath<ElementType, PropertyType>,
+        at relativeTimestamp: Double,
+        relativeValue: @escaping (_ initialValue: PropertyType) -> PropertyType
+    ) {
+        if var keyframeSeries = keyframeSeriesByProperty[property] as? KeyframeSeries<PropertyType> {
+            keyframeSeries.valuesByRelativeTimestamp[relativeTimestamp] = relativeValue
+            keyframeSeriesByProperty[property] = keyframeSeries
+
+        } else {
+            let keyframeSeries = KeyframeSeries(
+                property: property,
+                valuesByRelativeTimestamp: [
+                    relativeTimestamp: relativeValue
+                ]
+            )
+            keyframeSeriesByProperty[property] = keyframeSeries
+        }
+    }
+
+    /// Add a keyframe for the given `property` of each element in the given `collection` with a fixed value.
+    ///
+    /// - Note: Collection keyframes are still a work in progress, and so are currently `internal`. Once they have been
+    /// fully implemented and documented, this method will be changed to be `public`.
+    ///
+    /// - parameter property: The key path for the property to be animated.
+    /// - parameter collection: The key path for the collection containing the elements to be animated.
+    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
+    /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter value: The value of the property at this keyframe.
+    internal mutating func addKeyframe<CollectionType: Collection, PropertyType: AnimatableProperty>(
+        for property: WritableKeyPath<CollectionType.Element, PropertyType>,
+        ofElementsIn collection: KeyPath<ElementType, CollectionType>,
+        at relativeTimestamp: Double,
+        value: PropertyType
+    ) {
+        addKeyframe(
+            for: property,
+            ofElementsIn: collection,
+            at: { _, _ in relativeTimestamp },
+            value: value
+        )
+    }
+
+    /// Add a keyframe for the given `property` of each element in the given `collection` with a fixed value.
+    ///
+    /// - Note: Collection keyframes are still a work in progress, and so are currently `internal`. Once they have been
+    /// fully implemented and documented, this method will be changed to be `public`.
+    ///
+    /// - parameter property: The key path for the property to be animated.
+    /// - parameter collection: The key path for the collection containing the elements to be animated.
+    /// - parameter relativeTimestamp: A block to calculate the relative timestamp at which this should be the value of
+    /// the property, based on the element's position in the collection. The return value of this block must be in the
+    /// range [0,1], where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter value: The value of the property at this keyframe.
+    internal mutating func addKeyframe<CollectionType: Collection, PropertyType: AnimatableProperty>(
+        for property: WritableKeyPath<CollectionType.Element, PropertyType>,
+        ofElementsIn collection: KeyPath<ElementType, CollectionType>,
+        at relativeTimestamp: @escaping (_ index: Int, _ count: Int) -> Double,
+        value: PropertyType
+    ) {
+        let key = CollectionKeyframeSeriesKey(collection: collection, property: property)
+
+        let keyframe = CollectionKeyframeSeries<CollectionType, PropertyType>.Keyframe(
+            relativeTimestamp: relativeTimestamp,
+            value: value
+        )
+
+        if var keyframeSeries = collectionKeyframeSeriesByProperty[key] as? CollectionKeyframeSeries<CollectionType, PropertyType> {
+            keyframeSeries.keyframes.append(keyframe)
+            collectionKeyframeSeriesByProperty[key] = keyframeSeries
+
+        } else {
+            let keyframeSeries = CollectionKeyframeSeries(
+                collection: collection,
+                property: property,
+                keyframes: [keyframe]
+            )
+            collectionKeyframeSeriesByProperty[key] = keyframeSeries
+        }
+    }
+
+    /// Add an assignment for the given `property` at the `relativeTimestamp`.
+    ///
+    /// When the animation is run in reverse, the property will be returned to its value prior to the assignment.
+    ///
+    /// - parameter property: The key path for the property to be assigned.
+    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
+    /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter value: The value to assign to the property.
+    public mutating func addAssignment<PropertyType>(
+        for property: WritableKeyPath<ElementType, PropertyType>,
+        at relativeTimestamp: Double,
+        value: PropertyType
+    ) {
+        assignments.append(.init(
+            relativeTimestamp: relativeTimestamp,
+            assignBlock: { element in
+                var element = element
+                element[keyPath: property] = value
+            },
+            generateReverseAssignBlock: { element in
+                let originalValue = element[keyPath: property]
+                return { element in
+                    var element = element
+                    element[keyPath: property] = originalValue
+                }
+            }
+        ))
+    }
+
+    /// Add an execution block at the given `relativeTimestamp`.
+    ///
+    /// This method takes two closures to execute at the given timestamp, one to be executed when the animation is
+    /// run in the forward direction and another to be executed when the animation is run in reverse.
+    ///
+    /// If an animation autoreverses, an execution block at the boundary of a cycle (i.e. having a `relativeTimestamp`
+    /// of either `0` or `1`) will be executed once in the direction of that cycle, then again in the direction of the
+    /// next cycle, unless it is the final cycle.
+    ///
+    /// If an animation loops, but does not autoreverse, between cycles each execution block will be executed in reverse
+    /// order. This allows execution blocks to be treated as discrete units where the `reverseBlock` is the opposite of
+    /// the `forwardBlock`, in effect reverting the changes made by the `forwardBlock`. The default value of
+    /// `reverseBlock` is a no-op closure, as a convenience for defining execution blocks for animations that are only
+    /// intended to run in the forward direction, or for which the action taken in the `forwardBlock` does not need to
+    /// be reverted (e.g. playing a sound or triggering a haptic).
+    ///
+    /// When an animation is cancelled, the execution blocks will be executed such that each cycle will be completed in
+    /// full. This allows execution blocks to depend on the effects of prior execution blocks. If you have an execution
+    /// block that should _not_ execute when cancelling (e.g. if it has side effects outside the animation), you can
+    /// check the `status` of the animation instance in the block.
+    ///
+    /// - parameter forwardBlock: The closure to execute when the animation is run in the forward direction.
+    /// - parameter reverseBlock: The closure to execute when the animation is run in the reverse direction.
+    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
+    /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
+    public mutating func addExecution(
+        onForward forwardBlock: @escaping (ElementType) -> Void,
+        onReverse reverseBlock: @escaping (ElementType) -> Void = { _ in },
+        at relativeTimestamp: Double
+    ) {
+        executionBlocks.append(.init(
+            relativeTimestamp: relativeTimestamp,
+            forwardBlock: forwardBlock,
+            reverseBlock: reverseBlock
+        ))
+    }
+
+    /// Add an execution block that will be called during each frame of the animation.
+    ///
+    /// The per-frame execution blocks will executed after the keyframes, property assignments, and other execution
+    /// blocks for the given frame have been applied.
+    ///
+    /// - parameter block: The block to call during each frame of the animation.
+    public mutating func addPerFrameExecution(
+        _ block: @escaping PerFrameExecutionBlock
+    ) {
+        perFrameExecutionBlocks.append(block)
+    }
+
+    /// Add a child animation.
+    ///
+    /// The `childAnimation`'s `duration` and `repeatStyle` will be ignored.
+    ///
+    /// Keyframes in a child animation for the same property as keyframes in the parent will be overridden by the values
+    /// of the keyframes in the parent.
+    ///
+    /// - parameter childAnimation: The child animation to be performed on the `subelement`.
+    /// - parameter subelement: The key path for the subelement on which the child animation should be performed.
+    /// - parameter relativeStartTimestamp: The relative timestamp at which the animation should begin.  Must be in the
+    ///  range [0,1), where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter relativeDuration: The relative duration over which the child animation should be performed. Must be
+    /// in the range (0,(1 - relativeStartTimestamp)], where 0 is the beginning of the animation and 1 is the end.
+    public mutating func addChild<SubelementType: AnyObject>(
+        _ childAnimation: Animation<SubelementType>,
+        for subelement: WritableKeyPath<ElementType, SubelementType>,
+        startingAt relativeStartTimestamp: Double,
+        relativeDuration: Double
+    ) {
+        var child = ChildAnimation(
+            animation: .init(),
+            relativeStartTimestamp: relativeStartTimestamp,
+            relativeDuration: relativeDuration
+        )
+
+        child.animation.curve = childAnimation.curve
+
+        // Map the child's keyframes into the child animation.
+        for (_, childKeyframeSeries) in childAnimation.keyframeSeriesByProperty {
+            let (property, keyframeSeries) = childKeyframeSeries.mapForParentElement(subelement)
+
+            child.animation.keyframeSeriesByProperty[property] = keyframeSeries
+        }
+
+        // Map the child's collection keyframes into the child animation.
+        for (_, childKeyframeSeries) in childAnimation.collectionKeyframeSeriesByProperty {
+            let (key, keyframeSeries) = childKeyframeSeries.mapForParentElement(
+                subelement,
+                relativeStartTimestamp: relativeStartTimestamp,
+                relativeDuration: relativeDuration
+            )
+
+            child.animation.collectionKeyframeSeriesByProperty[key] = keyframeSeries
+        }
+
+        // Collapse the property assignments from the child into the parent.
+        assignments.append(
+            contentsOf: childAnimation.assignments.map { childAssignment in
+                // Adjust the relative timestamp for the child's animation curve.
+                let relativeTimestamp = relativeStartTimestamp + (childAssignment.relativeTimestamp / relativeDuration)
+                let adjustedRelativeTimestamp = childAnimation.curve.adjustedProgress(for: relativeTimestamp)
+
+                return Assignment(
+                    relativeTimestamp: adjustedRelativeTimestamp,
+                    assignBlock: { element in
+                        childAssignment.assignBlock(element[keyPath: subelement])
+                    },
+                    generateReverseAssignBlock: { element -> ((ElementType) -> Void) in
+                        let subelementAssignBlock = childAssignment.generateReverseAssignBlock(element[keyPath: subelement])
+                        return { element in
+                            subelementAssignBlock(element[keyPath: subelement])
+                        }
+                    }
+                )
+            }
+        )
+
+        // Collapse the execution blocks from the child into the parent.
+        executionBlocks.append(
+            contentsOf: childAnimation.executionBlocks.map { childExecutionBlock in
+                // Adjust the relative timestamp for the child's animation curve.
+                let relativeTimestamp = relativeStartTimestamp + (childExecutionBlock.relativeTimestamp / relativeDuration)
+                let adjustedRelativeTimestamp = childAnimation.curve.adjustedProgress(for: relativeTimestamp)
+
+                return ExecutionBlock(
+                    relativeTimestamp: adjustedRelativeTimestamp,
+                    forwardBlock: { element in
+                        childExecutionBlock.forwardBlock(element[keyPath: subelement])
+                    },
+                    reverseBlock: { element in
+                        childExecutionBlock.reverseBlock(element[keyPath: subelement])
+                    }
+                )
+            }
+        )
+
+        // Collapse per-frame execution blocks from the child into the parent.
+        perFrameExecutionBlocks.append(
+            contentsOf: childAnimation.perFrameExecutionBlocks.map { childExecutionBlock in
+                return { context in
+                    guard context.uncurvedProgress >= relativeStartTimestamp else {
+                        // The child animation hasn't started yet.
+                        return
+                    }
+
+                    guard context.uncurvedProgress <= (relativeStartTimestamp + relativeDuration) else {
+                        // The child animation already ended.
+                        return
+                    }
+
+                    // The uncurved progress of the child animation is based on the curved progress of the parent.
+                    let uncurvedProgress = context.progress
+
+                    childExecutionBlock(
+                        .init(
+                            element: context.element[keyPath: subelement],
+                            uncurvedProgress: uncurvedProgress,
+                            progress: childAnimation.curve.adjustedProgress(for: uncurvedProgress)
+                        )
+                    )
+                }
+            }
+        )
+
+        // Integrate the grandchildren.
+        for grandchild in childAnimation.children {
+            child.animation.addChild(
+                grandchild.animation,
+                for: subelement,
+                startingAt: grandchild.relativeStartTimestamp,
+                relativeDuration: grandchild.relativeDuration
+            )
+        }
+
+        children.append(child)
+    }
+
+    // MARK: - Public Methods - Execution
+
+    /// Perform the animation on the given `element`.
+    ///
+    /// - parameter element: The element to be animated.
+    /// - parameter delay: The time interval to wait before performing the animation.
+    /// - parameter completion: The completion block to call when the animation has concluded, with a parameter
+    /// indicated whether the animation completed (as opposed to being cancelled).
+    @discardableResult
+    public func perform(
+        on element: ElementType,
+        delay: TimeInterval = 0,
+        completion: ((_ finished: Bool) -> Void)? = nil
+    ) -> AnimationInstance {
+        let driver = DisplayLinkDriver(
+            delay: delay,
+            duration: duration,
+            repeatStyle: repeatStyle,
+            completion: completion
+        )
+
+        let instance = AnimationInstance(
+            animation: self,
+            element: element,
+            driver: driver
+        )
+
+        driver.start()
+
+        return instance
+    }
+
+    // MARK: - Internal Methods
+
+    /// Applies the animatable properties (those defined by keyframes, including collection keyframes) to the `element`
+    /// at the given `relativeTimestamp`.
+    ///
+    /// - parameter element: The element being animated.
+    /// - parameter relativeTimestamp: The raw (non-curved) timestamp at which to apply the values.
+    /// - parameter initialValues: A dictionary mapping the property animated by each keyframe series to the value of
+    /// that property when the animation began.
+    internal func apply(
+        to element: inout ElementType,
+        at relativeTimestamp: Double,
+        initialValues: [PartialKeyPath<ElementType>: Any]
+    ) {
+        let adjustedRelativeTimestamp = curve.adjustedProgress(for: relativeTimestamp)
+
+        for child in children {
+            // Allow for the child to be rendered _slightly_ outside its applied timestamp range to account for rounding
+            // error when applying a timestamp corresponding to a keyframe.
+            let ε = 0.0000000001
+
+            guard adjustedRelativeTimestamp >= child.relativeStartTimestamp - ε else {
+                continue
+            }
+
+            guard adjustedRelativeTimestamp <= (child.relativeStartTimestamp + child.relativeDuration) + ε else {
+                continue
+            }
+
+            child.animation.apply(
+                to: &element,
+                at: (adjustedRelativeTimestamp - child.relativeStartTimestamp) / child.relativeDuration,
+                initialValues: initialValues
+            )
+        }
+
+        var element = element as AnyObject
+
+        for series in self.keyframeSeriesByProperty {
+            series.value.applyToElement(
+                &element,
+                at: adjustedRelativeTimestamp,
+                initialValue: initialValues[series.key]!
+            )
+        }
+
+        for collectionSeries in self.collectionKeyframeSeriesByProperty {
+            collectionSeries.value.applyToElement(
+                &element,
+                at: adjustedRelativeTimestamp
+            )
+        }
+    }
+
+    /// Applies the first value of each animatable property (those defined by keyframes, _not_ including collection
+    /// keyframes) to the `element`.
+    ///
+    /// - parameter element: The element being animated.
+    /// - parameter initialValues: A dictionary mapping the property animated by each keyframe series to the value of
+    /// that property when the animation began.
+    internal func applyInitialKeyframes(
+        to element: inout ElementType,
+        initialValues: [PartialKeyPath<ElementType>: Any]
+    ) {
+        var element = element as AnyObject
+
+        for property in propertiesWithKeyframes {
+            let keyframeSeries = self.keyframeSeries(for: property)!.0
+            keyframeSeries.applyToElement(&element, at: 0, initialValue: initialValues[property]!)
+        }
+    }
+
+    // MARK: - Private Methods
+
+    private func keyframeSeries(for property: PartialKeyPath<ElementType>) -> (AnyKeyframeSeries, startingAt: Double)? {
+        if let keyframeSeries = keyframeSeriesByProperty[property] {
+            return (keyframeSeries, startingAt: 0)
+        }
+
+        var earliestKeyframeSeries: (AnyKeyframeSeries, Double)?
+        for child in children.sorted(by: { $0.relativeStartTimestamp < $1.relativeStartTimestamp }) {
+            if let candidateKeyframeSeries = child.animation.keyframeSeries(for: property) {
+                let adjustedStartTimestamp = child.relativeStartTimestamp + candidateKeyframeSeries.startingAt * child.relativeDuration
+
+                if earliestKeyframeSeries == nil {
+                    earliestKeyframeSeries = candidateKeyframeSeries
+                } else if let existingKeyframeSeries = earliestKeyframeSeries, adjustedStartTimestamp <= existingKeyframeSeries.1 {
+                    earliestKeyframeSeries = candidateKeyframeSeries
+                }
+            }
+        }
+
+        return earliestKeyframeSeries
+    }
+
+}
+
+// MARK: -
+
+public enum AnimationRepeatStyle {
+
+    /// Animation will execute `count` times.
+    ///
+    /// - `count`: The number of times the animation will be executed. A count of `0` represents an animation that
+    /// repeats indefinitely (until canceled). A count of `1` will run the animation a single time from start to end.
+    /// - `autoreversing`: Whether or not the animation should alternative direction on each execution. The first
+    /// execution will always run in the forwards direction, optionally alternating begining on the second run.
+    case repeating(count: UInt, autoreversing: Bool)
+
+    /// Animation will execute once.
+    public static let none: AnimationRepeatStyle = .repeating(count: 1, autoreversing: false)
+
+    /// Animation will execute indefinitely (until canceled).
+    /// - parameter autoreversing: Whether or not the animation should alternative direction on each cycle. The first
+    /// cycle will always run in the forwards direction, optionally alternating begining on the second cycle.
+    public static func infinitelyRepeating(autoreversing: Bool) -> AnimationRepeatStyle {
+        return .repeating(count: 0, autoreversing: autoreversing)
+    }
+
+}
+
+// MARK: -
+
+extension Animation {
+
+    private struct KeyframeSeries<PropertyType: AnimatableProperty>: AnyKeyframeSeries {
+
+        // MARK: - Public Properties
+
+        var property: WritableKeyPath<ElementType, PropertyType>
+
+        var valuesByRelativeTimestamp: [Double: (PropertyType) -> PropertyType]
+
+        // MARK: - Public Methods
+
+        func apply(to element: inout ElementType, at relativeTimestamp: Double, initialValue: PropertyType) {
+            if let value = valuesByRelativeTimestamp[relativeTimestamp] {
+                element[keyPath: property] = value(initialValue)
+            } else {
+                let values = valuesByRelativeTimestamp.sorted { $0.key < $1.key }
+
+                guard let previousIndex = values.lastIndex(where: { $0.key < relativeTimestamp }) else {
+                    element[keyPath: property] = values.first!.value(initialValue)
+                    return
+                }
+
+                let (previousTimestamp, previousValue) = values[previousIndex]
+
+                let nextIndex = values.index(after: previousIndex)
+                guard nextIndex != values.endIndex else {
+                    element[keyPath: property] = previousValue(initialValue)
+                    return
+                }
+
+                let (nextTimestamp, nextValue) = values[nextIndex]
+
+                element[keyPath: property] = PropertyType.value(
+                    between: previousValue(initialValue),
+                    and: nextValue(initialValue),
+                    at: ((relativeTimestamp - previousTimestamp) / (nextTimestamp - previousTimestamp))
+                )
+            }
+        }
+
+        func mapForParent<ParentElementType>(
+            _ subelementPath: WritableKeyPath<ParentElementType, ElementType>
+        ) -> (PartialKeyPath<ParentElementType>, Animation<ParentElementType>.KeyframeSeries<PropertyType>) {
+            let mappedProperty = subelementPath.appending(path: property)
+            return (mappedProperty, .init(
+                property: mappedProperty,
+                valuesByRelativeTimestamp: valuesByRelativeTimestamp
+            ))
+        }
+
+        // MARK: - AnyKeyframeSeries
+
+        var propertyPath: AnyKeyPath {
+            return property
+        }
+
+        var keyframeRelativeTimestamps: [Double] {
+            return valuesByRelativeTimestamp.keys.sorted()
+        }
+
+        func applyToElement(_ element: inout AnyObject, at relativeTimestamp: Double, initialValue: Any) {
+            var element = element as! ElementType
+            apply(to: &element, at: relativeTimestamp, initialValue: initialValue as! PropertyType)
+        }
+
+        func mapForParentElement<ParentElementType: AnyObject>(
+            _ subelementPath: PartialKeyPath<ParentElementType>
+        ) -> (PartialKeyPath<ParentElementType>, AnyKeyframeSeries) {
+            let (keyPath, keyframeSeries) = mapForParent(
+                subelementPath as! WritableKeyPath<ParentElementType, ElementType>
+            )
+            return (keyPath, keyframeSeries)
+        }
+
+    }
+
+}
+
+internal protocol AnyKeyframeSeries {
+
+    var propertyPath: AnyKeyPath { get }
+
+    var keyframeRelativeTimestamps: [Double] { get }
+
+    func applyToElement(_ element: inout AnyObject, at relativeTimestamp: Double, initialValue: Any)
+
+    func mapForParentElement<ParentElementType: AnyObject>(
+        _ subelementPath: PartialKeyPath<ParentElementType>
+    ) -> (PartialKeyPath<ParentElementType>, AnyKeyframeSeries)
+
+}
+
+// MARK: -
+
+extension Animation {
+
+    private struct CollectionKeyframeSeries<CollectionType: Collection, PropertyType: AnimatableProperty>: AnyCollectionKeyframeSeries {
+
+        // MARK: - Public Types
+
+        struct Keyframe {
+
+            var relativeTimestamp: (Int, Int) -> Double
+
+            var value: PropertyType
+
+        }
+
+        // MARK: - Public Properties
+
+        var collection: KeyPath<ElementType, CollectionType>
+
+        var property: WritableKeyPath<CollectionType.Element, PropertyType>
+
+        var keyframes: [Keyframe]
+
+        // MARK: - Public Methods
+
+        func apply(to element: inout ElementType, at relativeTimestamp: Double) {
+            let collection = element[keyPath: self.collection]
+            for (index, var item) in collection.enumerated() {
+                let valuesByRelativeTimestamp = Dictionary(
+                    keyframes.map { ($0.relativeTimestamp(index, collection.count), $0.value) },
+                    uniquingKeysWith: { $1 }
+                )
+
+                if let value = valuesByRelativeTimestamp[relativeTimestamp] {
+                    item[keyPath: property] = value
+
+                } else {
+                    let values = valuesByRelativeTimestamp.sorted { $0.key < $1.key }
+
+                    guard let previousIndex = values.lastIndex(where: { $0.key < relativeTimestamp }) else {
+                        item[keyPath: property] = values.first!.value
+                        continue
+                    }
+
+                    let (previousTimestamp, previousValue) = values[previousIndex]
+
+                    let nextIndex = values.index(after: previousIndex)
+                    guard nextIndex != values.endIndex else {
+                        item[keyPath: property] = previousValue
+                        continue
+                    }
+
+                    let (nextTimestamp, nextValue) = values[nextIndex]
+
+                    item[keyPath: property] = PropertyType.value(
+                        between: previousValue,
+                        and: nextValue,
+                        at: ((relativeTimestamp - previousTimestamp) / (nextTimestamp - previousTimestamp))
+                    )
+                }
+            }
+        }
+
+        func mapForParent<ParentElementType>(
+            _ subelementPath: WritableKeyPath<ParentElementType, ElementType>,
+            relativeStartTimestamp: Double,
+            relativeDuration: Double
+        ) -> (Animation<ParentElementType>.CollectionKeyframeSeriesKey, Animation<ParentElementType>.CollectionKeyframeSeries<CollectionType, PropertyType>) {
+            let reinterpolatedKeyframes = keyframes.map { keyframe in
+                return Animation<ParentElementType>.CollectionKeyframeSeries<CollectionType, PropertyType>.Keyframe(
+                    relativeTimestamp: { index, count in
+                        let initialRelativeTimestamp = keyframe.relativeTimestamp(index, count)
+                        return (relativeStartTimestamp + (initialRelativeTimestamp * relativeDuration))
+                    },
+                    value: keyframe.value
+                )
+            }
+
+            let mappedCollectionPath: KeyPath<ParentElementType, CollectionType> = subelementPath.appending(path: collection)
+
+            return (
+                .init(
+                    collection: mappedCollectionPath,
+                    property: property
+                ),
+                .init(
+                    collection: mappedCollectionPath,
+                    property: property,
+                    keyframes: reinterpolatedKeyframes
+                )
+            )
+        }
+
+        // MARK: - AnyCollectionKeyframeSeries
+
+        var collectionPath: AnyKeyPath {
+            return collection
+        }
+
+        func applyToElement(_ element: inout AnyObject, at relativeTimestamp: Double) {
+            var element = element as! ElementType
+            apply(to: &element, at: relativeTimestamp)
+        }
+
+        func mapForParentElement<ParentElementType: AnyObject>(
+            _ subelementPath: PartialKeyPath<ParentElementType>,
+            relativeStartTimestamp: Double,
+            relativeDuration: Double
+        ) -> (Animation<ParentElementType>.CollectionKeyframeSeriesKey, AnyCollectionKeyframeSeries) {
+            let (key, keyframeSeries) = mapForParent(
+                subelementPath as! WritableKeyPath<ParentElementType, ElementType>,
+                relativeStartTimestamp: relativeStartTimestamp,
+                relativeDuration: relativeDuration
+            )
+            return (key, keyframeSeries)
+        }
+
+    }
+
+    internal struct CollectionKeyframeSeriesKey: Hashable {
+
+        var collection: PartialKeyPath<ElementType>
+
+        var property: AnyKeyPath
+
+    }
+
+}
+
+internal protocol AnyCollectionKeyframeSeries {
+
+    var collectionPath: AnyKeyPath { get }
+
+    func applyToElement(_ element: inout AnyObject, at relativeTimestamp: Double)
+
+    func mapForParentElement<ParentElementType: AnyObject>(
+        _ subelementPath: PartialKeyPath<ParentElementType>,
+        relativeStartTimestamp: Double,
+        relativeDuration: Double
+    ) -> (Animation<ParentElementType>.CollectionKeyframeSeriesKey, AnyCollectionKeyframeSeries)
+
+}
+
+// MARK: -
+
+extension Animation {
+
+    internal struct Assignment {
+
+        var relativeTimestamp: Double
+
+        var assignBlock: (ElementType) -> Void
+
+        var generateReverseAssignBlock: (ElementType) -> ((ElementType) -> Void)
+
+    }
+
+}
+
+// MARK: -
+
+extension Animation {
+
+    internal struct ExecutionBlock {
+
+        var relativeTimestamp: Double
+
+        var forwardBlock: (ElementType) -> Void
+
+        var reverseBlock: (ElementType) -> Void
+
+    }
+
+}
+
+// MARK: -
+
+extension Animation {
+
+    internal struct ChildAnimation {
+
+        /// The base animation of the child.
+        ///
+        /// This animation is stripped of any execution blocks, per frame execution blocks, and property assignments.
+        /// When the child is added, these are removed and collapsed into the parent. The child's animation is used
+        /// only to store the keyframe series associated with it, since collapsing these into the parent would lose
+        /// any animation curve applied to the child.
+        ///
+        /// This animation's `duration` and `repeatStyle` can be ignored.
+        var animation: Animation<ElementType>
+
+        var relativeStartTimestamp: Double
+
+        var relativeDuration: Double
+
+    }
+
+}
+

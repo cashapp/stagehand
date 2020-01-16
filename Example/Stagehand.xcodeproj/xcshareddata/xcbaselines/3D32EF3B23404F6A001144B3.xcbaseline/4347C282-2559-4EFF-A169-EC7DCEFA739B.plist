@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>classNames</key>
+	<dict>
+		<key>AnimationCurvePerformanceTests</key>
+		<dict>
+			<key>testCubicBezierEaseInPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.026842</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Sep 28, 2019 at 7:59:07 PM</string>
+				</dict>
+			</dict>
+			<key>testParabolicEaseInPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.04231</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Sep 28, 2019 at 8:08:35 PM</string>
+				</dict>
+			</dict>
+			<key>testParabolicEaseOutPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.043876</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Sep 28, 2019 at 8:08:35 PM</string>
+				</dict>
+			</dict>
+			<key>testSinusoidalEaseInEaseOutPerformance()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.020915</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Sep 28, 2019 at 8:08:35 PM</string>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

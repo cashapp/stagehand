@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' display-mode='raw'>
+    <pages>
+        <page name='Creating and Executing an Animation'/>
+        <page name='Advanced Execution of Animations'/>
+        <page name='All About Keyframes'/>
+        <page name='Composing Animations'/>
+        <page name='Repeating Animations'/>
+        <page name='Executing Code During Animations'/>
+        <page name='Assigning Properties During Animations'/>
+        <page name='Executing Code Every Frame'/>
+        <page name='Animation Curves'/>
+        <page name='Animation Groups'/>
+        <page name='Animating Custom Properties'/>
+        <page name='Snapshot Testing Animations'/>
+    </pages>
+</playground>
