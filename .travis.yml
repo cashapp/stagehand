@@ -1,8 +1,16 @@
-osx_image: xcode10.3
 language: objective-c
+jobs:
+  - osx_image: xcode11.3
+    env: SDK=iphonesimulator13.3
+  - osx_image: xcode10.3
+    env: SDK=iphonesimulator12.4
+  - osx_image: xcode10.3
+    env: SDK=iphonesimulator11.4
+  - osx_image: xcode10.3
+    env: SDK=iphonesimulator10.3.1
 install:
   - bundle install --gemfile=Example/Gemfile
   - bundle exec --gemfile=Example/Gemfile pod install --project-directory=Example
 script:
-  - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Stagehand.xcworkspace -scheme "Stagehand Demo App" -sdk iphonesimulator12.4 ONLY_ACTIVE_ARCH=NO | xcpretty
+  - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Stagehand.xcworkspace -scheme "Stagehand Demo App" -sdk $SDK ONLY_ACTIVE_ARCH=NO | xcpretty
   - bundle exec --gemfile=Example/Gemfile pod lib lint
