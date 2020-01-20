@@ -12,7 +12,7 @@ install:
   - bundle install --gemfile=Example/Gemfile
   - bundle exec --gemfile=Example/Gemfile pod install --project-directory=Example
 script:
-  - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Stagehand.xcworkspace -scheme "Stagehand Demo App" -sdk iphonesimulator -destination $DEST ONLY_ACTIVE_ARCH=NO | xcpretty
+  - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Stagehand.xcworkspace -scheme "Stagehand Demo App" -sdk iphonesimulator -destination "$DEST" ONLY_ACTIVE_ARCH=NO | xcpretty
   - bundle exec --gemfile=Example/Gemfile pod lib lint
 branches:
   only:
