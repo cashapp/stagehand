@@ -23,6 +23,8 @@ final class AnimationSnapshotTests: FBSnapshotTestCase {
     override func setUp() {
         super.setUp()
 
+        fileNameOptions = [.OS, .screenSize, .screenScale]
+
         recordMode = false
     }
 
