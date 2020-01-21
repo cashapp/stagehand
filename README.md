@@ -1,6 +1,6 @@
 # Stagehand
 
-[![CI Status](https://img.shields.io/travis/CashApp/Stagehand.svg?style=flat)](https://travis-ci.org/CashApp/Stagehand)
+[![CI Status](https://img.shields.io/travis/CashApp/Stagehand/master.svg?style=flat)](https://travis-ci.org/CashApp/Stagehand)
 [![Version](https://img.shields.io/cocoapods/v/Stagehand.svg?style=flat)](https://cocoapods.org/pods/Stagehand)
 [![License](https://img.shields.io/cocoapods/l/Stagehand.svg?style=flat)](https://cocoapods.org/pods/Stagehand)
 [![Platform](https://img.shields.io/cocoapods/p/Stagehand.svg?style=flat)](https://cocoapods.org/pods/Stagehand)
