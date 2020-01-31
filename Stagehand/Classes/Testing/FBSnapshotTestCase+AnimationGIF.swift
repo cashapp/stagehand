@@ -107,6 +107,66 @@ extension FBSnapshotTestCase {
         animationInstance.cancel(behavior: .revert)
     }
 
+    /// Snapshots the `view` over time as the `animation` is performed on the `element`.
+    ///
+    /// When `recordMode` is true, records an animated snapshot of the view. When `recordMode` is false, performs a
+    /// comparison with the existing snapshot.
+    ///
+    /// Note that this method can generate fairly large snapshot files. The higher the `fps`, the more frames will be
+    /// captured, and therefore the larger the file output.
+    ///
+    /// - parameter animation: The animation to perform on the element.
+    /// - parameter element: The element to be animated.
+    /// - parameter view: The view which will be snapshotted to verify the animation.
+    /// - parameter fps: The number of frames per seconds at which to record the snapshot.
+    /// - parameter bookendFrameDuration: The behavior to use for determining the duration of the first and last frame
+    /// the recording. For looping animations, it is recommended to use `.matchIntermediateFrames`.
+    /// - parameter identifier: An optional identifier included in the snapshot name, for use when there are multiple
+    /// snapshot tests in a given test method. Defaults to no identifier.
+    /// - parameter suffixes: An ordered set of strings representing the platform suffixes.
+    /// - parameter file: The file in which the test result should be attributed.
+    /// - parameter line: The line in which the test result should be attributed.
+    public func SnapshotVerify<ElementType>(
+        animation: Animation<ElementType>,
+        on element: ElementType,
+        using view: UIView,
+        fps: Double = defaultAnimationSnapshotFPS,
+        bookendFrameDuration: BookendFrameDuration = .default,
+        identifier: String = "",
+        suffixes: NSOrderedSet = FBSnapshotTestCaseDefaultSuffixes(),
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        let driver = NoOpDriver()
+
+        let animationInstance = AnimationInstance(
+            animation: animation,
+            element: element,
+            driver: driver
+        )
+
+        let includeReverseCycle: Bool
+        switch animation.repeatStyle {
+        case let .repeating(count: count, autoreversing: autoreversing):
+            includeReverseCycle = (count != 1 && autoreversing)
+        }
+
+        SnapshotVerify(
+            animationInstance: animationInstance,
+            using: view,
+            animationDuration: animation.duration,
+            includeReverseCycle: includeReverseCycle,
+            fps: fps,
+            bookendFrameDuration: bookendFrameDuration,
+            identifier: identifier,
+            suffixes: suffixes,
+            file: file,
+            line: line
+        )
+
+        animationInstance.cancel(behavior: .revert)
+    }
+
     /// Snapshots the `view` over time as the `animationGroup` is performed.
     ///
     /// When `recordMode` is true, records an animated snapshot of the view. When `recordMode` is false, performs a
