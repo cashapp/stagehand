@@ -582,7 +582,7 @@ public struct Animation<ElementType: AnyObject> {
 
 // MARK: -
 
-public enum AnimationRepeatStyle {
+public enum AnimationRepeatStyle: Equatable {
 
     /// Animation will execute `count` times.
     ///
