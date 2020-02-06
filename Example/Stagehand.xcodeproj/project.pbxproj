@@ -12,6 +12,7 @@
 		3D2712EE236A17C5001D3B4B /* AnimationQueueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */; };
 		3D32EF4623404F98001144B3 /* AnimationCurvePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D32EF362340449B001144B3 /* AnimationCurvePerformanceTests.swift */; };
 		3D32EF4B234058C7001144B3 /* AnimationOptimizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */; };
+		3D5F2D3B23E63E3600EEFA89 /* AnimationGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */; };
 		3D75A7BD228FED9900743166 /* AnimationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75A7BC228FED9900743166 /* AnimationFactory.swift */; };
 		3D75A7C3229284C600743166 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75A7C2229284C600743166 /* DemoViewController.swift */; };
 		3D75A7C62292892B00743166 /* SimpleAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75A7C52292892B00743166 /* SimpleAnimationsViewController.swift */; };
@@ -67,6 +68,7 @@
 		3D32EF3C23404F6A001144B3 /* Stagehand-PerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Stagehand-PerformanceTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D32EF4023404F6A001144B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationOptimizationTests.swift; sourceTree = "<group>"; };
+		3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationGroupTests.swift; sourceTree = "<group>"; };
 		3D75A7BC228FED9900743166 /* AnimationFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationFactory.swift; sourceTree = "<group>"; };
 		3D75A7C2229284C600743166 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		3D75A7C52292892B00743166 /* SimpleAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAnimationsViewController.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */,
 				607FACEB1AFB9204008FA782 /* AnimationSnapshotTests.swift */,
 				3DC75492232D819700402BD9 /* ChildAnimationTests.swift */,
+				3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */,
 				3D7E79AA239FC1F8008BF8FF /* DisplayLinkDriverTests.swift */,
 				3DC75495232F6D3800402BD9 /* Utilities */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
@@ -577,6 +580,7 @@
 				3DC75497232F6D5500402BD9 /* TestDriver.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* AnimationSnapshotTests.swift in Sources */,
 				3D7D500023011D4400A468A7 /* AnimationInstanceTests.swift in Sources */,
+				3D5F2D3B23E63E3600EEFA89 /* AnimationGroupTests.swift in Sources */,
 				3DC75494232D82FD00402BD9 /* ChildAnimationTests.swift in Sources */,
 				3D7E79AB239FC1F8008BF8FF /* DisplayLinkDriverTests.swift in Sources */,
 				3D32EF4B234058C7001144B3 /* AnimationOptimizationTests.swift in Sources */,
