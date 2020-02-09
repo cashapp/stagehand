@@ -24,7 +24,7 @@ extension FBSnapshotTestCase {
 
     // MARK: - Public Types
 
-    /// Definition of the how the duration of the first and last frame of the GIF should be determined. The duration of
+    /// Definition of the how the duration of the first and last frame of the APNG should be determined. The duration of
     /// intermediate frames is based on the rate at which the frames are captured (`fps`) so that the recording will
     /// play in real time with the animation.
     public enum BookendFrameDuration {
@@ -44,7 +44,7 @@ extension FBSnapshotTestCase {
 
     // MARK: - Public Static Properties
 
-    /// The default frame rate (in frames per second) at which to record an animated GIF of an animation.
+    /// The default frame rate (in frames per second) at which to record an animated PNG of an animation.
     public static let defaultAnimationSnapshotFPS: Double = 10
 
     // MARK: - Public Methods
@@ -409,7 +409,7 @@ extension FBSnapshotTestCase {
 
         filePath = (filePath as NSString).appendingPathComponent(fileName)
 
-        return (filePath as NSString).appendingPathExtension("gif")!
+        return (filePath as NSString).appendingPathExtension("png")!
     }
 
     private func generateAnimatedSnapshot(
@@ -462,33 +462,33 @@ extension FBSnapshotTestCase {
             }
         }
 
-        return generateAnimatedGIF(
+        return generateAnimatedPNG(
             from: frames,
             fps: fps,
             bookendFrameDuration: bookendFrameDuration
         )
     }
 
-    /// Generates an animated GIF from the provided `images`. Returns the URL of the generated temporary file if
+    /// Generates an animated PNG from the provided `images`. Returns the URL of the generated temporary file if
     /// successful, or `nil` otherwise.
     ///
     /// Based on <https://gist.github.com/westerlund/eae8ec71cdac88be7c3a>.
-    private func generateAnimatedGIF(
+    private func generateAnimatedPNG(
         from images: [UIImage],
         fps: Double,
         bookendFrameDuration: BookendFrameDuration
     ) -> URL? {
         let fileProperties = [
-            kCGImagePropertyGIFDictionary: [
-                kCGImagePropertyGIFLoopCount: 0,
+            kCGImagePropertyPNGDictionary: [
+                kCGImagePropertyAPNGLoopCount: 0,
             ],
         ] as CFDictionary
 
         let intermediateFrameDuration = (1 / fps)
 
         let frameProperties = [
-            kCGImagePropertyGIFDictionary: [
-                kCGImagePropertyGIFUnclampedDelayTime: intermediateFrameDuration,
+            kCGImagePropertyPNGDictionary: [
+                kCGImagePropertyAPNGUnclampedDelayTime: intermediateFrameDuration,
             ],
         ] as CFDictionary
 
@@ -505,29 +505,31 @@ extension FBSnapshotTestCase {
         }
 
         let firstFrameProperties = [
-            kCGImagePropertyGIFDictionary: [
-                kCGImagePropertyGIFUnclampedDelayTime: firstFrameDuration,
+            kCGImagePropertyPNGDictionary: [
+                kCGImagePropertyAPNGUnclampedDelayTime: firstFrameDuration,
             ],
         ] as CFDictionary
 
         let lastFrameProperties = [
-            kCGImagePropertyGIFDictionary: [
-                kCGImagePropertyGIFUnclampedDelayTime: lastFrameDuration,
+            kCGImagePropertyPNGDictionary: [
+                kCGImagePropertyAPNGUnclampedDelayTime: lastFrameDuration,
             ],
         ] as CFDictionary
 
         let url = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent(UUID().uuidString)
-            .appendingPathExtension(".gif")
+            .appendingPathExtension("png")
 
         guard let destination = CGImageDestinationCreateWithURL(
             url as CFURL,
-            kUTTypeGIF,
+            kUTTypePNG,
             images.count,
-            fileProperties
+            nil
         ) else {
             return nil
         }
+
+        CGImageDestinationSetProperties(destination, fileProperties)
 
         for (index, image) in images.enumerated() {
             guard let cgImage = image.cgImage else {
