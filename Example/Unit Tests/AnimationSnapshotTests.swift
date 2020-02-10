@@ -85,9 +85,9 @@ final class AnimationSnapshotTests: FBSnapshotTestCase {
         FBSnapshotVerifyView(view, identifier: "start")
     }
 
-    // MARK: - Tests - Animated GIF
+    // MARK: - Tests - Animated PNG
 
-    func testSimpleAnimationSnapshotGIF() {
+    func testSimpleAnimationSnapshotAPNG() {
         let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
         var animation = Animation<View>()
@@ -97,7 +97,7 @@ final class AnimationSnapshotTests: FBSnapshotTestCase {
         SnapshotVerify(animation: animation, on: view)
     }
 
-    func testSimpleAnimationSnapshotGIFAtHighFPS() {
+    func testSimpleAnimationSnapshotAPNGAtHighFPS() {
         let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
         var animation = Animation<View>()
@@ -107,7 +107,7 @@ final class AnimationSnapshotTests: FBSnapshotTestCase {
         SnapshotVerify(animation: animation, on: view, fps: 30)
     }
 
-    func testLongAnimationSnapshotGIF() {
+    func testLongAnimationSnapshotAPNG() {
         let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
         var animation = Animation<View>()
@@ -118,7 +118,7 @@ final class AnimationSnapshotTests: FBSnapshotTestCase {
         SnapshotVerify(animation: animation, on: view)
     }
 
-    func testAutoreversingAnimationSnapshotGIF() {
+    func testAutoreversingAnimationSnapshotAPNG() {
         let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
         var animation = Animation<View>()
@@ -129,7 +129,7 @@ final class AnimationSnapshotTests: FBSnapshotTestCase {
         SnapshotVerify(animation: animation, on: view, bookendFrameDuration: .matchIntermediateFrames)
     }
 
-    func testAnimationWithExecutionBlocksSnapshotGIF() {
+    func testAnimationWithExecutionBlocksSnapshotAPNG() {
         let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
         var animation = Animation<View>()
@@ -144,7 +144,7 @@ final class AnimationSnapshotTests: FBSnapshotTestCase {
         SnapshotVerify(animation: animation, on: view)
     }
 
-    func testAutoreversingAnimationWithExecutionBlocksSnapshotGIF() {
+    func testAutoreversingAnimationWithExecutionBlocksSnapshotAPNG() {
         let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
         var animation = Animation<View>()
@@ -160,7 +160,7 @@ final class AnimationSnapshotTests: FBSnapshotTestCase {
         SnapshotVerify(animation: animation, on: view)
     }
 
-    func testAnimationWithNonViewElementSnapshotGIF() {
+    func testAnimationWithNonViewElementSnapshotAPNG() {
         let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
         let element = Proxy(view: view)
@@ -170,6 +170,18 @@ final class AnimationSnapshotTests: FBSnapshotTestCase {
         animation.addKeyframe(for: \.animatableViewTransform, at: 1, value: .init(translationX: 160, y: 0))
 
         SnapshotVerify(animation: animation, on: element, using: view)
+    }
+
+    func testAnimationWithPartialTransparency() {
+        let view = ColorGridView(frame: .init(x: 0, y: 0, width: 200, height: 200))
+
+        var animation = Animation<ColorGridView>()
+        for view in [\ColorGridView.redView, \.greenView, \.blueView, \.yellowView] {
+            animation.addKeyframe(for: view.appending(path: \.alpha), at: 0, value: 1)
+            animation.addKeyframe(for: view.appending(path: \.alpha), at: 1, value: 0)
+        }
+
+        SnapshotVerify(animation: animation, on: view)
     }
 
 }
@@ -235,6 +247,81 @@ extension AnimationSnapshotTests {
         // MARK: - Private Properties
 
         private let view: View
+
+    }
+
+}
+
+// MARK: -
+
+extension AnimationSnapshotTests {
+
+    final class ColorGridView: UIView {
+
+        // MARK: - Life Cycle
+
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+
+            redView.backgroundColor = .red
+            addSubview(redView)
+
+            greenView.backgroundColor = .green
+            addSubview(greenView)
+
+            blueView.backgroundColor = .blue
+            addSubview(blueView)
+
+            yellowView.backgroundColor = .yellow
+            addSubview(yellowView)
+        }
+
+        @available(*, unavailable)
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        // MARK: - Public Properties
+
+        let redView = UIView()
+
+        let greenView = UIView()
+
+        let blueView = UIView()
+
+        let yellowView = UIView()
+
+        // MARK: - UIView
+
+        override func layoutSubviews() {
+            redView.frame = .init(
+                x: bounds.width / 7,
+                y: bounds.height / 7,
+                width: bounds.width * 2 / 7,
+                height: bounds.height * 2 / 7
+            )
+
+            greenView.frame = .init(
+                x: bounds.width * 4 / 7,
+                y: bounds.height / 7,
+                width: bounds.width * 2 / 7,
+                height: bounds.height * 2 / 7
+            )
+
+            blueView.frame = .init(
+                x: bounds.width / 7,
+                y: bounds.height * 4 / 7,
+                width: bounds.width * 2 / 7,
+                height: bounds.height * 2 / 7
+            )
+
+            yellowView.frame = .init(
+                x: bounds.width * 4 / 7,
+                y: bounds.height * 4 / 7,
+                width: bounds.width * 2 / 7,
+                height: bounds.height * 2 / 7
+            )
+        }
 
     }
 
