@@ -17,7 +17,7 @@ Stagehand provides a modern, type-safe API for building animations on iOS. Stage
 Stagehand is available through [CocoaPods](https://cocoapods.org). To install it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'Stagehand', '~> 1.0'
+pod 'Stagehand'
 ```
 
 ## Getting Started with Stagehand
