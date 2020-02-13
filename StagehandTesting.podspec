@@ -19,4 +19,7 @@ Pod::Spec.new do |s|
   s.dependency 'Stagehand', s.version.to_s
 
   s.dependency 'iOSSnapshotTestCase', '~> 6.1'
+
+  s.frameworks = 'XCTest'
+  s.weak_framework = 'XCTest'
 end
