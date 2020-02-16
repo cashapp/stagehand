@@ -20,6 +20,9 @@ import PackageDescription
 
 let package = Package(
 	name: "Stagehand",
+	platforms: [
+		.iOS(.v10),
+	],
 	products: [
 		.library(
 			name: "Stagehand",
