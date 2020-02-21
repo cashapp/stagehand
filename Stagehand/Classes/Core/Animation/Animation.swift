@@ -373,7 +373,7 @@ public struct Animation<ElementType: AnyObject> {
         assignments.append(
             contentsOf: childAnimation.assignments.map { childAssignment in
                 // Adjust the relative timestamp for the child's animation curve.
-                let relativeTimestamp = relativeStartTimestamp + (childAssignment.relativeTimestamp / relativeDuration)
+                let relativeTimestamp = relativeStartTimestamp + (childAssignment.relativeTimestamp * relativeDuration)
                 let adjustedRelativeTimestamp = childAnimation.curve.adjustedProgress(for: relativeTimestamp)
 
                 return Assignment(
@@ -395,7 +395,7 @@ public struct Animation<ElementType: AnyObject> {
         executionBlocks.append(
             contentsOf: childAnimation.executionBlocks.map { childExecutionBlock in
                 // Adjust the relative timestamp for the child's animation curve.
-                let relativeTimestamp = relativeStartTimestamp + (childExecutionBlock.relativeTimestamp / relativeDuration)
+                let relativeTimestamp = relativeStartTimestamp + (childExecutionBlock.relativeTimestamp * relativeDuration)
                 let adjustedRelativeTimestamp = childAnimation.curve.adjustedProgress(for: relativeTimestamp)
 
                 return ExecutionBlock(

@@ -182,6 +182,217 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
+    // MARK: - Tests - Exeuction Blocks
+
+    func testExecutionBlocks_fullDurationChild() {
+        var executedBlocks: [String] = []
+
+        var child = Animation<Element>()
+        child.addExecution(
+            onForward: { _ in executedBlocks.append("A") },
+            at: 0
+        )
+        child.addExecution(
+            onForward: { _ in executedBlocks.append("B") },
+            at: 0.5
+        )
+        child.addExecution(
+            onForward: { _ in executedBlocks.append("C") },
+            at: 1
+        )
+
+        var parent = Animation<Element>()
+        parent.addChild(child, for: \.self, startingAt: 0, relativeDuration: 1)
+
+        let element = Element()
+
+        let driver = TestDriver()
+
+        let animationInstance = AnimationInstance(
+            animation: parent,
+            element: element,
+            driver: driver
+        )
+
+        driver.runForward(to: 0)
+        XCTAssertEqual(executedBlocks, ["A"])
+
+        driver.runForward(to: 0.5)
+        XCTAssertEqual(executedBlocks, ["A", "B"])
+
+        driver.runForward(to: 1)
+        XCTAssertEqual(executedBlocks, ["A", "B", "C"])
+
+        _ = animationInstance
+    }
+
+    func testExecutionBlocks_partialDurationChildren() {
+        var executedBlocks: [String] = []
+
+        func makeChild(prefix: String) -> Animation<Element> {
+            var child = Animation<Element>()
+            child.addExecution(
+                onForward: { _ in executedBlocks.append("\(prefix)A") },
+                at: 0
+            )
+            child.addExecution(
+                onForward: { _ in executedBlocks.append("\(prefix)B") },
+                at: 0.5
+            )
+            child.addExecution(
+                onForward: { _ in executedBlocks.append("\(prefix)C") },
+                at: 1
+            )
+            return child
+        }
+
+        var parent = Animation<Element>()
+        parent.addChild(makeChild(prefix: "1"), for: \.self, startingAt: 0, relativeDuration: 0.2)
+        parent.addChild(makeChild(prefix: "2"), for: \.self, startingAt: 0.3, relativeDuration: 0.5)
+        parent.addChild(makeChild(prefix: "3"), for: \.self, startingAt: 0.5, relativeDuration: 0.5)
+
+        let element = Element()
+
+        let driver = TestDriver()
+
+        let animationInstance = AnimationInstance(
+            animation: parent,
+            element: element,
+            driver: driver
+        )
+
+        driver.runForward(to: 0)
+        XCTAssertEqual(executedBlocks, ["1A"])
+
+        driver.runForward(to: 0.1)
+        XCTAssertEqual(executedBlocks, ["1A", "1B"])
+
+        driver.runForward(to: 0.2)
+        XCTAssertEqual(executedBlocks, ["1A", "1B", "1C"])
+
+        driver.runForward(to: 0.3)
+        XCTAssertEqual(executedBlocks, ["1A", "1B", "1C", "2A"])
+
+        driver.runForward(to: 0.5)
+        XCTAssertEqual(executedBlocks, ["1A", "1B", "1C", "2A", "3A"])
+
+        driver.runForward(to: 0.55)
+        XCTAssertEqual(executedBlocks, ["1A", "1B", "1C", "2A", "3A", "2B"])
+
+        driver.runForward(to: 0.75)
+        XCTAssertEqual(executedBlocks, ["1A", "1B", "1C", "2A", "3A", "2B", "3B"])
+
+        driver.runForward(to: 0.8)
+        XCTAssertEqual(executedBlocks, ["1A", "1B", "1C", "2A", "3A", "2B", "3B", "2C"])
+
+        driver.runForward(to: 1)
+        XCTAssertEqual(executedBlocks, ["1A", "1B", "1C", "2A", "3A", "2B", "3B", "2C", "3C"])
+
+        _ = animationInstance
+    }
+
+    // MARK: - Tests - Property Assignments
+
+    func testPropertyAssignments_fullDurationChild() {
+        var child = Animation<Subelement>()
+        child.addAssignment(for: \.propertyOne, at: 0, value: 0)
+        child.addAssignment(for: \.propertyOne, at: 0.5, value: 0.5)
+        child.addAssignment(for: \.propertyOne, at: 1, value: 1)
+
+        var parent = Animation<Element>()
+        parent.addChild(child, for: \.subelementOne, startingAt: 0, relativeDuration: 1)
+
+        let element = Element()
+
+        let driver = TestDriver()
+
+        let animationInstance = AnimationInstance(
+            animation: parent,
+            element: element,
+            driver: driver
+        )
+
+        driver.runForward(to: 0)
+        XCTAssertEqual(element.subelementOne.propertyOne, 0)
+
+        driver.runForward(to: 0.5)
+        XCTAssertEqual(element.subelementOne.propertyOne, 0.5)
+
+        driver.runForward(to: 1)
+        XCTAssertEqual(element.subelementOne.propertyOne, 1)
+
+        _ = animationInstance
+    }
+
+    func testPropertyAssignments_partialDurationChildren() {
+        var child = Animation<Subelement>()
+        child.addAssignment(for: \.propertyOne, at: 0, value: 0)
+        child.addAssignment(for: \.propertyOne, at: 0.5, value: 0.5)
+        child.addAssignment(for: \.propertyOne, at: 1, value: 1)
+
+        var parent = Animation<Element>()
+        parent.addChild(child, for: \.subelementOne, startingAt: 0, relativeDuration: 0.2)
+        parent.addChild(child, for: \.subelementTwo, startingAt: 0.3, relativeDuration: 0.5)
+        parent.addChild(child, for: \.subelementThree, startingAt: 0.5, relativeDuration: 0.5)
+
+        let element = Element()
+
+        let driver = TestDriver()
+
+        let animationInstance = AnimationInstance(
+            animation: parent,
+            element: element,
+            driver: driver
+        )
+
+        driver.runForward(to: 0)
+        XCTAssertEqual(element.subelementOne.propertyOne, 0)
+        XCTAssertEqual(element.subelementTwo.propertyOne, -1)
+        XCTAssertEqual(element.subelementThree.propertyOne, -1)
+
+        driver.runForward(to: 0.1)
+        XCTAssertEqual(element.subelementOne.propertyOne, 0.5)
+        XCTAssertEqual(element.subelementTwo.propertyOne, -1)
+        XCTAssertEqual(element.subelementThree.propertyOne, -1)
+
+        driver.runForward(to: 0.2)
+        XCTAssertEqual(element.subelementOne.propertyOne, 1)
+        XCTAssertEqual(element.subelementTwo.propertyOne, -1)
+        XCTAssertEqual(element.subelementThree.propertyOne, -1)
+
+        driver.runForward(to: 0.3)
+        XCTAssertEqual(element.subelementOne.propertyOne, 1)
+        XCTAssertEqual(element.subelementTwo.propertyOne, 0)
+        XCTAssertEqual(element.subelementThree.propertyOne, -1)
+
+        driver.runForward(to: 0.5)
+        XCTAssertEqual(element.subelementOne.propertyOne, 1)
+        XCTAssertEqual(element.subelementTwo.propertyOne, 0)
+        XCTAssertEqual(element.subelementThree.propertyOne, 0)
+
+        driver.runForward(to: 0.55)
+        XCTAssertEqual(element.subelementOne.propertyOne, 1)
+        XCTAssertEqual(element.subelementTwo.propertyOne, 0.5)
+        XCTAssertEqual(element.subelementThree.propertyOne, 0)
+
+        driver.runForward(to: 0.75)
+        XCTAssertEqual(element.subelementOne.propertyOne, 1)
+        XCTAssertEqual(element.subelementTwo.propertyOne, 0.5)
+        XCTAssertEqual(element.subelementThree.propertyOne, 0.5)
+
+        driver.runForward(to: 0.8)
+        XCTAssertEqual(element.subelementOne.propertyOne, 1)
+        XCTAssertEqual(element.subelementTwo.propertyOne, 1)
+        XCTAssertEqual(element.subelementThree.propertyOne, 0.5)
+
+        driver.runForward(to: 1)
+        XCTAssertEqual(element.subelementOne.propertyOne, 1)
+        XCTAssertEqual(element.subelementTwo.propertyOne, 1)
+        XCTAssertEqual(element.subelementThree.propertyOne, 1)
+
+        _ = animationInstance
+    }
+
 }
 
 // MARK: -
@@ -193,6 +404,8 @@ private extension ChildAnimationTests {
         var subelementOne: Subelement = .init()
 
         var subelementTwo: Subelement = .init()
+
+        var subelementThree: Subelement = .init()
 
     }
 
