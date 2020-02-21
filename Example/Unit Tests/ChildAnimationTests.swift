@@ -182,7 +182,7 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
-    // MARK: - Tests - Exeuction Blocks
+    // MARK: - Tests - Execution Blocks
 
     func testExecutionBlocks_fullDurationChild() {
         var executedBlocks: [String] = []
