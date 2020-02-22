@@ -103,6 +103,7 @@ extension DemoViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let row = animationRows[indexPath.row]
         cell.textLabel?.text = row.name
+        cell.textLabel?.adjustsFontSizeToFitWidth = true
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

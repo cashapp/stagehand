@@ -396,10 +396,9 @@ public struct Animation<ElementType: AnyObject> {
             contentsOf: childAnimation.executionBlocks.map { childExecutionBlock in
                 // Adjust the relative timestamp for the child's animation curve.
                 let relativeTimestamp = relativeStartTimestamp + (childExecutionBlock.relativeTimestamp * relativeDuration)
-                let adjustedRelativeTimestamp = childAnimation.curve.adjustedProgress(for: relativeTimestamp)
 
                 return ExecutionBlock(
-                    relativeTimestamp: adjustedRelativeTimestamp,
+                    relativeTimestamp: relativeTimestamp,
                     forwardBlock: { element in
                         childExecutionBlock.forwardBlock(element[keyPath: subelement])
                     },
@@ -414,18 +413,18 @@ public struct Animation<ElementType: AnyObject> {
         perFrameExecutionBlocks.append(
             contentsOf: childAnimation.perFrameExecutionBlocks.map { childExecutionBlock in
                 return { context in
-                    guard context.uncurvedProgress >= relativeStartTimestamp else {
+                    guard context.progress >= relativeStartTimestamp else {
                         // The child animation hasn't started yet.
                         return
                     }
 
-                    guard context.uncurvedProgress <= (relativeStartTimestamp + relativeDuration) else {
+                    guard context.progress <= (relativeStartTimestamp + relativeDuration) else {
                         // The child animation already ended.
                         return
                     }
 
                     // The uncurved progress of the child animation is based on the curved progress of the parent.
-                    let uncurvedProgress = context.progress
+                    let uncurvedProgress = (context.progress - relativeStartTimestamp) / relativeDuration
 
                     childExecutionBlock(
                         .init(

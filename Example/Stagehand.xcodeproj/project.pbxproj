@@ -27,6 +27,7 @@
 		3DA3997C230FCFAC00DE41A0 /* ExecutionBlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */; };
 		3DA5EB7C2318E64A001DF944 /* CollectionKeyframesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5EB7B2318E64A001DF944 /* CollectionKeyframesViewController.swift */; };
 		3DB3927D23249D680009E8B3 /* ColorAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */; };
+		3DBFEE422400B2460086D61C /* ChildAnimationProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBFEE412400B2460086D61C /* ChildAnimationProgressViewController.swift */; };
 		3DC75494232D82FD00402BD9 /* ChildAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC75492232D819700402BD9 /* ChildAnimationTests.swift */; };
 		3DC75497232F6D5500402BD9 /* TestDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC75496232F6D5500402BD9 /* TestDriver.swift */; };
 		3DEE440A231331DD0057D796 /* AnimationGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */; };
@@ -83,6 +84,7 @@
 		3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionBlockViewController.swift; sourceTree = "<group>"; };
 		3DA5EB7B2318E64A001DF944 /* CollectionKeyframesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionKeyframesViewController.swift; sourceTree = "<group>"; };
 		3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAnimationsViewController.swift; sourceTree = "<group>"; };
+		3DBFEE412400B2460086D61C /* ChildAnimationProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAnimationProgressViewController.swift; sourceTree = "<group>"; };
 		3DC75492232D819700402BD9 /* ChildAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAnimationTests.swift; sourceTree = "<group>"; };
 		3DC75496232F6D5500402BD9 /* TestDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDriver.swift; sourceTree = "<group>"; };
 		3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationGroupViewController.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				3D75A7C72292910B00743166 /* RelativeAnimationsViewController.swift */,
 				3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */,
 				3D1D304922F007B7003E392C /* ChildAnimationsViewController.swift */,
+				3DBFEE412400B2460086D61C /* ChildAnimationProgressViewController.swift */,
 				3D1D304B22F01136003E392C /* AnimationCurveViewController.swift */,
 				3D8E3D7F22F16C1B00D70FCB /* ChildAnimationsWithCurvesViewController.swift */,
 				3D8E3D8122F17D3B00D70FCB /* AnimationCancelationViewController.swift */,
@@ -555,6 +558,7 @@
 				3D75A7C62292892B00743166 /* SimpleAnimationsViewController.swift in Sources */,
 				3D89F1E222FDEAAC008AC33E /* PropertyAssignmentViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* RootViewController.swift in Sources */,
+				3DBFEE422400B2460086D61C /* ChildAnimationProgressViewController.swift in Sources */,
 				3DA5EB7C2318E64A001DF944 /* CollectionKeyframesViewController.swift in Sources */,
 				3DA3997C230FCFAC00DE41A0 /* ExecutionBlockViewController.swift in Sources */,
 				3D2712EE236A17C5001D3B4B /* AnimationQueueViewController.swift in Sources */,

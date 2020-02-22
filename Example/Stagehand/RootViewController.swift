@@ -40,6 +40,7 @@ final class RootViewController: UITableViewController {
         ("Child Animations", { ChildAnimationsViewController() }),
         ("Animation Curves", { AnimationCurveViewController() }),
         ("Child Animations with Curves", { ChildAnimationsWithCurvesViewController() }),
+        ("Child Animation Progress", { ChildAnimationProgressViewController() }),
         ("Animation Cancellation", { AnimationCancelationViewController() }),
         ("Property Assignments", { PropertyAssignmentViewController() }),
         ("Repeating Animations", { RepeatingAnimationsViewController() }),

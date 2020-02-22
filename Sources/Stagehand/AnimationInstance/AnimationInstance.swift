@@ -210,6 +210,10 @@ public final class AnimationInstance {
         _ fromInclusivity: Inclusivity,
         to endingRelativeTimestamp: Double
     ) {
+        // Apply the animation curve to the start/end timestamps.
+        let startingRelativeTimestamp = animationCurve.adjustedProgress(for: startingRelativeTimestamp)
+        let endingRelativeTimestamp = animationCurve.adjustedProgress(for: endingRelativeTimestamp)
+
         if endingRelativeTimestamp >= startingRelativeTimestamp {
             // Iterate forward through the execution blocks.
             for (index, executionBlock) in sortedExecutionBlocks.enumerated() {
@@ -243,6 +247,8 @@ public final class AnimationInstance {
             return
         }
 
+        status = .animating(progress: relativeTimestamp)
+
         // If we skipped any keyframes since the last frame we rendered, render them now. If we don't do this, we might
         // skip rendering the last keyframe of a child animation, leaving the properties of that animation in their
         // value just shy of the value specified by the final keyframe.
@@ -275,8 +281,6 @@ public final class AnimationInstance {
         renderer.renderFrame(at: relativeTimestamp)
 
         perFrameExecutionBlocks.forEach { $0(relativeTimestamp) }
-
-        status = .animating(progress: relativeTimestamp)
 
         lastRenderedFrameRelativeTimestamp = relativeTimestamp
     }
