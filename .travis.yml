@@ -9,7 +9,7 @@ jobs:
   - osx_image: xcode10.3
     env: ACTIONS="xcode,pod-lint";PLATFORM="iOS_10"
   - osx_image: xcode11.3
-    env: ACTIONS="swift-package";PLATFORM="iOS_13"
+    env: ACTIONS="spm";PLATFORM="iOS_13"
 install:
   - bundle install --gemfile=Example/Gemfile
   - bundle exec --gemfile=Example/Gemfile pod install --project-directory=Example
