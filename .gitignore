@@ -30,3 +30,7 @@ Pods/
 
 # Swift Playgrounds
 timeline.xctimeline
+
+# Swift Pacakge Manager
+generated/
+.build/
