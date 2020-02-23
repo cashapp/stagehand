@@ -9,12 +9,25 @@ func execute(commandPath: String, arguments: [String], pipedTo pipeProcess: Proc
 	task.launchPath = commandPath
 	task.arguments = arguments
 
-	print("Launching command: \(commandPath) \(arguments.joined(separator: " "))")
+	let argumentsString = arguments
+		.map { argument in
+			if argument.contains(" ") {
+				return "\"\(argument)\""
+			} else {
+				return argument
+			}
+		}
+		.joined(separator: " ")
 
-	if let pipeProcess = pipeProcess {
+	if let pipeProcess = pipeProcess, let pipePath = pipeProcess.launchPath {
 		let pipe = Pipe()
 		task.standardOutput = pipe
 		pipeProcess.standardInput = pipe
+
+		print("Launching command: \(commandPath) \(argumentsString) | \(pipePath)")
+
+	} else {
+		print("Launching command: \(commandPath) \(argumentsString)")
 	}
 
 	task.launch()
