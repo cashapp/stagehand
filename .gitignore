@@ -34,3 +34,4 @@ timeline.xctimeline
 # Swift Pacakge Manager
 generated/
 .build/
+.swiftpm/
