@@ -4,10 +4,10 @@ PODS:
   - iOSSnapshotTestCase/Core (6.2.0)
   - iOSSnapshotTestCase/SwiftSupport (6.2.0):
     - iOSSnapshotTestCase/Core
-  - Stagehand (2.0.3)
-  - StagehandTesting (2.0.3):
+  - Stagehand (2.0.2)
+  - StagehandTesting (2.0.2):
     - iOSSnapshotTestCase (~> 6.1)
-    - Stagehand (= 2.0.3)
+    - Stagehand (= 2.0.2)
 
 DEPENDENCIES:
   - Stagehand (from `../`)
@@ -25,8 +25,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
-  Stagehand: 26757908d185201b6f1b1670540f7df0f9ccbbdf
-  StagehandTesting: 1f39c10576e118d0fba460cb8e473f72935f3e01
+  Stagehand: 6d360781f1e1ad7c15a16253952164c0035010d1
+  StagehandTesting: 941f1f1e381cf27e91a677895e249a3078e863e9
 
 PODFILE CHECKSUM: e2058eb578e4d6fb432b015c43b4e221c1b70e87
 
