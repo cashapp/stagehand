@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'StagehandTesting'
-  s.version          = '2.0.2'
+  s.version          = '2.0.3'
   s.summary          = 'Utilities for snapshot testing animations created using the Stagehand framework'
   s.homepage         = 'https://github.com/CashApp/Stagehand'
   s.license          = { :type => 'Apache License, Version 2.0', :file => 'LICENSE' }
