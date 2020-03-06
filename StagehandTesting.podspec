@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 
   s.swift_version = '5.0.1'
 
-  s.source_files = 'Stagehand/Classes/Testing/**/*'
+  s.source_files = 'Sources/StagehandTesting/**/*'
 
   # The dependency on Stagehand is pinned to the same version as StagehandTesting. This is because
   # StagehandTesting depends on internal methods inside Stagehand, so the normal rules of semantic

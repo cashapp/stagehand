@@ -33,7 +33,7 @@ let package = Package(
 		.target(
 			name: "Stagehand",
 			dependencies: [],
-			path: "Stagehand/Classes/Core"
+			path: "Sources/Stagehand"
 		),
 	],
 	swiftLanguageVersions: [.v5]
