@@ -14,10 +14,28 @@ Stagehand provides a modern, type-safe API for building animations on iOS. Stage
 
 ## Installation
 
-Stagehand is available through [CocoaPods](https://cocoapods.org). To install it, simply add the following line to your Podfile:
+### CocoaPods
+
+To install Stagehand via [CocoaPods](https://cocoapods.org), simply add the following line to your `Podfile`:
 
 ```ruby
 pod 'Stagehand'
+```
+
+To install StagehandTesting, the animation snapshot testing utilities, add the following line to your test target definition in your `Podfile`:
+
+```ruby
+pod 'StagehandTesting'
+```
+
+### Swift Package Manager
+
+To install Stagehand via [Swift Package Manager](https://github.com/apple/swift-package-manager), add the following to your `Package.swift`:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/cashapp/stagehand", from: "2.0.3"),
+],
 ```
 
 ## Getting Started with Stagehand

@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 
   s.swift_version = '5.0.1'
 
-  s.source_files = 'Stagehand/Classes/Core/**/*'
+  s.source_files = 'Sources/Stagehand/**/*'
 
   s.frameworks = 'CoreGraphics', 'UIKit'
 

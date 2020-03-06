@@ -1,19 +1,20 @@
 language: objective-c
 jobs:
   - osx_image: xcode11.3
-    env: DEST='platform=iOS Simulator,OS=13.3,name=iPhone 11 Pro'
+    env: ACTIONS="xcode,pod-lint";PLATFORM="iOS_13"
   - osx_image: xcode10.3
-    env: DEST='platform=iOS Simulator,OS=12.4,name=iPhone Xs'
+    env: ACTIONS="xcode,pod-lint";PLATFORM="iOS_12"
   - osx_image: xcode10.3
-    env: DEST='platform=iOS Simulator,OS=11.4,name=iPhone X'
+    env: ACTIONS="xcode,pod-lint";PLATFORM="iOS_11"
   - osx_image: xcode10.3
-    env: DEST='platform=iOS Simulator,OS=10.3.1,name=iPhone 7'
+    env: ACTIONS="xcode,pod-lint";PLATFORM="iOS_10"
+  - osx_image: xcode11.3
+    env: ACTIONS="spm";PLATFORM="iOS_13"
 install:
   - bundle install --gemfile=Example/Gemfile
   - bundle exec --gemfile=Example/Gemfile pod install --project-directory=Example
 script:
-  - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/Stagehand.xcworkspace -scheme "Stagehand Demo App" -sdk iphonesimulator -destination "$DEST" ONLY_ACTIVE_ARCH=NO | xcpretty
-  - bundle exec --gemfile=Example/Gemfile pod lib lint
+  - ./Scripts/ci.sh
 branches:
   only:
   - master

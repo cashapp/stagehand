@@ -14,7 +14,7 @@
 //  limitations under the License.
 //
 
-import Foundation
+import QuartzCore
 
 /// An animation driver that is controlled by a `CADisplayLink`. This driver is intended for use with non-interactive
 /// animations that have a specified duration.
