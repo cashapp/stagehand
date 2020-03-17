@@ -557,7 +557,7 @@ final class DisplayLinkDriverTests: XCTestCase {
     }
 
     func testCallsCompletion() {
-        var calledCompletion: Bool = false
+        var calledCompletion = false
         let completion: (Bool) -> Void = { success in
             XCTAssertTrue(success)
             calledCompletion = true
@@ -992,7 +992,7 @@ private final class TestDisplayLink: DisplayLinkDriverDisplayLink {
 
     private(set) var timestamp: CFTimeInterval = 0
 
-    private(set) var wasInvalidated: Bool = false
+    private(set) var wasInvalidated = false
 
     func add(to runloop: RunLoop, forMode mode: RunLoop.Mode) {
         // No-op.

@@ -293,7 +293,7 @@ internal final class DisplayLinkDriver: Driver {
     private func complete(success: Bool) {
         // Set the status to `completed` in order to stop rendering frames. We'll call the completion handlers and
         // invalidate the display link on the next display loop pass. This ensures that the final frame is drawn to
-        // the screen before the completion handlers are called, in case they do work that would otherwise casue a
+        // the screen before the completion handlers are called, in case they do work that would otherwise cause a
         // delay in drawing.
         status = .completed(success: success)
     }
