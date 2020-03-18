@@ -47,6 +47,14 @@ internal final class DisplayLinkDriver: Driver {
 
     }
 
+    private enum Status {
+
+        case active
+
+        case completed(success: Bool)
+
+    }
+
     // MARK: - Private Properties
 
     private let delay: TimeInterval
@@ -62,6 +70,8 @@ internal final class DisplayLinkDriver: Driver {
     private var startTime: TimeInterval?
 
     private var lastRenderedFrame: Frame?
+
+    private var status: Status = .active
 
     // MARK: - Private Computed Properties
 
@@ -154,6 +164,22 @@ internal final class DisplayLinkDriver: Driver {
     }
 
     @objc func renderCurrentFrame() {
+        switch status {
+        case .active:
+            break
+
+        case let .completed(success: success):
+            displayLink?.invalidate()
+            displayLink = nil
+
+            animationInstance = nil
+
+            completions.forEach { $0(success) }
+            completions = []
+
+            return
+        }
+
         guard let displayLink = displayLink, let startTime = startTime else {
             return
         }
@@ -265,12 +291,11 @@ internal final class DisplayLinkDriver: Driver {
     // MARK: - Private Methods
 
     private func complete(success: Bool) {
-        displayLink?.invalidate()
-        displayLink = nil
-
-        animationInstance = nil
-
-        completions.forEach { $0(success) }
+        // Set the status to `completed` in order to stop rendering frames. We'll call the completion handlers and
+        // invalidate the display link on the next display loop pass. This ensures that the final frame is drawn to
+        // the screen before the completion handlers are called, in case they do work that would otherwise cause a
+        // delay in drawing.
+        status = .completed(success: success)
     }
 
 }

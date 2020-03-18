@@ -557,10 +557,10 @@ final class DisplayLinkDriverTests: XCTestCase {
     }
 
     func testCallsCompletion() {
-        let expectation = self.expectation(description: "calls completion")
+        var calledCompletion = false
         let completion: (Bool) -> Void = { success in
             XCTAssertTrue(success)
-            expectation.fulfill()
+            calledCompletion = true
         }
 
         let displayLink = TestDisplayLink()
@@ -581,9 +581,18 @@ final class DisplayLinkDriverTests: XCTestCase {
 
         driver.start(timeFactory: Factory.timeFactory)
 
+        // When the display link hits the end, the final frame should be rendered, but the completion should not yet be
+        // called. The display link will be left running so that there will be one more call.
         displayLink.simulateRunLoop(at: 1)
 
-        waitForExpectations(timeout: 1, handler: nil)
+        XCTAssertFalse(calledCompletion)
+        XCTAssertFalse(displayLink.wasInvalidated)
+
+        // On the final call, the driver should call the completion and invalidate the display link.
+        displayLink.simulateRunLoop(at: 1.1)
+
+        XCTAssertTrue(calledCompletion)
+        XCTAssertTrue(displayLink.wasInvalidated)
     }
 
     // MARK: - Tests - Cancellation
@@ -983,12 +992,14 @@ private final class TestDisplayLink: DisplayLinkDriverDisplayLink {
 
     private(set) var timestamp: CFTimeInterval = 0
 
+    private(set) var wasInvalidated = false
+
     func add(to runloop: RunLoop, forMode mode: RunLoop.Mode) {
         // No-op.
     }
 
     func invalidate() {
-        // No-op.
+        wasInvalidated = true
     }
 
     // MARK: - Private  Properties
