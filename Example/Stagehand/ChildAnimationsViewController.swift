@@ -158,12 +158,9 @@ extension ChildAnimationsViewController {
 
         // MARK: - Public Properties
 
-        // Due to a limitation in how Swift KeyPaths are appended, these properties need to be mutable since they will
-        // be used for a child animation.
+        let leftView: UIView = .init()
 
-        var leftView: UIView = .init()
-
-        var rightView: UIView = .init()
+        let rightView: UIView = .init()
 
         // MARK: - UIView
 

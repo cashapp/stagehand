@@ -339,7 +339,7 @@ public struct Animation<ElementType: AnyObject> {
     /// in the range (0,(1 - relativeStartTimestamp)], where 0 is the beginning of the animation and 1 is the end.
     public mutating func addChild<SubelementType: AnyObject>(
         _ childAnimation: Animation<SubelementType>,
-        for subelement: WritableKeyPath<ElementType, SubelementType>,
+        for subelement: KeyPath<ElementType, SubelementType>,
         startingAt relativeStartTimestamp: Double,
         relativeDuration: Double
     ) {
@@ -646,10 +646,15 @@ extension Animation {
             }
         }
 
-        func mapForParent<ParentElementType>(
-            _ subelementPath: WritableKeyPath<ParentElementType, ElementType>
+        func mapForParent<ParentElementType: AnyObject>(
+            _ subelementPath: KeyPath<ParentElementType, ElementType>
         ) -> (PartialKeyPath<ParentElementType>, Animation<ParentElementType>.KeyframeSeries<PropertyType>) {
-            let mappedProperty = subelementPath.appending(path: property)
+            // This is not a type-safe cast because `appending(path:)` doesn't know that the `ParentElementType` is a
+            // reference type. Given the `AnyObject` restriction, it should be safe to assume that we will always get
+            // back a `ReferenceWritableKeyPath` since we're appending a writable key path to a key path for a reference
+            // type.
+            let mappedProperty = subelementPath.appending(path: property) as! ReferenceWritableKeyPath<ParentElementType, PropertyType>
+
             return (mappedProperty, .init(
                 property: mappedProperty,
                 valuesByRelativeTimestamp: valuesByRelativeTimestamp
@@ -675,7 +680,7 @@ extension Animation {
             _ subelementPath: PartialKeyPath<ParentElementType>
         ) -> (PartialKeyPath<ParentElementType>, AnyKeyframeSeries) {
             let (keyPath, keyframeSeries) = mapForParent(
-                subelementPath as! WritableKeyPath<ParentElementType, ElementType>
+                subelementPath as! KeyPath<ParentElementType, ElementType>
             )
             return (keyPath, keyframeSeries)
         }
