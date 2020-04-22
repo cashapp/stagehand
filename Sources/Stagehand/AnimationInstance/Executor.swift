@@ -243,10 +243,13 @@ extension Executor {
 
         var group: ExecutionGroup
 
+        /// The timestamp at which the child animation begins, relative to the parent animation's timeline.
         var startingRelativeTimestamp: Double
 
+        /// The duration over which the child animation occurs, relative to the parent animation's timeline.
         var relativeDuration: Double
 
+        /// The timestamp at which the child animation ends, relative to the parent animation's timeline.
         var endingRelativeTimestamp: Double {
             return startingRelativeTimestamp + relativeDuration
         }
@@ -255,6 +258,7 @@ extension Executor {
 
     private struct ExecutionBlock {
 
+        /// The timestamp at which the block should be executed, relative to the animation's timeline.
         var relativeTimestamp: Double
 
         var forwardBlock: (inout ExecutionBlock) -> Void
