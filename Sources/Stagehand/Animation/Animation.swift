@@ -254,8 +254,9 @@ public struct Animation<ElementType: AnyObject> {
     /// provides a value outside of the range [0,1]).
     ///
     /// - parameter property: The key path for the property to be assigned.
-    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
-    /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property, based
+    /// on the curved progress of the animation. Must be in the range [0,1], where 0 is the beginning of the animation
+    /// and 1 is the end.
     /// - parameter value: The value to assign to the property.
     public mutating func addAssignment<PropertyType>(
         for property: WritableKeyPath<ElementType, PropertyType>,
@@ -304,8 +305,9 @@ public struct Animation<ElementType: AnyObject> {
     ///
     /// - parameter forwardBlock: The closure to execute when the animation is run in the forward direction.
     /// - parameter reverseBlock: The closure to execute when the animation is run in the reverse direction.
-    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
-    /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property, based
+    /// on the curved progress of the animation. Must be in the range [0,1], where 0 is the beginning of the animation
+    /// and 1 is the end.
     public mutating func addExecution(
         onForward forwardBlock: @escaping (ElementType) -> Void,
         onReverse reverseBlock: @escaping (ElementType) -> Void = { _ in },
