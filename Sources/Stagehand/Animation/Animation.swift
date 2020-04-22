@@ -250,6 +250,9 @@ public struct Animation<ElementType: AnyObject> {
     ///
     /// When the animation is run in reverse, the property will be returned to its value prior to the assignment.
     ///
+    /// The behavior of property assignments is undefined when used with an animation curve that overshoots (i.e.
+    /// provides a value outside of the range [0,1]).
+    ///
     /// - parameter property: The key path for the property to be assigned.
     /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
     /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
@@ -295,6 +298,9 @@ public struct Animation<ElementType: AnyObject> {
     /// full. This allows execution blocks to depend on the effects of prior execution blocks. If you have an execution
     /// block that should _not_ execute when cancelling (e.g. if it has side effects outside the animation), you can
     /// check the `status` of the animation instance in the block.
+    ///
+    /// The behavior of execution blocks is undefined when used with an animation curve that overshoots (i.e. provides a
+    /// value outside of the range [0,1]).
     ///
     /// - parameter forwardBlock: The closure to execute when the animation is run in the forward direction.
     /// - parameter reverseBlock: The closure to execute when the animation is run in the reverse direction.
@@ -369,45 +375,34 @@ public struct Animation<ElementType: AnyObject> {
             child.animation.collectionKeyframeSeriesByProperty[key] = keyframeSeries
         }
 
-        // Collapse the property assignments from the child into the parent.
-        assignments.append(
-            contentsOf: childAnimation.assignments.map { childAssignment in
-                // Adjust the relative timestamp for the child's animation curve.
-                let relativeTimestamp = relativeStartTimestamp + (childAssignment.relativeTimestamp * relativeDuration)
-                let adjustedRelativeTimestamp = childAnimation.curve.adjustedProgress(for: relativeTimestamp)
-
-                return Assignment(
-                    relativeTimestamp: adjustedRelativeTimestamp,
-                    assignBlock: { element in
-                        childAssignment.assignBlock(element[keyPath: subelement])
-                    },
-                    generateReverseAssignBlock: { element -> ((ElementType) -> Void) in
-                        let subelementAssignBlock = childAssignment.generateReverseAssignBlock(element[keyPath: subelement])
-                        return { element in
-                            subelementAssignBlock(element[keyPath: subelement])
-                        }
+        // Map the child's property assignments into the child animation.
+        child.animation.assignments = childAnimation.assignments.map { childAssignment in
+            return Assignment(
+                relativeTimestamp: childAssignment.relativeTimestamp,
+                assignBlock: { element in
+                    childAssignment.assignBlock(element[keyPath: subelement])
+                },
+                generateReverseAssignBlock: { element in
+                    let subelementAssignBlock = childAssignment.generateReverseAssignBlock(element[keyPath: subelement])
+                    return { element in
+                        subelementAssignBlock(element[keyPath: subelement])
                     }
-                )
-            }
-        )
+                }
+            )
+        }
 
-        // Collapse the execution blocks from the child into the parent.
-        executionBlocks.append(
-            contentsOf: childAnimation.executionBlocks.map { childExecutionBlock in
-                // Adjust the relative timestamp for the child's animation curve.
-                let relativeTimestamp = relativeStartTimestamp + (childExecutionBlock.relativeTimestamp * relativeDuration)
-
-                return ExecutionBlock(
-                    relativeTimestamp: relativeTimestamp,
-                    forwardBlock: { element in
-                        childExecutionBlock.forwardBlock(element[keyPath: subelement])
-                    },
-                    reverseBlock: { element in
-                        childExecutionBlock.reverseBlock(element[keyPath: subelement])
-                    }
-                )
-            }
-        )
+        // Map the child's execution blocks into the child animation.
+        child.animation.executionBlocks = childAnimation.executionBlocks.map { childExecutionBlock in
+            return ExecutionBlock(
+                relativeTimestamp: childExecutionBlock.relativeTimestamp,
+                forwardBlock: { element in
+                    childExecutionBlock.forwardBlock(element[keyPath: subelement])
+                },
+                reverseBlock: { element in
+                    childExecutionBlock.reverseBlock(element[keyPath: subelement])
+                }
+            )
+        }
 
         // Collapse per-frame execution blocks from the child into the parent.
         perFrameExecutionBlocks.append(

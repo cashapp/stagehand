@@ -36,50 +36,7 @@ public final class AnimationInstance {
         self.keyframeRelativeTimestamps = animation.keyframeRelativeTimestamps
 
         self.renderer = Renderer(animation: animation, element: element)
-
-        let executionBlocks: [ExecutionBlock] = animation.executionBlocks
-            .map { executionBlock in
-                return ExecutionBlock(
-                    relativeTimestamp: executionBlock.relativeTimestamp,
-                    forwardBlock: { [weak element] _ in
-                        guard let element = element else {
-                            return
-                        }
-
-                        executionBlock.forwardBlock(element)
-                    },
-                    reverseBlock: { [weak element] in
-                        guard let element = element else {
-                            return
-                        }
-
-                        executionBlock.reverseBlock(element)
-                    }
-                )
-            }
-
-        let assignmentBlocks: [ExecutionBlock] = animation.assignments
-            .map { assignment in
-                return ExecutionBlock(
-                    relativeTimestamp: assignment.relativeTimestamp,
-                    forwardBlock: { [weak element] executionBlock in
-                        guard let element = element else {
-                            return
-                        }
-
-                        let reverseAssignment = assignment.generateReverseAssignBlock(element)
-                        executionBlock.reverseBlock = { reverseAssignment(element) }
-
-                        assignment.assignBlock(element)
-                    },
-                    reverseBlock: {
-                        // No-op. This block will be replaced when the `forwardBlock` is invoked.
-                    }
-                )
-            }
-
-        self.sortedExecutionBlocks = (executionBlocks + assignmentBlocks)
-            .sorted { $0.relativeTimestamp < $1.relativeTimestamp }
+        self.executor = Executor(animation: animation, element: element)
 
         self.perFrameExecutionBlocks = animation.perFrameExecutionBlocks
             .map { block in
@@ -135,7 +92,7 @@ public final class AnimationInstance {
 
     private let renderer: AnyRenderer
 
-    private var sortedExecutionBlocks: [ExecutionBlock]
+    private let executor: Executor
 
     private let perFrameExecutionBlocks: [(Double) -> Void]
 
@@ -176,66 +133,14 @@ public final class AnimationInstance {
         driver.animationInstanceDidCancel(behavior: behavior)
     }
 
-    // MARK: - Internal Methods - Execution
-
-    internal enum Inclusivity {
-
-        case inclusive
-        case exclusive
-
-        // MARK: - Private Computed Properties
-
-        fileprivate var forwardFromCompare: (Double, Double) -> Bool {
-            switch self {
-            case .inclusive:
-                return (>=)
-            case .exclusive:
-                return (>)
-            }
-        }
-
-        fileprivate var reverseFromCompare: (Double, Double) -> Bool {
-            switch self {
-            case .inclusive:
-                return (<=)
-            case .exclusive:
-                return (<)
-            }
-        }
-
-    }
+    // MARK: - Internal Methods
 
     func executeBlocks(
         from startingRelativeTimestamp: Double,
-        _ fromInclusivity: Inclusivity,
+        _ fromInclusivity: Executor.Inclusivity,
         to endingRelativeTimestamp: Double
     ) {
-        // Apply the animation curve to the start/end timestamps.
-        let startingRelativeTimestamp = animationCurve.adjustedProgress(for: startingRelativeTimestamp)
-        let endingRelativeTimestamp = animationCurve.adjustedProgress(for: endingRelativeTimestamp)
-
-        if endingRelativeTimestamp >= startingRelativeTimestamp {
-            // Iterate forward through the execution blocks.
-            for (index, executionBlock) in sortedExecutionBlocks.enumerated() {
-                let relativeTimestamp = executionBlock.relativeTimestamp
-                if fromInclusivity.forwardFromCompare(relativeTimestamp, startingRelativeTimestamp) && relativeTimestamp <= endingRelativeTimestamp {
-                    // Perform the forward invocation of the execution block. When executing a property assignment, the
-                    // forward block will set the reverse block, so update the stored execution block.
-                    var executionBlock = executionBlock
-                    executionBlock.forwardBlock(&executionBlock)
-                    sortedExecutionBlocks[index] = executionBlock
-                }
-            }
-
-        } else {
-            // Iterate in reverse through the execution blocks.
-            for executionBlock in sortedExecutionBlocks.reversed() {
-                let relativeTimestamp = executionBlock.relativeTimestamp
-                if fromInclusivity.reverseFromCompare(relativeTimestamp, startingRelativeTimestamp) && relativeTimestamp >= endingRelativeTimestamp {
-                    executionBlock.reverseBlock()
-                }
-            }
-        }
+        executor.executeBlocks(from: startingRelativeTimestamp, fromInclusivity, to: endingRelativeTimestamp)
     }
 
     func renderFrame(
@@ -287,36 +192,6 @@ public final class AnimationInstance {
 
     func markAnimationAsComplete() {
         status = .complete
-    }
-
-}
-
-// MARK: -
-
-extension AnimationInstance {
-
-    private struct ExecutionBlock {
-
-        var relativeTimestamp: Double
-
-        var forwardBlock: (inout ExecutionBlock) -> Void
-
-        var reverseBlock: () -> Void
-
-    }
-
-}
-
-// MARK: -
-
-extension ClosedRange {
-
-    fileprivate init(unorderedBounds bounds: (Bound, Bound)) {
-        if bounds.0 < bounds.1 {
-            self = (bounds.0...bounds.1)
-        } else {
-            self = (bounds.1...bounds.0)
-        }
     }
 
 }

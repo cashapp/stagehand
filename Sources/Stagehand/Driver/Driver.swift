@@ -39,7 +39,7 @@ protocol DrivenAnimationInstance: AnyObject {
 
     func executeBlocks(
         from startingRelativeTimestamp: Double,
-        _ fromInclusivity: AnimationInstance.Inclusivity,
+        _ fromInclusivity: Executor.Inclusivity,
         to endingRelativeTimestamp: Double
     )
 
