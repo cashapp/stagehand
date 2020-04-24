@@ -954,7 +954,7 @@ private final class TestAnimationInstance: DrivenAnimationInstance {
 
     // MARK: - Public Properties
 
-    private(set) var executedBlockSequences: [(Double, AnimationInstance.Inclusivity, Double)] = []
+    private(set) var executedBlockSequences: [(Double, Executor.Inclusivity, Double)] = []
 
     private(set) var renderedFrames: [Double] = []
 
@@ -970,7 +970,7 @@ private final class TestAnimationInstance: DrivenAnimationInstance {
 
     // MARK: - DrivenAnimationInstance
 
-    func executeBlocks(from startingRelativeTimestamp: Double, _ fromInclusivity: AnimationInstance.Inclusivity, to endingRelativeTimestamp: Double) {
+    func executeBlocks(from startingRelativeTimestamp: Double, _ fromInclusivity: Executor.Inclusivity, to endingRelativeTimestamp: Double) {
         executedBlockSequences.append((startingRelativeTimestamp, fromInclusivity, endingRelativeTimestamp))
     }
 

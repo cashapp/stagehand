@@ -38,6 +38,14 @@ public struct CubicBezierAnimationCurve: AnimationCurve {
     // MARK: - Animation Curve
 
     public func adjustedProgress(for progress: Double) -> Double {
+        // Since the curve always starts at `(0,0)` and ends at `(1,1)`, these values should always be the same. Early
+        // return with the appropriate values here to avoid extra work and potential for rounding error.
+        if progress == 0 {
+            return 0
+        } else if progress == 1 {
+            return 1
+        }
+
         // The animation curve is defined as a cubic bezier curve where the x-axis is the raw progress and the y-axis is
         // the adjusted progress.
 

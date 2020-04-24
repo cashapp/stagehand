@@ -25,98 +25,85 @@ final class ChildAnimationProgressViewController: DemoViewController {
         super.init()
 
         contentView = mainView
-        contentHeight = 260
+        contentHeight = 360
 
         animationRows = [
-            ("Per-Frame in Linear / Linear", { [unowned self] in
+            ("Linear / Linear", { [unowned self] in
                 self.reset()
 
                 let animation = self.makeAnimation(
                     parentCurve: LinearAnimationCurve(),
-                    childCurve: LinearAnimationCurve(),
-                    trackKeyframes: false
+                    childCurve: LinearAnimationCurve()
                 )
 
                 self.animationInstance = animation.perform(on: self.element)
             }),
-            ("Per-Frame in Linear / Ease In Out", { [unowned self] in
+            ("Linear / Ease In Out", { [unowned self] in
                 self.reset()
 
                 let animation = self.makeAnimation(
                     parentCurve: LinearAnimationCurve(),
-                    childCurve: SinusoidalEaseInEaseOutAnimationCurve(),
-                    trackKeyframes: false
+                    childCurve: SinusoidalEaseInEaseOutAnimationCurve()
                 )
 
                 self.animationInstance = animation.perform(on: self.element)
             }),
-            ("Per-Frame in Ease In Out / Ease In Out", { [unowned self] in
+            ("Linear / Ease In", { [unowned self] in
+                self.reset()
+
+                let animation = self.makeAnimation(
+                    parentCurve: LinearAnimationCurve(),
+                    childCurve: CubicBezierAnimationCurve(controlPoints: (0.7, 0), (1, 1))
+                )
+
+                self.animationInstance = animation.perform(on: self.element)
+            }),
+            ("Ease In Out / Ease In Out", { [unowned self] in
                 self.reset()
 
                 let animation = self.makeAnimation(
                     parentCurve: SinusoidalEaseInEaseOutAnimationCurve(),
-                    childCurve: SinusoidalEaseInEaseOutAnimationCurve(),
-                    trackKeyframes: false
+                    childCurve: SinusoidalEaseInEaseOutAnimationCurve()
                 )
 
                 self.animationInstance = animation.perform(on: self.element)
             }),
-            ("Per-Frame in Ease In / Linear", { [unowned self] in
+            ("Ease In / Linear", { [unowned self] in
                 self.reset()
 
                 let animation = self.makeAnimation(
                     parentCurve: ParabolicEaseInAnimationCurve(),
-                    childCurve: LinearAnimationCurve(),
-                    trackKeyframes: false
+                    childCurve: LinearAnimationCurve()
                 )
 
                 self.animationInstance = animation.perform(on: self.element)
             }),
-            ("Keyframes in Linear / Linear", { [unowned self] in
-                self.reset()
 
-                let animation = self.makeAnimation(
-                    parentCurve: LinearAnimationCurve(),
-                    childCurve: LinearAnimationCurve(),
-                    trackKeyframes: true
-                )
-
-                self.animationInstance = animation.perform(on: self.element)
-            }),
-            ("Keyframes in Linear / Ease In Out", { [unowned self] in
-                self.reset()
-
-                let animation = self.makeAnimation(
-                    parentCurve: LinearAnimationCurve(),
-                    childCurve: SinusoidalEaseInEaseOutAnimationCurve(),
-                    trackKeyframes: true
-                )
-
-                self.animationInstance = animation.perform(on: self.element)
-            }),
-            ("Keyframes in Ease In Out / Ease In Out", { [unowned self] in
-                self.reset()
-
-                let animation = self.makeAnimation(
-                    parentCurve: SinusoidalEaseInEaseOutAnimationCurve(),
-                    childCurve: SinusoidalEaseInEaseOutAnimationCurve(),
-                    trackKeyframes: true
-                )
-
-                self.animationInstance = animation.perform(on: self.element)
-            }),
-            ("Keyframes in Ease In / Linear", { [unowned self] in
-                self.reset()
-
-                let animation = self.makeAnimation(
-                    parentCurve: ParabolicEaseInAnimationCurve(),
-                    childCurve: LinearAnimationCurve(),
-                    trackKeyframes: true
-                )
-
-                self.animationInstance = animation.perform(on: self.element)
-            }),
+            // The behavior of execution blocks and property assignments is undefined when used with an animation curve
+            // that overshoots. This test case is useful for debugging, and may eventually become defined behavior, but
+            // is not an official part of the API specification for now.
+            //
+            // ("Linear / Overshoot", { [unowned self] in
+            //     self.reset()
+            //
+            //     let animation = self.makeAnimation(
+            //         parentCurve: LinearAnimationCurve(),
+            //         childCurve: CubicBezierAnimationCurve(controlPoints: (0.1, -0.5), (0.9, 1.5))
+            //     )
+            //
+            //     self.animationInstance = animation.perform(on: self.element)
+            // }),
         ]
+
+        mainView.graphModeControl.insertSegment(withTitle: "Per-Frame Blocks", at: 0, animated: false)
+        mainView.graphModeControl.insertSegment(withTitle: "Keyframes", at: 1, animated: false)
+        mainView.graphModeControl.selectedSegmentIndex = 0
+        mainView.graphModeControl.addTarget(self, action: #selector(controlValuesUpdated), for: .valueChanged)
+
+        mainView.eventsModeControl.insertSegment(withTitle: "Execution Blocks", at: 0, animated: false)
+        mainView.eventsModeControl.insertSegment(withTitle: "Property Assignments", at: 1, animated: false)
+        mainView.eventsModeControl.selectedSegmentIndex = 0
+        mainView.eventsModeControl.addTarget(self, action: #selector(controlValuesUpdated), for: .valueChanged)
     }
 
     // MARK: - Private Properties
@@ -127,12 +114,15 @@ final class ChildAnimationProgressViewController: DemoViewController {
 
     private let element: Element = .init()
 
+    private var graphMode: GraphMode = .perFrameExecutionBlocks
+
+    private var eventsMode: EventsMode = .executionBlocks
+
     // MARK: - Private Methods
 
     private func makeAnimation(
         parentCurve: AnimationCurve,
-        childCurve: AnimationCurve,
-        trackKeyframes: Bool
+        childCurve: AnimationCurve
     ) -> Animation<Element> {
         func relativeTimestamp() -> Double {
             guard case let .some(.animating(progress)) = self.animationInstance?.status else {
@@ -143,7 +133,12 @@ final class ChildAnimationProgressViewController: DemoViewController {
 
         var parentAnimation = Animation<Element>()
         parentAnimation.curve = parentCurve
-        if trackKeyframes {
+
+        var childAnimation = Animation<Element>()
+        childAnimation.curve = childCurve
+
+        switch graphMode {
+        case .keyframes:
             parentAnimation.addKeyframe(for: \.parentProgress, at: 0, value: 0)
             parentAnimation.addKeyframe(for: \.parentProgress, at: 1, value: 1)
             parentAnimation.addPerFrameExecution { context in
@@ -154,31 +149,6 @@ final class ChildAnimationProgressViewController: DemoViewController {
                 )
             }
 
-        } else {
-            parentAnimation.addPerFrameExecution { context in
-                self.mainView.parentChartView.addPoint(
-                    relativeTimestamp: relativeTimestamp(),
-                    uncurvedProgress: context.uncurvedProgress,
-                    curvedProgress: context.progress
-                )
-            }
-        }
-        parentAnimation.addExecution(
-            onForward: { _ in self.mainView.parentChartView.addExecution(relativeTimestamp: relativeTimestamp()) },
-            at: 0
-        )
-        parentAnimation.addExecution(
-            onForward: { _ in self.mainView.parentChartView.addExecution(relativeTimestamp: relativeTimestamp()) },
-            at: 0.5
-        )
-        parentAnimation.addExecution(
-            onForward: { _ in self.mainView.parentChartView.addExecution(relativeTimestamp: relativeTimestamp()) },
-            at: 1
-        )
-
-        var childAnimation = Animation<Element>()
-        childAnimation.curve = childCurve
-        if trackKeyframes {
             childAnimation.addKeyframe(for: \.childProgress, at: 0, value: 0)
             childAnimation.addKeyframe(for: \.childProgress, at: 1, value: 1)
             childAnimation.addPerFrameExecution { context in
@@ -189,7 +159,15 @@ final class ChildAnimationProgressViewController: DemoViewController {
                 )
             }
 
-        } else {
+        case .perFrameExecutionBlocks:
+            parentAnimation.addPerFrameExecution { context in
+                self.mainView.parentChartView.addPoint(
+                    relativeTimestamp: relativeTimestamp(),
+                    uncurvedProgress: context.uncurvedProgress,
+                    curvedProgress: context.progress
+                )
+            }
+
             childAnimation.addPerFrameExecution { context in
                 self.mainView.childChartView.addPoint(
                     relativeTimestamp: relativeTimestamp(),
@@ -198,18 +176,74 @@ final class ChildAnimationProgressViewController: DemoViewController {
                 )
             }
         }
-        childAnimation.addExecution(
-            onForward: { _ in self.mainView.childChartView.addExecution(relativeTimestamp: relativeTimestamp()) },
-            at: 0
-        )
-        childAnimation.addExecution(
-            onForward: { _ in self.mainView.childChartView.addExecution(relativeTimestamp: relativeTimestamp()) },
-            at: 0.5
-        )
-        childAnimation.addExecution(
-            onForward: { _ in self.mainView.childChartView.addExecution(relativeTimestamp: relativeTimestamp()) },
-            at: 1
-        )
+
+        switch eventsMode {
+        case .executionBlocks:
+            parentAnimation.addExecution(
+                onForward: { _ in self.mainView.parentChartView.addForwardExecution(relativeTimestamp: relativeTimestamp()) },
+                onReverse: { _ in self.mainView.parentChartView.addReverseExecution(relativeTimestamp: relativeTimestamp()) },
+                at: 0
+            )
+            parentAnimation.addExecution(
+                onForward: { _ in self.mainView.parentChartView.addForwardExecution(relativeTimestamp: relativeTimestamp()) },
+                onReverse: { _ in self.mainView.parentChartView.addReverseExecution(relativeTimestamp: relativeTimestamp()) },
+                at: 0.5
+            )
+            parentAnimation.addExecution(
+                onForward: { _ in self.mainView.parentChartView.addForwardExecution(relativeTimestamp: relativeTimestamp()) },
+                onReverse: { _ in self.mainView.parentChartView.addReverseExecution(relativeTimestamp: relativeTimestamp()) },
+                at: 1
+            )
+
+            childAnimation.addExecution(
+                onForward: { _ in self.mainView.childChartView.addForwardExecution(relativeTimestamp: relativeTimestamp()) },
+                onReverse: { _ in self.mainView.childChartView.addReverseExecution(relativeTimestamp: relativeTimestamp()) },
+                at: 0
+            )
+            childAnimation.addExecution(
+                onForward: { _ in self.mainView.childChartView.addForwardExecution(relativeTimestamp: relativeTimestamp()) },
+                onReverse: { _ in self.mainView.childChartView.addReverseExecution(relativeTimestamp: relativeTimestamp()) },
+                at: 0.5
+            )
+            childAnimation.addExecution(
+                onForward: { _ in self.mainView.childChartView.addForwardExecution(relativeTimestamp: relativeTimestamp()) },
+                onReverse: { _ in self.mainView.childChartView.addReverseExecution(relativeTimestamp: relativeTimestamp()) },
+                at: 1
+            )
+
+        case .propertyAssignments:
+            parentAnimation.addAssignment(for: \.parentPropertyAssignmentProxy, at: 0, value: true)
+            parentAnimation.addAssignment(for: \.parentPropertyAssignmentProxy, at: 0.5, value: true)
+            parentAnimation.addAssignment(for: \.parentPropertyAssignmentProxy, at: 1, value: true)
+
+            childAnimation.addAssignment(for: \.childPropertyAssignmentProxy, at: 0, value: true)
+            childAnimation.addAssignment(for: \.childPropertyAssignmentProxy, at: 0.5, value: true)
+            childAnimation.addAssignment(for: \.childPropertyAssignmentProxy, at: 1, value: true)
+
+            parentAnimation.addPerFrameExecution { context in
+                if let parentPropertyAssignmentDirection = context.element.didSetParentProperty {
+                    switch parentPropertyAssignmentDirection {
+                    case .forward:
+                        self.mainView.parentChartView.addForwardExecution(relativeTimestamp: relativeTimestamp())
+                    case .reverse:
+                        self.mainView.parentChartView.addReverseExecution(relativeTimestamp: relativeTimestamp())
+                    }
+                }
+
+                if let childPropertyAssignmentDirection = context.element.didSetChildProperty {
+                    switch childPropertyAssignmentDirection {
+                    case .forward:
+                        self.mainView.childChartView.addForwardExecution(relativeTimestamp: relativeTimestamp())
+                    case .reverse:
+                        self.mainView.childChartView.addReverseExecution(relativeTimestamp: relativeTimestamp())
+                    }
+                }
+
+                context.element.didSetParentProperty = nil
+                context.element.didSetChildProperty = nil
+            }
+        }
+
         parentAnimation.addChild(childAnimation, for: \.self, startingAt: 0.25, relativeDuration: 0.5)
 
         parentAnimation.duration = 4
@@ -221,6 +255,39 @@ final class ChildAnimationProgressViewController: DemoViewController {
 
         mainView.parentChartView.reset()
         mainView.childChartView.reset()
+    }
+
+    @objc
+    private func controlValuesUpdated() {
+        switch mainView.graphModeControl.selectedSegmentIndex {
+        case 0:
+            graphMode = .perFrameExecutionBlocks
+        case 1:
+            graphMode = .keyframes
+        default:
+            fatalError("Unexpected selected segment index")
+        }
+
+        switch mainView.eventsModeControl.selectedSegmentIndex {
+        case 0:
+            eventsMode = .executionBlocks
+        case 1:
+            eventsMode = .propertyAssignments
+        default:
+            fatalError("Unexpected selected segment index")
+        }
+    }
+
+    // MARK: - Private Types
+
+    private enum GraphMode {
+        case perFrameExecutionBlocks
+        case keyframes
+    }
+
+    private enum EventsMode {
+        case executionBlocks
+        case propertyAssignments
     }
 
 }
@@ -237,8 +304,9 @@ private extension ChildAnimationProgressViewController {
             super.init(frame: frame)
 
             addSubview(parentChartView)
-
             addSubview(childChartView)
+            addSubview(graphModeControl)
+            addSubview(eventsModeControl)
         }
 
         @available(*, unavailable)
@@ -251,6 +319,10 @@ private extension ChildAnimationProgressViewController {
         let parentChartView: ChartView = .init()
 
         let childChartView: ChartView = .init()
+
+        let graphModeControl: UISegmentedControl = .init()
+
+        let eventsModeControl: UISegmentedControl = .init()
 
         // MARK: - UIView
 
@@ -265,6 +337,21 @@ private extension ChildAnimationProgressViewController {
 
             childChartView.bounds.size = chartSize
             childChartView.frame.origin = .init(x: 20, y: parentChartView.frame.maxY + 20)
+
+            let controlSizeToFit = CGSize(width: bounds.width / 3, height: .greatestFiniteMagnitude)
+            graphModeControl.bounds.size = graphModeControl.sizeThatFits(controlSizeToFit)
+            eventsModeControl.bounds.size = eventsModeControl.sizeThatFits(controlSizeToFit)
+
+            let controlsMargin: CGFloat = 20
+            let controlsWidth = (bounds.width - (controlsMargin * 2))
+
+            graphModeControl.sizeToFit()
+            graphModeControl.bounds.size.width = controlsWidth
+            graphModeControl.frame.origin = .init(x: controlsMargin, y: childChartView.frame.maxY + controlsMargin)
+
+            eventsModeControl.sizeToFit()
+            eventsModeControl.bounds.size.width = controlsWidth
+            eventsModeControl.frame.origin = .init(x: controlsMargin, y: graphModeControl.frame.maxY + controlsMargin)
         }
 
     }
@@ -297,10 +384,15 @@ private extension ChildAnimationProgressViewController {
             curvedProgressLayer.strokeColor = UIColor(white: 0.3, alpha: 1).cgColor
             layer.addSublayer(curvedProgressLayer)
 
-            executionBlocksLayer.fillColor = nil
-            executionBlocksLayer.lineWidth = 1.5
-            executionBlocksLayer.strokeColor = UIColor.blue.cgColor
-            layer.addSublayer(executionBlocksLayer)
+            forwardExecutionBlocksLayer.fillColor = nil
+            forwardExecutionBlocksLayer.lineWidth = 1.5
+            forwardExecutionBlocksLayer.strokeColor = UIColor.blue.cgColor
+            layer.addSublayer(forwardExecutionBlocksLayer)
+
+            reverseExecutionBlocksLayer.fillColor = nil
+            reverseExecutionBlocksLayer.lineWidth = 1.5
+            reverseExecutionBlocksLayer.strokeColor = UIColor.red.cgColor
+            layer.addSublayer(reverseExecutionBlocksLayer)
         }
 
         @available(*, unavailable)
@@ -318,8 +410,11 @@ private extension ChildAnimationProgressViewController {
         private let curvedProgressLayer: CAShapeLayer = .init()
         private var curvedProgressPath: UIBezierPath = .init()
 
-        private let executionBlocksLayer: CAShapeLayer = .init()
-        private var executionBlocksPath: UIBezierPath = .init()
+        private let forwardExecutionBlocksLayer: CAShapeLayer = .init()
+        private var forwardExecutionBlocksPath: UIBezierPath = .init()
+
+        private let reverseExecutionBlocksLayer: CAShapeLayer = .init()
+        private var reverseExecutionBlocksPath: UIBezierPath = .init()
 
         // MARK: - UIView
 
@@ -329,7 +424,8 @@ private extension ChildAnimationProgressViewController {
 
             uncurvedProgressLayer.frame = bounds
             curvedProgressLayer.frame = bounds
-            executionBlocksLayer.frame = bounds
+            forwardExecutionBlocksLayer.frame = bounds
+            reverseExecutionBlocksLayer.frame = bounds
         }
 
         // MARK: - Public Methods
@@ -360,11 +456,18 @@ private extension ChildAnimationProgressViewController {
             curvedProgressLayer.path = curvedProgressPath.cgPath
         }
 
-        func addExecution(relativeTimestamp: Double) {
-            let positionX = CGFloat(relativeTimestamp) * executionBlocksLayer.bounds.width
-            executionBlocksPath.move(to: .init(x: positionX, y: 0))
-            executionBlocksPath.addLine(to: .init(x: positionX, y: executionBlocksLayer.bounds.height))
-            executionBlocksLayer.path = executionBlocksPath.cgPath
+        func addForwardExecution(relativeTimestamp: Double) {
+            let positionX = CGFloat(relativeTimestamp) * forwardExecutionBlocksLayer.bounds.width
+            forwardExecutionBlocksPath.move(to: .init(x: positionX, y: 0))
+            forwardExecutionBlocksPath.addLine(to: .init(x: positionX, y: forwardExecutionBlocksLayer.bounds.height))
+            forwardExecutionBlocksLayer.path = forwardExecutionBlocksPath.cgPath
+        }
+
+        func addReverseExecution(relativeTimestamp: Double) {
+            let positionX = CGFloat(relativeTimestamp) * reverseExecutionBlocksLayer.bounds.width
+            reverseExecutionBlocksPath.move(to: .init(x: positionX, y: 0))
+            reverseExecutionBlocksPath.addLine(to: .init(x: positionX, y: reverseExecutionBlocksLayer.bounds.height))
+            reverseExecutionBlocksLayer.path = reverseExecutionBlocksPath.cgPath
         }
 
         func reset() {
@@ -374,8 +477,11 @@ private extension ChildAnimationProgressViewController {
             curvedProgressPath = .init()
             curvedProgressLayer.path = curvedProgressPath.cgPath
 
-            executionBlocksPath = .init()
-            executionBlocksLayer.path = executionBlocksPath.cgPath
+            forwardExecutionBlocksPath = .init()
+            forwardExecutionBlocksLayer.path = forwardExecutionBlocksPath.cgPath
+
+            reverseExecutionBlocksPath = .init()
+            reverseExecutionBlocksLayer.path = reverseExecutionBlocksPath.cgPath
         }
 
         // MARK: - Private Methods
@@ -417,6 +523,47 @@ private extension ChildAnimationProgressViewController {
 
         var childProgress: Double = -1
 
+        var parentPropertyAssignmentProxy: Bool {
+            get {
+                return false
+            }
+            set {
+                // This property always return `false` and the property assignments above always provide a value of
+                // `true`. Therefore, if `newValue` is `true`, we're in a forward execution; and if `newValue` is
+                // `false`, we're in a reverse execution (restoring the original value that was read).
+                if newValue {
+                    didSetParentProperty = .forward
+                } else {
+                    didSetParentProperty = .reverse
+                }
+            }
+        }
+
+        var didSetParentProperty: AssignmentDirection?
+
+        var childPropertyAssignmentProxy: Bool {
+            get {
+                return false
+            }
+            set {
+                // This property always return `false` and the property assignments above always provide a value of
+                // `true`. Therefore, if `newValue` is `true`, we're in a forward execution; and if `newValue` is
+                // `false`, we're in a reverse execution (restoring the original value that was read).
+                if newValue {
+                    didSetChildProperty = .forward
+                } else {
+                    didSetChildProperty = .reverse
+                }
+            }
+        }
+
+        var didSetChildProperty: AssignmentDirection?
+
+    }
+
+    enum AssignmentDirection {
+        case forward
+        case reverse
     }
 
 }
