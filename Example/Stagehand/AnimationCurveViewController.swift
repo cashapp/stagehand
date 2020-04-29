@@ -220,30 +220,9 @@ extension AnimationCurveViewController {
             )
 
             gridLayer.frame = shapeLayer.frame
-            updateGrid()
+            ShapeLayerUtils.addGridPath(to: gridLayer, rows: 10, columns: 10)
 
             oldShapeLayer.frame = shapeLayer.frame
-        }
-
-        // MARK: - Private Methods
-
-        private func updateGrid() {
-            let gridPath = UIBezierPath()
-
-            let divisions = 10
-            let cellSize = gridLayer.bounds.height / CGFloat(divisions)
-
-            for row in 0...divisions {
-                gridPath.move(to: CGPoint(x: 0, y: cellSize * CGFloat(row)))
-                gridPath.addLine(to: CGPoint(x: gridLayer.bounds.width, y: cellSize * CGFloat(row)))
-            }
-
-            for column in 0...divisions {
-                gridPath.move(to: CGPoint(x: cellSize * CGFloat(column), y: 0))
-                gridPath.addLine(to: CGPoint(x: cellSize * CGFloat(column), y: gridLayer.bounds.width))
-            }
-
-            gridLayer.path = gridPath.cgPath
         }
 
     }
