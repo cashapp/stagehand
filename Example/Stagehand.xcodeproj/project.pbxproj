@@ -40,6 +40,9 @@
 		7BF94D6BF3E507D571EE88FE /* Pods_Stagehand_PerformanceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CCC78EBA87C54F6184E964D /* Pods_Stagehand_PerformanceTests.framework */; };
 		92777BD5AB23DAFC15E297A3 /* Pods_Stagehand_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F058A67C239ED37BC34BE76C /* Pods_Stagehand_UnitTests.framework */; };
 		AEFF0D89739204C18F94EF22 /* Pods_Stagehand_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1575429BE6BAD827FC19AE22 /* Pods_Stagehand_Example.framework */; };
+		B3C4CA092459F75800893CB5 /* ShapeLayerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4CA082459F75800893CB5 /* ShapeLayerUtils.swift */; };
+		B3C4CA0A2459F75800893CB5 /* ShapeLayerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4CA082459F75800893CB5 /* ShapeLayerUtils.swift */; };
+		B3C4CA0D2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4CA0B2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +109,8 @@
 		8A7CDB5C6219B625BB9E7F41 /* Stagehand.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Stagehand.podspec; path = ../Stagehand.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A9CF2FF630BA8BCCB209601B /* Pods-Stagehand-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand-UnitTests.debug.xcconfig"; path = "Target Support Files/Pods-Stagehand-UnitTests/Pods-Stagehand-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AD24733DD14E922142707F28 /* Pods-Stagehand-PerformanceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand-PerformanceTests.release.xcconfig"; path = "Target Support Files/Pods-Stagehand-PerformanceTests/Pods-Stagehand-PerformanceTests.release.xcconfig"; sourceTree = "<group>"; };
+		B3C4CA082459F75800893CB5 /* ShapeLayerUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeLayerUtils.swift; sourceTree = "<group>"; };
+		B3C4CA0B2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationCurveSnapshotTests.swift; sourceTree = "<group>"; };
 		B5D8077CC460626597AB790F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		B64913526970D210595894B7 /* Pods-Stagehand-PerformanceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand-PerformanceTests.debug.xcconfig"; path = "Target Support Files/Pods-Stagehand-PerformanceTests/Pods-Stagehand-PerformanceTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B657CC2F9B1F03D85F9BFF96 /* Pods-Stagehand_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand_Example.release.xcconfig"; path = "Target Support Files/Pods-Stagehand_Example/Pods-Stagehand_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -241,10 +246,11 @@
 		607FACD21AFB9204008FA782 /* Stagehand Demo */ = {
 			isa = PBXGroup;
 			children = (
-				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
-				607FACD71AFB9204008FA782 /* RootViewController.swift */,
-				3D75A7C2229284C600743166 /* DemoViewController.swift */,
 				3D75A7BC228FED9900743166 /* AnimationFactory.swift */,
+				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				3D75A7C2229284C600743166 /* DemoViewController.swift */,
+				607FACD71AFB9204008FA782 /* RootViewController.swift */,
+				B3C4CA082459F75800893CB5 /* ShapeLayerUtils.swift */,
 				3D75A7C42292891100743166 /* Demo View Controllers */,
 				3D1BA3B2233EC7FE00FC8DB3 /* Resources */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -264,6 +270,7 @@
 		607FACE81AFB9204008FA782 /* Unit Tests */ = {
 			isa = PBXGroup;
 			children = (
+				B3C4CA0B2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift */,
 				3D7D4FFE23011C4600A468A7 /* AnimationInstanceTests.swift */,
 				3D89890E2450DEB3006824FC /* ExecutorTests.swift */,
 				3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */,
@@ -561,6 +568,7 @@
 				3D75A7C62292892B00743166 /* SimpleAnimationsViewController.swift in Sources */,
 				3D89F1E222FDEAAC008AC33E /* PropertyAssignmentViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* RootViewController.swift in Sources */,
+				B3C4CA092459F75800893CB5 /* ShapeLayerUtils.swift in Sources */,
 				3DBFEE422400B2460086D61C /* ChildAnimationProgressViewController.swift in Sources */,
 				3DA5EB7C2318E64A001DF944 /* CollectionKeyframesViewController.swift in Sources */,
 				3DA3997C230FCFAC00DE41A0 /* ExecutionBlockViewController.swift in Sources */,
@@ -584,11 +592,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3C4CA0D2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift in Sources */,
 				3D89890F2450DEB3006824FC /* ExecutorTests.swift in Sources */,
 				3DC75497232F6D5500402BD9 /* TestDriver.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* AnimationSnapshotTests.swift in Sources */,
 				3D7D500023011D4400A468A7 /* AnimationInstanceTests.swift in Sources */,
 				3D5F2D3B23E63E3600EEFA89 /* AnimationGroupTests.swift in Sources */,
+				B3C4CA0A2459F75800893CB5 /* ShapeLayerUtils.swift in Sources */,
 				3DC75494232D82FD00402BD9 /* ChildAnimationTests.swift in Sources */,
 				3D7E79AB239FC1F8008BF8FF /* DisplayLinkDriverTests.swift in Sources */,
 				3D32EF4B234058C7001144B3 /* AnimationOptimizationTests.swift in Sources */,
