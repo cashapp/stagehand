@@ -16,17 +16,8 @@
 
 import Stagehand
 import StagehandTesting
-import FBSnapshotTestCase
 
-final class AnimationCurveSnapshotTests: FBSnapshotTestCase {
-
-    // MARK: - FBSnapshotTestCase
-
-    override func setUp() {
-        super.setUp()
-        fileNameOptions = [.OS, .screenSize, .screenScale]
-        recordMode = false
-    }
+final class AnimationCurveSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests
 
