@@ -19,72 +19,213 @@ import CoreGraphics
 extension CGAffineTransform: AnimatableProperty {
 
     /// Interpolates between the `initialValue` and `finalValue`.
-    ///
-    /// This supports transforms that are composed of translations, scales, and rotations; where `M' = R * S * T * M`.
-    /// In order words, the matrix must be mutated in order of (1) translations, (2) scales, then (3) rotations. It does
-    /// not support transforms that have had a skew/distort applied.
     public static func value(
         between initialValue: CGAffineTransform,
         and finalValue: CGAffineTransform,
         at progress: Double
     ) -> CGAffineTransform {
-        let initialRotation = initialValue.rotation
+        let initialDecomposition = initialValue.decomposed()
+        let finalDecomposition = finalValue.decomposed()
 
-        // Pick the shortest route to the between the transforms by adjusting the final angle by ±2π.
-        let calculatedFinalRotation = finalValue.rotation
-        let finalRotationCandidates = [
-            calculatedFinalRotation - 2 * .pi,
-            calculatedFinalRotation,
-            calculatedFinalRotation + 2 * .pi
-        ]
-        let finalRotation = finalRotationCandidates.min(by: { abs($0 - initialRotation) < abs($1 - initialRotation) })!
-
-        return CGAffineTransform.identity
-            .translatedBy(
-                x: CGFloat.value(between: initialValue.tx, and: finalValue.tx, at: progress),
-                y: CGFloat.value(between: initialValue.ty, and: finalValue.ty, at: progress)
-            )
-            .scaledBy(
-                x: CGFloat.value(between: initialValue.scaleX, and: finalValue.scaleX, at: progress),
-                y: CGFloat.value(between: initialValue.scaleY, and: finalValue.scaleY, at: progress)
-            )
-            .rotated(
-                by: CGFloat.value(between: initialRotation, and: finalRotation, at: progress)
-            )
+        return CGAffineTransform.DecomposedMatrix(
+            scaleX: CGFloat.value(between: initialDecomposition.scaleX, and: finalDecomposition.scaleX, at: progress),
+            scaleY: CGFloat.value(between: initialDecomposition.scaleY, and: finalDecomposition.scaleY, at: progress),
+            translateX: CGFloat.value(between: initialDecomposition.translateX, and: finalDecomposition.translateX, at: progress),
+            translateY: CGFloat.value(between: initialDecomposition.translateY, and: finalDecomposition.translateY, at: progress),
+            rotation: CGFloat.value(between: initialDecomposition.rotation, and: finalDecomposition.rotation, at: progress),
+            m11: CGFloat.value(between: initialDecomposition.m11, and: finalDecomposition.m11, at: progress),
+            m12: CGFloat.value(between: initialDecomposition.m12, and: finalDecomposition.m12, at: progress),
+            m21: CGFloat.value(between: initialDecomposition.m21, and: finalDecomposition.m21, at: progress),
+            m22: CGFloat.value(between: initialDecomposition.m22, and: finalDecomposition.m22, at: progress)
+        ).recompose()
     }
 
-    // MARK: - Private Computed Properties
+}
 
-    private var rotation: CGFloat {
-        return atan2(b, d)
-    }
+// MARK: -
 
-    private var scaleX: CGFloat {
-        let signProvider: CGFloat
-        switch (a.sign, rotation) {
-        case (.plus, (-.pi/2)...(.pi/2)):
-            signProvider = 1
-        case (.minus, (-.pi/2)...(.pi/2)), (.plus, _):
-            signProvider = -1
-        case (.minus, _):
-            signProvider = 1
+extension CGAffineTransform {
+
+    // This logic is based on functionality in WebKit, which has the following copyrights:
+    //   Copyright (C) 2005, 2006, 2013 Apple Inc.  All rights reserved.
+    //   Copyright (C) 2009 Torch Mobile, Inc.
+
+    // MARK: - Internal Methods
+
+    func decomposed() -> DecomposedMatrix {
+        if isIdentity {
+            return .init()
         }
 
-        return CGFloat(signOf: signProvider, magnitudeOf: sqrt(a * a + c * c))
-    }
+        var matrix = self
+        var decomposedMatrix = DecomposedMatrix()
 
-    private var scaleY: CGFloat {
-        let signProvider: CGFloat
-        switch (d.sign, rotation) {
-        case (.plus, (-.pi/2)...(.pi/2)):
-            signProvider = 1
-        case (.minus, (-.pi/2)...(.pi/2)), (.plus, _):
-            signProvider = -1
-        case (.minus, _):
-            signProvider = 1
+        // Affine transforms are represented by a 3x3 matrix:
+        //
+        //   ┌─         ─┐
+        //   │ a   b   0 │
+        //   │           │
+        //   │ c   d   0 │
+        //   │           │
+        //   │ tx  ty  1 │
+        //   └─         ─┘
+        //
+        // The `a`, `b`, `c`, and `d` elements are made from a combination of applied scale, rotation, and shear
+        // transforms. The `tx` and `ty` elements represent the translation.
+
+        // Translation
+        //
+        //   ┌─         ─┐┌─           ─┐   ┌─                                       ─┐
+        //   │ 1   0   0 ││  a    b   0 │   │         a                  b          0 │
+        //   │           ││             │   │                                         │
+        //   │ 0   1   0 ││  c    d   0 │ = │         c                  d          0 │
+        //   │           ││             │   │                                         │
+        //   │ tx  ty  1 ││ tx0  ty0  1 │   │ tx·a + ty·c + tx0  tx·b + ty·d + ty0  1 │
+        //   └─         ─┘└─           ─┘   └─                                       ─┘
+
+        // Since translation only affects the `tx` and `ty` elements, we can store those directly.
+        decomposedMatrix.translateX = matrix.tx
+        decomposedMatrix.translateY = matrix.ty
+
+        // Scaling
+        //
+        //   ┌─         ─┐┌─         ─┐   ┌─             ─┐
+        //   │ sx  0   0 ││ a   b   0 │   │ sx·a  sx·b  0 │
+        //   │           ││           │   │               │
+        //   │ 0   sy  0 ││ c   d   0 │ = │ sy·c  sy·d  0 │
+        //   │           ││           │   │               │
+        //   │ 0   0   1 ││ tx  ty  1 │   │  tx    ty   1 │
+        //   └─         ─┘└─         ─┘   └─             ─┘
+
+        decomposedMatrix.scaleX = hypot(matrix.a, matrix.b)
+        decomposedMatrix.scaleY = hypot(matrix.c, matrix.d)
+
+        let determinant = matrix.a * matrix.d - matrix.b * matrix.c
+
+        // If determinant is negative, one axis was flipped.
+        if determinant <= 0 {
+            // Flip axis with minimum unit vector dot product.
+            if matrix.a < matrix.d {
+                decomposedMatrix.scaleX *= -1
+            } else {
+                decomposedMatrix.scaleY *= -1
+            }
         }
 
-        return CGFloat(signOf: signProvider, magnitudeOf: sqrt(b * b + d * d))
+        // Remove any (non-zero) scale factor.
+
+        if decomposedMatrix.scaleX != 0 {
+            matrix.a /= decomposedMatrix.scaleX
+            matrix.b /= decomposedMatrix.scaleX
+        }
+
+        if decomposedMatrix.scaleY != 0 {
+            matrix.c /= decomposedMatrix.scaleY
+            matrix.d /= decomposedMatrix.scaleY
+        }
+
+        // Rotation
+        //
+        //   ┌─                  ─┐┌─         ─┐   ┌─                                             ─┐
+        //   │  cos(Θ)  sin(Θ)  0 ││ a   b   0 │   │  cos(Θ)·a + sin(Θ)·c   cos(Θ)·b + sin(Θ)·d  0 │
+        //   │                    ││           │   │                                               │
+        //   │ -sin(Θ)  cos(Θ)  0 ││ c   d   0 │ = │ -sin(Θ)·a + cos(Θ)·c  -sin(Θ)·b + cos(Θ)·d  0 │
+        //   │                    ││           │   │                                               │
+        //   │    0       0     1 ││ tx  ty  1 │   │          tx                    ty           1 │
+        //   └─                  ─┘└─         ─┘   └─                                             ─┘
+
+        decomposedMatrix.rotation = atan2(matrix.b, matrix.a)
+
+        // Reverse the rotation if necessary, then assign the remaining matrix values to the m** decomposed fields to
+        // account for any shear transforms.
+        if decomposedMatrix.rotation != 0 {
+            // Since we already removed the scale factor from our matrix, we can use `-matrix.b` for `sin(-Θ)` and
+            // `matrix.a` for `cos(-Θ)`.
+            let sin = -matrix.b
+            let cos = matrix.a
+
+            decomposedMatrix.m11 = cos * matrix.a + sin * matrix.c
+            decomposedMatrix.m12 = cos * matrix.b + sin * matrix.d
+            decomposedMatrix.m21 = -sin * matrix.a + cos * matrix.c
+            decomposedMatrix.m22 = -sin * matrix.b + cos * matrix.d
+
+        } else {
+            decomposedMatrix.m11 = matrix.a
+            decomposedMatrix.m12 = matrix.b
+            decomposedMatrix.m21 = matrix.c
+            decomposedMatrix.m22 = matrix.d
+        }
+
+        return decomposedMatrix
+    }
+
+    // MARK: - Internal Types
+
+    internal struct DecomposedMatrix: Equatable {
+
+        // MARK: - Life Cycle
+
+        init(
+            scaleX: CGFloat = 1,
+            scaleY: CGFloat = 1,
+            translateX: CGFloat = 0,
+            translateY: CGFloat = 0,
+            rotation: CGFloat = 0,
+            m11: CGFloat = 1,
+            m12: CGFloat = 0,
+            m21: CGFloat = 0,
+            m22: CGFloat = 1
+        ) {
+            self.scaleX = scaleX
+            self.scaleY = scaleY
+            self.translateX = translateX
+            self.translateY = translateY
+            self.rotation = rotation
+            self.m11 = m11
+            self.m12 = m12
+            self.m21 = m21
+            self.m22 = m22
+        }
+
+        // MARK: - Internal Properties
+
+        var scaleX: CGFloat
+
+        var scaleY: CGFloat
+
+        var translateX: CGFloat
+
+        var translateY: CGFloat
+
+        /// Rotation, in radians.
+        var rotation: CGFloat
+
+        var m11: CGFloat
+
+        var m12: CGFloat
+
+        var m21: CGFloat
+
+        var m22: CGFloat
+
+        // MARK: - Internal Methods
+
+        func recompose() -> CGAffineTransform {
+            let transform = CGAffineTransform(
+                a: m11,
+                b: m12,
+                c: m21,
+                d: m22,
+                tx: translateX,
+                ty: translateY
+            )
+
+            // Apply the rotation and scaling in the reverse order from how they were decomposed.
+            return transform
+                .rotated(by: rotation)
+                .scaledBy(x: scaleX, y: scaleY)
+        }
+
     }
 
 }

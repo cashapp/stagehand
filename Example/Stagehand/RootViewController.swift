@@ -49,6 +49,7 @@ final class RootViewController: UITableViewController {
         ("Collection Keyframes", { CollectionKeyframesViewController() }),
         ("Performance Benchmark", { PerformanceBenchmarkViewController() }),
         ("Animation Queues", { AnimationQueueViewController() }),
+        ("CGAffineTransform Debugging", { CGAffineTransformDebuggingViewController() }),
     ]
 
     // MARK: - UITableViewController

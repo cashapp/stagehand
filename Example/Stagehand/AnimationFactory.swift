@@ -60,6 +60,27 @@ enum AnimationFactory {
         return popAnimation
     }
 
+    static func makeSkewAnimation() -> Animation<UIView> {
+        var popAnimation = Animation<UIView>()
+        popAnimation.addKeyframe(for: \.transform, at: 0, relativeValue: { $0 })
+        popAnimation.addKeyframe(
+            for: \.transform,
+            at: 1,
+            relativeValue: { transform in
+                let skewTransform = CGAffineTransform(
+                    a: 1,
+                    b: 0,
+                    c: 0.2,
+                    d: 1,
+                    tx: 0,
+                    ty: 0
+                )
+                return transform.concatenating(skewTransform)
+            }
+        )
+        return popAnimation
+    }
+
     static func makeGhostAnimation() -> Animation<UIView> {
         var ghostAnimation = Animation<UIView>()
         ghostAnimation.addKeyframe(for: \.alpha, at: 0, relativeValue: { $0 })

@@ -10,6 +10,8 @@
 		3D1D304A22F007B7003E392C /* ChildAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1D304922F007B7003E392C /* ChildAnimationsViewController.swift */; };
 		3D1D304C22F01136003E392C /* AnimationCurveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1D304B22F01136003E392C /* AnimationCurveViewController.swift */; };
 		3D2712EE236A17C5001D3B4B /* AnimationQueueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */; };
+		3D2C058F2489F281003F5A4B /* CGAffineTransformDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2C058E2489F281003F5A4B /* CGAffineTransformDecompositionTests.swift */; };
+		3D2C05912489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2C05902489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift */; };
 		3D32EF4623404F98001144B3 /* AnimationCurvePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D32EF362340449B001144B3 /* AnimationCurvePerformanceTests.swift */; };
 		3D32EF4B234058C7001144B3 /* AnimationOptimizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */; };
 		3D5F2D3B23E63E3600EEFA89 /* AnimationGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */; };
@@ -72,6 +74,8 @@
 		3D1D304922F007B7003E392C /* ChildAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAnimationsViewController.swift; sourceTree = "<group>"; };
 		3D1D304B22F01136003E392C /* AnimationCurveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCurveViewController.swift; sourceTree = "<group>"; };
 		3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationQueueViewController.swift; sourceTree = "<group>"; };
+		3D2C058E2489F281003F5A4B /* CGAffineTransformDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformDecompositionTests.swift; sourceTree = "<group>"; };
+		3D2C05902489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformDebuggingViewController.swift; sourceTree = "<group>"; };
 		3D32EF362340449B001144B3 /* AnimationCurvePerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCurvePerformanceTests.swift; sourceTree = "<group>"; };
 		3D32EF3C23404F6A001144B3 /* Stagehand-PerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Stagehand-PerformanceTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D32EF4023404F6A001144B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -189,6 +193,7 @@
 				3DA5EB7B2318E64A001DF944 /* CollectionKeyframesViewController.swift */,
 				3D875EFF2323542500670803 /* PerformanceBenchmarkViewController.swift */,
 				3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */,
+				3D2C05902489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift */,
 			);
 			name = "Demo View Controllers";
 			sourceTree = "<group>";
@@ -286,6 +291,7 @@
 				3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */,
 				3D7E79AA239FC1F8008BF8FF /* DisplayLinkDriverTests.swift */,
 				3DD79B722488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift */,
+				3D2C058E2489F281003F5A4B /* CGAffineTransformDecompositionTests.swift */,
 				3DD79B702488D51600954004 /* SnapshotTestCase.swift */,
 				3DC75495232F6D3800402BD9 /* Utilities */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
@@ -593,6 +599,7 @@
 				3D875F002323542500670803 /* PerformanceBenchmarkViewController.swift in Sources */,
 				3D75A7BD228FED9900743166 /* AnimationFactory.swift in Sources */,
 				3D1D304C22F01136003E392C /* AnimationCurveViewController.swift in Sources */,
+				3D2C05912489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift in Sources */,
 				3D75A7C3229284C600743166 /* DemoViewController.swift in Sources */,
 				3D75A7C82292910B00743166 /* RelativeAnimationsViewController.swift in Sources */,
 			);
@@ -606,6 +613,7 @@
 				B3C4CA0D2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift in Sources */,
 				3DD79B732488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift in Sources */,
 				3D89890F2450DEB3006824FC /* ExecutorTests.swift in Sources */,
+				3D2C058F2489F281003F5A4B /* CGAffineTransformDecompositionTests.swift in Sources */,
 				3DC75497232F6D5500402BD9 /* TestDriver.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* AnimationSnapshotTests.swift in Sources */,
 				3D7D500023011D4400A468A7 /* AnimationInstanceTests.swift in Sources */,
