@@ -122,6 +122,43 @@ final class CGAffineTransformDecompositionTests: XCTestCase {
         assertDecomposesRotation(-3 * .pi, decomposedAngle: -.pi)
     }
 
+    func testDecompositionClampsRotationValues() {
+        func assertRotation(
+            of initialAngle: CGFloat,
+            resultsIn resultingAngle: CGFloat,
+            file: StaticString = #file,
+            line: UInt = #line
+        ) {
+            XCTAssertEqual(
+                CGAffineTransform.identity
+                    .rotated(by: initialAngle)
+                    .decomposed()
+                    .rotation,
+                resultingAngle,
+                accuracy: 1e-10,
+                file: file,
+                line: line
+            )
+        }
+
+        // Values in [0, π] should be preserved.
+        assertRotation(of: 0, resultsIn: 0)
+        assertRotation(of: .pi / 4, resultsIn: .pi / 4)
+        assertRotation(of: .pi, resultsIn: .pi)
+
+        // Values in (π, 2π] should be mapped to (-π, 0], or in other words (x - 2π).
+        assertRotation(of: 1.5 * .pi, resultsIn: -.pi / 2)
+        assertRotation(of: 2 * .pi, resultsIn: 0)
+
+        // Values in [-π, 0] should be preserved.
+        assertRotation(of: -.pi / 4, resultsIn: -.pi / 4)
+        assertRotation(of: -.pi, resultsIn: -.pi)
+
+        // Values in [-2π, -π) should be mapped to [0, π), or in other words (x + 2π).
+        assertRotation(of: -1.5 * .pi, resultsIn: .pi / 2)
+        assertRotation(of: -2 * .pi, resultsIn: 0)
+    }
+
     func testDecompositionRotationAndScale() {
         assertEqual(
             CGAffineTransform.identity

@@ -47,6 +47,10 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
             transforms: [
                 .init(rotationAngle: .pi / 4),
                 .init(rotationAngle: -.pi / 4),
+
+                // Test that rotation across π/-π behave as expected.
+                .init(rotationAngle: CGFloat(.pi - 0.5)),
+                .init(rotationAngle: CGFloat(-.pi + 0.5)),
             ]
         )
     }

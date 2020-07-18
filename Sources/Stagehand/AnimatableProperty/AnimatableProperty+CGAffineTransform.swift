@@ -25,7 +25,24 @@ extension CGAffineTransform: AnimatableProperty {
         at progress: Double
     ) -> CGAffineTransform {
         let initialDecomposition = initialValue.decomposed()
-        let finalDecomposition = finalValue.decomposed()
+
+        // Any transform can be decomposed into multiple sets of components. Find the decomposition that provides the
+        // most shortest path between the two transforms.
+        let rawFinalDecomposition = finalValue.decomposed()
+        let finalDecompositionCandidates = [
+            rawFinalDecomposition,
+
+            // Applying a rotation of ±2π will look identical, but may change the direction of rotation.
+            rawFinalDecomposition.applying {
+                $0.rotation += (rawFinalDecomposition.rotation < 0 ? 2 : -2) * .pi
+            },
+        ]
+
+        let finalDecomposition = finalDecompositionCandidates.min {
+            // For now, we'll define the shortest path as the one that requires the smallest change in rotation. This
+            // will need to be expanded to include other properties as the list of potential candidates grows.
+            return abs($0.rotation - initialDecomposition.rotation) < abs($1.rotation - initialDecomposition.rotation)
+        }!
 
         return CGAffineTransform.DecomposedMatrix(
             scaleX: CGFloat.value(between: initialDecomposition.scaleX, and: finalDecomposition.scaleX, at: progress),
@@ -52,6 +69,9 @@ extension CGAffineTransform {
 
     // MARK: - Internal Methods
 
+    /// Returns the decomposed values that make up the transform.
+    ///
+    /// Rotation values will be in the range `[-π, π]`.
     func decomposed() -> DecomposedMatrix {
         if isIdentity {
             return .init()
@@ -224,6 +244,12 @@ extension CGAffineTransform {
             return transform
                 .rotated(by: rotation)
                 .scaledBy(x: scaleX, y: scaleY)
+        }
+
+        func applying(_ actions: (inout DecomposedMatrix) -> Void) -> DecomposedMatrix {
+            var decomposedMatrix = self
+            actions(&decomposedMatrix)
+            return decomposedMatrix
         }
 
     }
