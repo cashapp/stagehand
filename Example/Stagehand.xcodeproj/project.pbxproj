@@ -39,6 +39,7 @@
 		3DD79B712488D51600954004 /* SnapshotTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD79B702488D51600954004 /* SnapshotTestCase.swift */; };
 		3DD79B732488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD79B722488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift */; };
 		3DEA0C9624837CAB00F1ECE7 /* TransformPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEA0C9524837CAB00F1ECE7 /* TransformPerformanceTests.swift */; };
+		3DDE7FF024C5123800999ABA /* InteractiveAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDE7FEF24C5123800999ABA /* InteractiveAnimationsViewController.swift */; };
 		3DEE440A231331DD0057D796 /* AnimationGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */; };
 		3DFE460424F4F0D000A460AC /* QuadrantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFE460324F4F0D000A460AC /* QuadrantView.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -109,6 +110,7 @@
 		3DD79B702488D51600954004 /* SnapshotTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTestCase.swift; sourceTree = "<group>"; };
 		3DD79B722488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformInterpolationSnapshotTests.swift; sourceTree = "<group>"; };
 		3DEA0C9524837CAB00F1ECE7 /* TransformPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformPerformanceTests.swift; sourceTree = "<group>"; };
+		3DDE7FEF24C5123800999ABA /* InteractiveAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveAnimationsViewController.swift; sourceTree = "<group>"; };
 		3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationGroupViewController.swift; sourceTree = "<group>"; };
 		3DFE460324F4F0D000A460AC /* QuadrantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadrantView.swift; sourceTree = "<group>"; };
 		3EEB62F0CC3F471BC6454D87 /* Pods-Stagehand_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand_Example.debug.xcconfig"; path = "Target Support Files/Pods-Stagehand_Example/Pods-Stagehand_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */,
 				3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */,
 				3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */,
+				3DDE7FEF24C5123800999ABA /* InteractiveAnimationsViewController.swift */,
 			);
 			name = "Feature Screens";
 			sourceTree = "<group>";
@@ -628,6 +631,7 @@
 				3DEE440A231331DD0057D796 /* AnimationGroupViewController.swift in Sources */,
 				3D1D304A22F007B7003E392C /* ChildAnimationsViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				3DDE7FF024C5123800999ABA /* InteractiveAnimationsViewController.swift in Sources */,
 				3D8E3D8422F2BC9300D70FCB /* RepeatingAnimationsViewController.swift in Sources */,
 				3D8E3D8022F16C1B00D70FCB /* ChildAnimationsWithCurvesViewController.swift in Sources */,
 				3DB3927D23249D680009E8B3 /* ColorAnimationsViewController.swift in Sources */,
