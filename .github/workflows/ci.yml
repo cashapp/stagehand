@@ -27,11 +27,8 @@ jobs:
         if: matrix.platform == 'iOS_12'
       - name: Pod Install
         run: bundle exec --gemfile=Example/Gemfile pod install --project-directory=Example
-      - name: Find xcpretty
-        id: find-xcpretty
-        run: echo "::set-output name=xcpretty-path::"`which xcpretty`
       - name: Build and Test
-        run: Scripts/build.swift xcode ${{ matrix.platform }} ${{ steps.find-xcpretty.outputs.xcpretty-path }}
+        run: Scripts/build.swift xcode ${{ matrix.platform }} `which xcpretty`
       - name: Upload Results
         uses: actions/upload-artifact@v2
         if: failure()
