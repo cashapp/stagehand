@@ -1,15 +1,11 @@
 language: objective-c
 jobs:
-  - osx_image: xcode11.3
-    env: ACTIONS="xcode,pod-lint";PLATFORM="iOS_13"
   - osx_image: xcode10.3
-    env: ACTIONS="xcode,pod-lint";PLATFORM="iOS_12"
+    env: ACTIONS="pod-lint"
   - osx_image: xcode10.3
-    env: ACTIONS="xcode,pod-lint";PLATFORM="iOS_11"
+    env: ACTIONS="xcode";PLATFORM="iOS_11"
   - osx_image: xcode10.3
-    env: ACTIONS="xcode,pod-lint";PLATFORM="iOS_10"
-  - osx_image: xcode11.3
-    env: ACTIONS="spm";PLATFORM="iOS_13"
+    env: ACTIONS="xcode";PLATFORM="iOS_10"
 install:
   - bundle install --gemfile=Example/Gemfile
   - bundle exec --gemfile=Example/Gemfile pod install --project-directory=Example
