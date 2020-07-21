@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import QuartzCore
 
 internal final class InteractiveDriver: Driver {
 
