@@ -57,6 +57,14 @@ final class RelativeAnimationsViewController: DemoViewController {
                     self?.gestureRecognizer.isEnabled = true
                 }
             }),
+            ("Skew", { [unowned self] in
+                self.gestureRecognizer.isEnabled = false
+
+                let animation = AnimationFactory.makeSkewAnimation()
+                animation.perform(on: self.mainView.animatableView) { [weak self] _ in
+                    self?.gestureRecognizer.isEnabled = true
+                }
+            }),
         ]
 
         mainView.animatableView.addGestureRecognizer(gestureRecognizer)
