@@ -94,6 +94,10 @@ extension CATransform3D {
     // MARK: - Internal Methods
 
     internal func decomposed() -> DecomposedTransform? {
+        guard !CATransform3DIsIdentity(self) else {
+            return .init()
+        }
+
         var matrix = self
 
         guard matrix.m44 != 0 else {
