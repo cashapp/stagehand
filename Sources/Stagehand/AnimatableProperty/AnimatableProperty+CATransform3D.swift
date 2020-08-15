@@ -325,33 +325,69 @@ extension CATransform3D {
 
     internal struct DecomposedTransform: Equatable {
 
-        var scaleX: CGFloat = 1
+        // MARK: - Life Cycle
 
-        var scaleY: CGFloat = 1
+        init(
+            scaleX: CGFloat = 1,
+            scaleY: CGFloat = 1,
+            scaleZ: CGFloat = 1,
+            skewXY: CGFloat = 0,
+            skewXZ: CGFloat = 0,
+            skewYZ: CGFloat = 0,
+            rotation: Quaternion = .init(),
+            translateX: CGFloat = 0,
+            translateY: CGFloat = 0,
+            translateZ: CGFloat = 0,
+            perspectiveX: CGFloat = 0,
+            perspectiveY: CGFloat = 0,
+            perspectiveZ: CGFloat = 0,
+            perspectiveW: CGFloat = 1
+        ) {
+            self.scaleX = scaleX
+            self.scaleY = scaleY
+            self.scaleZ = scaleZ
+            self.skewXY = skewXY
+            self.skewXZ = skewXZ
+            self.skewYZ = skewYZ
+            self.rotation = rotation
+            self.translateX = translateX
+            self.translateY = translateY
+            self.translateZ = translateZ
+            self.perspectiveX = perspectiveX
+            self.perspectiveY = perspectiveY
+            self.perspectiveZ = perspectiveZ
+            self.perspectiveW = perspectiveW
+        }
 
-        var scaleZ: CGFloat = 1
+        // MARK: - Internal Properties
 
-        var skewXY: CGFloat = 0
+        var scaleX: CGFloat
 
-        var skewXZ: CGFloat = 0
+        var scaleY: CGFloat
 
-        var skewYZ: CGFloat = 0
+        var scaleZ: CGFloat
 
-        var rotation: Quaternion = .init()
+        var skewXY: CGFloat
 
-        var translateX: CGFloat = 0
+        var skewXZ: CGFloat
 
-        var translateY: CGFloat = 0
+        var skewYZ: CGFloat
 
-        var translateZ: CGFloat = 0
+        var rotation: Quaternion
 
-        var perspectiveX: CGFloat = 0
+        var translateX: CGFloat
 
-        var perspectiveY: CGFloat = 0
+        var translateY: CGFloat
 
-        var perspectiveZ: CGFloat = 0
+        var translateZ: CGFloat
 
-        var perspectiveW: CGFloat = 1
+        var perspectiveX: CGFloat
+
+        var perspectiveY: CGFloat
+
+        var perspectiveZ: CGFloat
+
+        var perspectiveW: CGFloat
 
     }
 
