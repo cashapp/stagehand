@@ -51,4 +51,38 @@ final class TransformPerformanceTests: XCTestCase {
         }
     }
 
+    func testCATransform3DInterpolationPerformance_identityToIdentity() {
+        measure {
+            for _ in 0...100 {
+                for i in 0...10000 {
+                    let progress = Double(i) / 10000
+                    _ = CATransform3D.value(between: CATransform3DIdentity, and: CATransform3DIdentity, at: progress)
+                }
+            }
+        }
+    }
+
+    func testCATransform3DInterpolationPerformance_complexTransforms() {
+        measure {
+            var fromTransform = CATransform3DIdentity
+            fromTransform.m34 = -0.05
+            fromTransform = CATransform3DRotate(fromTransform, 1, 0, 0, 1)
+            fromTransform = CATransform3DScale(fromTransform, 2, 3, 1)
+            fromTransform = CATransform3DTranslate(fromTransform, 4, 5, 6)
+
+            var toTransform = CATransform3DIdentity
+            toTransform.m34 = -0.07
+            toTransform = CATransform3DRotate(toTransform, 6, 0, 0, 1)
+            toTransform = CATransform3DScale(toTransform, 7, 8, 9)
+            toTransform = CATransform3DTranslate(toTransform, 10, 11, 12)
+
+            for _ in 0...100 {
+                for i in 0...10000 {
+                    let progress = Double(i) / 10000
+                    _ = CATransform3D.value(between: fromTransform, and: toTransform, at: progress)
+                }
+            }
+        }
+    }
+
 }

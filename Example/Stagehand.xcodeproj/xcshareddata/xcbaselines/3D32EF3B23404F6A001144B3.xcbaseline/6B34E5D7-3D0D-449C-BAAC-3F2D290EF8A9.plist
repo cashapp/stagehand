@@ -6,6 +6,26 @@
 	<dict>
 		<key>TransformPerformanceTests</key>
 		<dict>
+			<key>testCATransform3DInterpolationPerformance_complexTransforms()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>11.368</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Aug 14, 2020 at 5:54:49 PM</string>
+				</dict>
+			</dict>
+			<key>testCATransform3DInterpolationPerformance_identityToIdentity()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>11.346</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Aug 14, 2020 at 5:54:49 PM</string>
+				</dict>
+			</dict>
 			<key>testCGAffineTransformInterpolationPerformance_complexTransforms()</key>
 			<dict>
 				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
