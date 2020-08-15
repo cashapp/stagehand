@@ -14,7 +14,8 @@
 //  limitations under the License.
 //
 
-import Foundation
+import CoreGraphics
+import QuartzCore
 
 internal struct Vector4 {
 

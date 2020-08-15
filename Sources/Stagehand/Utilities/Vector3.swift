@@ -14,7 +14,7 @@
 //  limitations under the License.
 //
 
-import Foundation
+import CoreGraphics
 
 internal struct Vector3 {
 
