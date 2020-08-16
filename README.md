@@ -7,10 +7,10 @@
 
 Stagehand provides a modern, type-safe API for building animations on iOS. Stagehand is designed around a set of core ideas:
 
-* Composition of Structures
-* Separation of Construction and Execution
-* Compiler Safety
-* Testability
+* **Composition of Structures** - Stagehand makes it easy to build complex, multi-part animations that are built from small, reusable pieces that are easier to reason about.
+* **Separation of Construction and Execution** - Stagehand provides separate mechanisms for the construction and execution, which increases the flexibility of animations and makes concepts like queuing a series of animations work straight out of the box.
+* **Compile-Time Safety** - Stagehand uses modern Swift features to provide a compile-time safe API for defining animations.
+* **Testability** - Stagehand builds on the concept of snapshot testing to introduce a visual testing paradigm for animations.
 
 ## Installation
 
