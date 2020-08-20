@@ -109,7 +109,9 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
                 CATransform3DIdentity.shearedBy(xy: -2),
                 CATransform3DIdentity,
                 CATransform3DIdentity.shearedBy(yx: 2),
-                CATransform3DIdentity.shearedBy(xy: 2, yx: 2),
+                CATransform3DIdentity,
+                CATransform3DIdentity.shearedBy(xy: 0.5, yx: 0.5),
+                CATransform3DIdentity.shearedBy(xy: -0.5),
             ]
         )
     }

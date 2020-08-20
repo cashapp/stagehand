@@ -236,6 +236,8 @@ final class CATransform3DDecompositionTests: XCTestCase {
         var skewXYTransform = CATransform3DIdentity
         skewXYTransform.m21 = 5
         assertDecomposesAndRecomposes(skewXYTransform)
+
+        assertDecomposesAndRecomposes(CATransform3DIdentity.shearedBy(xy: 2, yx: 2), accuracy: 1e-10)
     }
 
     // MARK: - Private Methods
