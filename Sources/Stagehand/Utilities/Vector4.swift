@@ -19,7 +19,7 @@ import QuartzCore
 
 internal struct Vector4 {
 
-    // MARK: - Public Properties
+    // MARK: - Internal Properties
 
     var v1: CGFloat
 
