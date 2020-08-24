@@ -134,7 +134,7 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
             animation.addKeyframe(for: \.transform, at: Double(index + 1) * segmentDuration, value: transform)
         }
 
-        animation.duration = TimeInterval(transforms.count)
+        animation.implicitDuration = TimeInterval(transforms.count)
 
         SnapshotVerify(
             animation: animation,

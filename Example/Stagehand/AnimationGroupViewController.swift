@@ -29,7 +29,6 @@ final class AnimationGroupViewController: DemoViewController {
         animationRows = [
             ("Move Both Views", { [unowned self] in
                 var animationGroup = AnimationGroup()
-                animationGroup.duration = 2
 
                 let topAnimation = self.makeAnimation()
                 animationGroup.addAnimation(topAnimation, for: self.topView, startingAt: 0, relativeDuration: 0.75)
@@ -37,7 +36,7 @@ final class AnimationGroupViewController: DemoViewController {
                 let bottomAnimation = self.makeAnimation()
                 animationGroup.addAnimation(bottomAnimation, for: self.bottomView, startingAt: 0.25, relativeDuration: 0.75)
 
-                animationGroup.perform()
+                animationGroup.perform(duration: 2)
             }),
         ]
     }
@@ -54,7 +53,6 @@ final class AnimationGroupViewController: DemoViewController {
         var animation = Animation<UIView>()
         animation.addKeyframe(for: \.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.transform, at: 1, value: .init(translationX: contentView.bounds.width - 100, y: 0))
-        animation.duration = 2
         return animation
     }
 

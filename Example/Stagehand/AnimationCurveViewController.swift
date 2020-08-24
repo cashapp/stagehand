@@ -117,7 +117,7 @@ final class AnimationCurveViewController: DemoViewController {
         var animation = Animation<UIView>()
         animation.addKeyframe(for: \.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.transform, at: 1, value: .init(translationX: mainView.bounds.width - 100, y: 0))
-        animation.duration = 2
+        animation.implicitDuration = 2
 
         animation.addPerFrameExecution { [weak self] context in
             guard let self = self else { return }

@@ -31,57 +31,68 @@ final class RepeatingAnimationsViewController: DemoViewController {
                 // Cancel any existing animation
                 self.animationInstance?.cancel(behavior: .revert)
 
-                var animation = self.makeAnimation()
-                animation.repeatStyle = .none
-                self.animationInstance = animation.perform(on: self.mainView.animatableView)
+                let animation = self.makeAnimation()
+                self.animationInstance = animation.perform(on: self.mainView.animatableView, repeatStyle: .noRepeat)
             }),
             ("Repeat Once", { [unowned self] in
                 // Cancel any existing animation
                 self.animationInstance?.cancel(behavior: .revert)
 
-                var animation = self.makeAnimation()
-                animation.repeatStyle = .repeating(count: 2, autoreversing: false)
-                self.animationInstance = animation.perform(on: self.mainView.animatableView)
+                let animation = self.makeAnimation()
+                self.animationInstance = animation.perform(
+                    on: self.mainView.animatableView,
+                    repeatStyle: .repeating(count: 2, autoreversing: false)
+                )
             }),
             ("Repeat Once, Autoreversing", { [unowned self] in
                 // Cancel any existing animation
                 self.animationInstance?.cancel(behavior: .revert)
 
-                var animation = self.makeAnimation()
-                animation.repeatStyle = .repeating(count: 2, autoreversing: true)
-                self.animationInstance = animation.perform(on: self.mainView.animatableView)
+                let animation = self.makeAnimation()
+                self.animationInstance = animation.perform(
+                    on: self.mainView.animatableView,
+                    repeatStyle: .repeating(count: 2, autoreversing: true)
+                )
             }),
             ("Repeat Twice", { [unowned self] in
                 // Cancel any existing animation
                 self.animationInstance?.cancel(behavior: .revert)
 
-                var animation = self.makeAnimation()
-                animation.repeatStyle = .repeating(count: 3, autoreversing: false)
-                self.animationInstance = animation.perform(on: self.mainView.animatableView)
+                let animation = self.makeAnimation()
+                self.animationInstance = animation.perform(
+                    on: self.mainView.animatableView,
+                    repeatStyle: .repeating(count: 3, autoreversing: false)
+                )
             }),
             ("Repeat Twice, Autoreversing", { [unowned self] in
                 // Cancel any existing animation
                 self.animationInstance?.cancel(behavior: .revert)
 
-                var animation = self.makeAnimation()
-                animation.repeatStyle = .repeating(count: 3, autoreversing: true)
-                self.animationInstance = animation.perform(on: self.mainView.animatableView)
+                let animation = self.makeAnimation()
+                self.animationInstance = animation.perform(
+                    on: self.mainView.animatableView,
+                    repeatStyle: .repeating(count: 3, autoreversing: true)
+                )
             }),
             ("Repeat Infinitely", { [unowned self] in
                 // Cancel any existing animation
                 self.animationInstance?.cancel(behavior: .revert)
 
-                var animation = self.makeAnimation()
-                animation.repeatStyle = .infinitelyRepeating(autoreversing: false)
-                self.animationInstance = animation.perform(on: self.mainView.animatableView)
+                let animation = self.makeAnimation()
+                self.animationInstance = animation.perform(
+                    on: self.mainView.animatableView,
+                    repeatStyle: .infinitelyRepeating(autoreversing: false)
+                )
             }),
             ("Repeat Infinitely, Autoreversing", { [unowned self] in
                 // Cancel any existing animation
                 self.animationInstance?.cancel(behavior: .revert)
 
-                var animation = self.makeAnimation()
-                animation.repeatStyle = .infinitelyRepeating(autoreversing: true)
-                self.animationInstance = animation.perform(on: self.mainView.animatableView)
+                let animation = self.makeAnimation()
+                self.animationInstance = animation.perform(
+                    on: self.mainView.animatableView,
+                    repeatStyle: .infinitelyRepeating(autoreversing: true)
+                )
             }),
             ("Cancel (Revert)", { [unowned self] in
                 self.animationInstance?.cancel(behavior: .revert)
@@ -106,7 +117,7 @@ final class RepeatingAnimationsViewController: DemoViewController {
         var animation = Animation<UIView>()
         animation.addKeyframe(for: \.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.transform, at: 1, value: .init(translationX: mainView.bounds.width - 100, y: 0))
-        animation.duration = 1
+        animation.implicitDuration = 1
         return animation
     }
 

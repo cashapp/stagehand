@@ -95,7 +95,7 @@ func makeAnimation(model: ModelDrivenView.Model) -> Animation<ModelDrivenView> {
     animation.addKeyframe(for: \.alpha, at: 1, value: 1)
 
     // Make the total duration of the animation 2 seconds.
-    animation.duration = 2
+    animation.implicitDuration = 2
 
     return animation
 }
@@ -148,8 +148,8 @@ func makeAnimation(modelToFlash: ModelDrivenView.Model, modelToRestore: ModelDri
         at: 0.5
     )
 
-    animation.duration = 2
-    animation.repeatStyle = .repeating(count: 2, autoreversing: true)
+    animation.implicitDuration = 2
+    animation.implicitRepeatStyle = .repeating(count: 2, autoreversing: true)
 
     return animation
 }

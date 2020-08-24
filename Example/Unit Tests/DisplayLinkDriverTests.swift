@@ -26,7 +26,7 @@ final class DisplayLinkDriverTests: XCTestCase {
         let driver = DisplayLinkDriver(
             delay: 0,
             duration: 0,
-            repeatStyle: .none,
+            repeatStyle: .noRepeat,
             completion: nil
         )
 
@@ -56,7 +56,7 @@ final class DisplayLinkDriverTests: XCTestCase {
         let driver = DisplayLinkDriver(
             delay: 1,
             duration: 0,
-            repeatStyle: .none,
+            repeatStyle: .noRepeat,
             completion: nil,
             displayLinkFactory: { _, _ in displayLink }
         )
@@ -103,7 +103,7 @@ final class DisplayLinkDriverTests: XCTestCase {
         let driver = DisplayLinkDriver(
             delay: 0,
             duration: 1,
-            repeatStyle: .none,
+            repeatStyle: .noRepeat,
             completion: nil,
             displayLinkFactory: { _, _ in displayLink }
         )
@@ -164,7 +164,7 @@ final class DisplayLinkDriverTests: XCTestCase {
         let driver = DisplayLinkDriver(
             delay: 0,
             duration: 1,
-            repeatStyle: .none,
+            repeatStyle: .noRepeat,
             completion: nil,
             displayLinkFactory: { _, _ in displayLink }
         )
@@ -202,7 +202,7 @@ final class DisplayLinkDriverTests: XCTestCase {
         let driver = DisplayLinkDriver(
             delay: 1,
             duration: 4,
-            repeatStyle: .none,
+            repeatStyle: .noRepeat,
             completion: nil,
             displayLinkFactory: { _, _ in displayLink }
         )
@@ -568,7 +568,7 @@ final class DisplayLinkDriverTests: XCTestCase {
         let driver = DisplayLinkDriver(
             delay: 0,
             duration: 1,
-            repeatStyle: .none,
+            repeatStyle: .noRepeat,
             completion: completion,
             displayLinkFactory: { _, _ in displayLink }
         )
@@ -603,7 +603,7 @@ final class DisplayLinkDriverTests: XCTestCase {
         let driver = DisplayLinkDriver(
             delay: 0,
             duration: 1,
-            repeatStyle: .none,
+            repeatStyle: .noRepeat,
             completion: nil,
             displayLinkFactory: { _, _ in displayLink }
         )
@@ -710,7 +710,7 @@ final class DisplayLinkDriverTests: XCTestCase {
         let driver = DisplayLinkDriver(
             delay: 0,
             duration: 1,
-            repeatStyle: .none,
+            repeatStyle: .noRepeat,
             completion: nil,
             displayLinkFactory: { _, _ in displayLink }
         )

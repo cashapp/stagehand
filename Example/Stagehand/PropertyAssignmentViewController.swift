@@ -50,19 +50,18 @@ final class PropertyAssignmentViewController: DemoViewController {
 
                 var animation = Animation<View>()
                 animation.addChild(childAnimation, for: \.animatableView, startingAt: 0, relativeDuration: 1)
-                animation.duration = 2
 
-                self.animationInstance = animation.perform(on: self.mainView)
+                self.animationInstance = animation.perform(on: self.mainView, duration: 2)
             }),
             ("Current -> Yellow -> Green, with reversal", { [unowned self] in
                 var animation = self.makeAnimation()
                 animation.addAssignment(for: \.backgroundColor, at: 0.33, value: .yellow)
                 animation.addAssignment(for: \.backgroundColor, at: 0.66, value: .green)
-                animation.repeatStyle = .repeating(count: 2, autoreversing: true)
 
                 self.mainView.initialColorSlider.isEnabled = false
                 self.animationInstance = animation.perform(
                     on: self.mainView.animatableView,
+                    repeatStyle: .repeating(count: 2, autoreversing: true),
                     completion: { [weak self] _ in
                         self?.mainView.initialColorSlider.isEnabled = true
                 }
@@ -85,7 +84,7 @@ final class PropertyAssignmentViewController: DemoViewController {
         var animation = Animation<UIView>()
         animation.addKeyframe(for: \.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.transform, at: 1, value: .init(translationX: mainView.bounds.width - 100, y: 0))
-        animation.duration = 2
+        animation.implicitDuration = 2
         return animation
     }
 

@@ -37,12 +37,29 @@ public final class AnimationQueue<ElementType: AnyObject> {
     ///
     /// If the queue was previously empty, the animation will begin immediately. If the queue was previously not empty,
     /// the animation will begin when the last animation in the queue has completed.
+    ///
+    /// The duration for each cycle of the animation will be determined in order of preference by:
+    /// 1. An explicit duration, if provided via the `duration` parameter
+    /// 2. The animation's implicit duration, as specified by the animation's `implicitDuration` property
+    ///
+    /// The repeat style for the animation will be determined in order of preference by:
+    /// 1. An explicit repeat style, if provided via the `repeatStyle` parameter
+    /// 2. The animation's implicit repeat style, as specified by the animation's `implicitRepeatStyle` property
+    ///
+    /// - parameter animation: The animation to add to the queue.
+    /// - parameter duration: The duration to use for each cycle of the animation.
+    /// - parameter repeatStyle: The repeat style to use for the animation.
+    /// - returns: An animation instance that can be used to check the status of or cancel the animation.
     @discardableResult
-    public func enqueue(animation: Animation<ElementType>) -> AnimationInstance {
+    public func enqueue(
+        animation: Animation<ElementType>,
+        duration: TimeInterval? = nil,
+        repeatStyle: AnimationRepeatStyle? = nil
+    ) -> AnimationInstance {
         let driver = DisplayLinkDriver(
             delay: 0,
-            duration: animation.duration,
-            repeatStyle: animation.repeatStyle,
+            duration: duration ?? animation.implicitDuration,
+            repeatStyle: repeatStyle ?? animation.implicitRepeatStyle,
             completion: nil
         )
 

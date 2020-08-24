@@ -19,8 +19,9 @@ import Foundation
 /// An instance of an animation that has been triggered to begin.
 ///
 /// Do not create an `AnimationInstance` directly. Instead, construct an `Animation`, then call the animation's
-/// `perform(on:delay:completion:)` method to begin the animation. That method will return an instance of this class.
-/// The `AnimationInstance` can then be used to track the `status` of the animation, or to cancel it.
+/// `perform(on:delay:duration:repeatStyle:completion:)` method to begin the animation. That method will return an
+/// instance of this class. The `AnimationInstance` can then be used to track the `status` of the animation, or to
+/// cancel it.
 public final class AnimationInstance {
 
     // MARK: - Life Cycle

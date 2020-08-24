@@ -39,7 +39,7 @@ func makeFlatAnimation() -> Animation<RaceCarView> {
     animation.addKeyframe(for: \.bottomView.backgroundColor, at: 0.75, value: UIColor.yellow.withAlphaComponent(0.8))
     animation.addKeyframe(for: \.bottomView.backgroundColor, at: 1, value: .yellow)
 
-    animation.duration = 3
+    animation.implicitDuration = 3
 
     return animation
 }
@@ -94,7 +94,7 @@ func makeHierarchicalAnimation() -> Animation<RaceCarView> {
     animation.addChild(makeCarAnimation(), for: \.topView, startingAt: 0, relativeDuration: 1)
     animation.addChild(makeCarAnimation(), for: \.bottomView, startingAt: 0, relativeDuration: 1)
 
-    animation.duration = 3
+    animation.implicitDuration = 3
 
     return animation
 }

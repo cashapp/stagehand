@@ -18,7 +18,7 @@ import Stagehand
 
 var basicAnimation = Animation<UIView>()
 
-basicAnimation.duration = 2
+basicAnimation.implicitDuration = 2
 
 /*:
 

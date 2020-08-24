@@ -32,7 +32,7 @@ final class AnimationCancelationViewController: DemoViewController {
                 self.animationInstance?.cancel()
 
                 let animation = self.makeAnimation()
-                self.animationInstance = animation.perform(on: self.mainView.animatableView)
+                self.animationInstance = animation.perform(on: self.mainView.animatableView, duration: 2)
             }),
             ("Cancel (Revert)", { [unowned self] in
                 self.animationInstance?.cancel(behavior: .revert)
@@ -58,7 +58,6 @@ final class AnimationCancelationViewController: DemoViewController {
         var animation = Animation<UIView>()
         animation.addKeyframe(for: \.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.transform, at: 1, value: .init(translationX: mainView.bounds.width - 100, y: 0))
-        animation.duration = 2
         return animation
     }
 
