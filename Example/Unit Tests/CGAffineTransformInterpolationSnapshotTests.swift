@@ -163,7 +163,7 @@ private final class ContainerView: UIView {
 
     // MARK: - Public Properties
 
-    let animatableView: UIView = .init()
+    let animatableView: QuadrantView = .init()
 
     var transforms: [CGAffineTransform] {
         get {

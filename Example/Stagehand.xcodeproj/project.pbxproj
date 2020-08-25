@@ -40,6 +40,7 @@
 		3DD79B732488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD79B722488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift */; };
 		3DEA0C9624837CAB00F1ECE7 /* TransformPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEA0C9524837CAB00F1ECE7 /* TransformPerformanceTests.swift */; };
 		3DEE440A231331DD0057D796 /* AnimationGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */; };
+		3DFE460424F4F0D000A460AC /* QuadrantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFE460324F4F0D000A460AC /* QuadrantView.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* RootViewController.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
@@ -109,6 +110,7 @@
 		3DD79B722488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformInterpolationSnapshotTests.swift; sourceTree = "<group>"; };
 		3DEA0C9524837CAB00F1ECE7 /* TransformPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformPerformanceTests.swift; sourceTree = "<group>"; };
 		3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationGroupViewController.swift; sourceTree = "<group>"; };
+		3DFE460324F4F0D000A460AC /* QuadrantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadrantView.swift; sourceTree = "<group>"; };
 		3EEB62F0CC3F471BC6454D87 /* Pods-Stagehand_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand_Example.debug.xcconfig"; path = "Target Support Files/Pods-Stagehand_Example/Pods-Stagehand_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		472E62FC731AD89405017C59 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		4B84A3658CDA0BD762380354 /* Pods-Stagehand_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Stagehand_Tests/Pods-Stagehand_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				3D89B4E724E74B89001C7CC3 /* CATransform3D+Additions.swift */,
+				3DFE460324F4F0D000A460AC /* QuadrantView.swift */,
 				3DC75496232F6D5500402BD9 /* TestDriver.swift */,
 			);
 			name = Utilities;
@@ -626,6 +629,7 @@
 				3DC75497232F6D5500402BD9 /* TestDriver.swift in Sources */,
 				3D5E5D9024DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* AnimationSnapshotTests.swift in Sources */,
+				3DFE460424F4F0D000A460AC /* QuadrantView.swift in Sources */,
 				3D7D500023011D4400A468A7 /* AnimationInstanceTests.swift in Sources */,
 				3D89B4E924E74C01001C7CC3 /* CATransform3D+Additions.swift in Sources */,
 				3D5F2D3B23E63E3600EEFA89 /* AnimationGroupTests.swift in Sources */,
