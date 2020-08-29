@@ -21,6 +21,7 @@
 		3D75A7C3229284C600743166 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75A7C2229284C600743166 /* DemoViewController.swift */; };
 		3D75A7C62292892B00743166 /* SimpleAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75A7C52292892B00743166 /* SimpleAnimationsViewController.swift */; };
 		3D75A7C82292910B00743166 /* RelativeAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75A7C72292910B00743166 /* RelativeAnimationsViewController.swift */; };
+		3D77A7D924F9CA7F00D25FAE /* CGAffineTransformInterpolationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D77A7D824F9CA7F00D25FAE /* CGAffineTransformInterpolationTests.swift */; };
 		3D7D500023011D4400A468A7 /* AnimationInstanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7D4FFE23011C4600A468A7 /* AnimationInstanceTests.swift */; };
 		3D7E79AB239FC1F8008BF8FF /* DisplayLinkDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7E79AA239FC1F8008BF8FF /* DisplayLinkDriverTests.swift */; };
 		3D875F002323542500670803 /* PerformanceBenchmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D875EFF2323542500670803 /* PerformanceBenchmarkViewController.swift */; };
@@ -91,6 +92,7 @@
 		3D75A7C2229284C600743166 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		3D75A7C52292892B00743166 /* SimpleAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAnimationsViewController.swift; sourceTree = "<group>"; };
 		3D75A7C72292910B00743166 /* RelativeAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelativeAnimationsViewController.swift; sourceTree = "<group>"; };
+		3D77A7D824F9CA7F00D25FAE /* CGAffineTransformInterpolationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformInterpolationTests.swift; sourceTree = "<group>"; };
 		3D7D4FFE23011C4600A468A7 /* AnimationInstanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationInstanceTests.swift; sourceTree = "<group>"; };
 		3D7E79AA239FC1F8008BF8FF /* DisplayLinkDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLinkDriverTests.swift; sourceTree = "<group>"; };
 		3D875EFF2323542500670803 /* PerformanceBenchmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceBenchmarkViewController.swift; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 				3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */,
 				3D7E79AA239FC1F8008BF8FF /* DisplayLinkDriverTests.swift */,
 				3DD79B722488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift */,
+				3D77A7D824F9CA7F00D25FAE /* CGAffineTransformInterpolationTests.swift */,
 				3D2C058E2489F281003F5A4B /* CGAffineTransformDecompositionTests.swift */,
 				3D5E5D8F24DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift */,
 				3D595521247D0B3D00284D45 /* CATransform3DDecompositionTests.swift */,
@@ -629,6 +632,7 @@
 				3DC75497232F6D5500402BD9 /* TestDriver.swift in Sources */,
 				3D5E5D9024DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* AnimationSnapshotTests.swift in Sources */,
+				3D77A7D924F9CA7F00D25FAE /* CGAffineTransformInterpolationTests.swift in Sources */,
 				3DFE460424F4F0D000A460AC /* QuadrantView.swift in Sources */,
 				3D7D500023011D4400A468A7 /* AnimationInstanceTests.swift in Sources */,
 				3D89B4E924E74C01001C7CC3 /* CATransform3D+Additions.swift in Sources */,

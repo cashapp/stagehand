@@ -85,8 +85,16 @@ final class CATransform3DDecompositionTests: XCTestCase {
         // cleanly here. We'll test the other cases in the round trip tests below.
         assertDecomposesScale(x: -2, y: -3, z: -4)
 
-        // Note that we can't test any scales where one of the axes is scaled by zero, since we would fail to decompse
-        // the transform.
+        // We can't decompose any transform where at least one of the axes is scaled by zero.
+        XCTAssertNil(CATransform3DMakeScale(0, 1, 1).decomposed())
+        XCTAssertNil(CATransform3DMakeScale(1, 0, 1).decomposed())
+        XCTAssertNil(CATransform3DMakeScale(1, 1, 0).decomposed())
+    }
+
+    func testDecompositionFailsWithM44OfZero() {
+        var transform = CATransform3DIdentity
+        transform.m44 = 0
+        XCTAssertNil(transform.decomposed())
     }
 
     // MARK: - Tests - Recomposition
