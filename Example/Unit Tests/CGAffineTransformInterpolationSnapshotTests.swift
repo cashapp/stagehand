@@ -42,6 +42,19 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    func testFlippedScaleResultsInRotation() {
+        snapshotVerifyAnimation(
+            transforms: [
+                .init(scaleX: -2, y: 3),
+                .init(scaleX: 3, y: -2),
+                .init(scaleX: -3, y: 2),
+
+                CGAffineTransform(scaleX: -3, y: 2).rotated(by: -.pi / 2),
+                CGAffineTransform(scaleX: 3, y: -2).rotated(by: .pi / 2),
+            ]
+        )
+    }
+
     func testRotation() {
         snapshotVerifyAnimation(
             transforms: [
@@ -163,7 +176,7 @@ private final class ContainerView: UIView {
 
     // MARK: - Public Properties
 
-    let animatableView: UIView = .init()
+    let animatableView: QuadrantView = .init()
 
     var transforms: [CGAffineTransform] {
         get {
