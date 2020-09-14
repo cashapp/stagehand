@@ -186,23 +186,18 @@
 		3D75A7C42292891100743166 /* Demo View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				3D75A7C52292892B00743166 /* SimpleAnimationsViewController.swift */,
-				3D75A7C72292910B00743166 /* RelativeAnimationsViewController.swift */,
-				3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */,
-				3D1D304922F007B7003E392C /* ChildAnimationsViewController.swift */,
-				3DBFEE412400B2460086D61C /* ChildAnimationProgressViewController.swift */,
-				3D1D304B22F01136003E392C /* AnimationCurveViewController.swift */,
-				3D8E3D7F22F16C1B00D70FCB /* ChildAnimationsWithCurvesViewController.swift */,
-				3D8E3D8122F17D3B00D70FCB /* AnimationCancelationViewController.swift */,
-				3D89F1E122FDEAAC008AC33E /* PropertyAssignmentViewController.swift */,
-				3D8E3D8322F2BC9300D70FCB /* RepeatingAnimationsViewController.swift */,
-				3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */,
-				3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */,
-				3D875EFF2323542500670803 /* PerformanceBenchmarkViewController.swift */,
-				3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */,
-				3D2C05902489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift */,
+				3D763D0525252E6D00D9525C /* Demo Screens */,
+				3DFA5473250F7361001CB420 /* Feature Screens */,
+				3DFA5474250F7389001CB420 /* Debugging Screens */,
 			);
 			name = "Demo View Controllers";
+			sourceTree = "<group>";
+		};
+		3D763D0525252E6D00D9525C /* Demo Screens */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Demo Screens";
 			sourceTree = "<group>";
 		};
 		3DC75495232F6D3800402BD9 /* Utilities */ = {
@@ -213,6 +208,35 @@
 				3DC75496232F6D5500402BD9 /* TestDriver.swift */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		3DFA5473250F7361001CB420 /* Feature Screens */ = {
+			isa = PBXGroup;
+			children = (
+				3D75A7C52292892B00743166 /* SimpleAnimationsViewController.swift */,
+				3D75A7C72292910B00743166 /* RelativeAnimationsViewController.swift */,
+				3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */,
+				3D1D304922F007B7003E392C /* ChildAnimationsViewController.swift */,
+				3D1D304B22F01136003E392C /* AnimationCurveViewController.swift */,
+				3D8E3D7F22F16C1B00D70FCB /* ChildAnimationsWithCurvesViewController.swift */,
+				3D8E3D8122F17D3B00D70FCB /* AnimationCancelationViewController.swift */,
+				3D89F1E122FDEAAC008AC33E /* PropertyAssignmentViewController.swift */,
+				3D8E3D8322F2BC9300D70FCB /* RepeatingAnimationsViewController.swift */,
+				3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */,
+				3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */,
+				3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */,
+			);
+			name = "Feature Screens";
+			sourceTree = "<group>";
+		};
+		3DFA5474250F7389001CB420 /* Debugging Screens */ = {
+			isa = PBXGroup;
+			children = (
+				3DBFEE412400B2460086D61C /* ChildAnimationProgressViewController.swift */,
+				3D875EFF2323542500670803 /* PerformanceBenchmarkViewController.swift */,
+				3D2C05902489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift */,
+			);
+			name = "Debugging Screens";
 			sourceTree = "<group>";
 		};
 		551ED7281AD3CB63D20C62B2 /* Pods */ = {
