@@ -46,7 +46,6 @@ final class RootViewController: UITableViewController {
         ("Repeating Animations", { RepeatingAnimationsViewController() }),
         ("Execution Blocks", { ExecutionBlockViewController() }),
         ("Animation Groups", { AnimationGroupViewController() }),
-        ("Collection Keyframes", { CollectionKeyframesViewController() }),
         ("Performance Benchmark", { PerformanceBenchmarkViewController() }),
         ("Animation Queues", { AnimationQueueViewController() }),
         ("CGAffineTransform Debugging", { CGAffineTransformDebuggingViewController() }),

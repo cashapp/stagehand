@@ -51,7 +51,6 @@ extension Animation {
         // container for child animations.
         guard
             keyframeSeriesByProperty.isEmpty
-            && collectionKeyframeSeriesByProperty.isEmpty
             && assignments.isEmpty
             && executionBlocks.isEmpty
             && perFrameExecutionBlocks.isEmpty
@@ -124,7 +123,6 @@ extension Animation {
     private mutating func removeEmptyChildren() {
         self.children = children.filter { child in
             return !child.animation.keyframeSeriesByProperty.isEmpty
-                || !child.animation.collectionKeyframeSeriesByProperty.isEmpty
                 || !child.animation.assignments.isEmpty
                 || !child.animation.executionBlocks.isEmpty
                 || !child.animation.perFrameExecutionBlocks.isEmpty
