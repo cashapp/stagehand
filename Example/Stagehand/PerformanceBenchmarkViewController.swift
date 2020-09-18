@@ -14,11 +14,8 @@
 //  limitations under the License.
 //
 
+import Stagehand
 import UIKit
-
-// This file is testing the collection keyframes feature of Stagehand, which is not yet ready for release. Use a
-// testable import here so we can call the internal methods.
-@testable import Stagehand
 
 final class PerformanceBenchmarkViewController: DemoViewController {
 
@@ -34,30 +31,6 @@ final class PerformanceBenchmarkViewController: DemoViewController {
             ("Reset", { [unowned self] in
                 self.animationInstances.forEach { $0.cancel(behavior: .revert) }
                 self.animationInstances = []
-            }),
-            ("Add Rotating Children Animation", { [unowned self] in
-                var animation = Animation<View>()
-                for degree in 0...360 {
-                    animation.addKeyframe(
-                        for: \.transform,
-                        ofElementsIn: \.rotatingChildViews,
-                        at: { index, count in
-                            let adjustedByIndex = Double(degree) / 360 + Double(index) / Double(count)
-                            return adjustedByIndex - floor(adjustedByIndex)
-                        },
-                        value: CGAffineTransform.identity
-                            .translatedBy(
-                                x: View.radius * cos(CGFloat(degree) * .pi / 180),
-                                y: View.radius * sin(CGFloat(degree) * .pi / 180)
-                            )
-                            .rotated(by: CGFloat(degree) * .pi / 180)
-                    )
-                }
-
-                animation.duration = 4
-                animation.repeatStyle = .infinitelyRepeating(autoreversing: false)
-
-                self.animationInstances.append(animation.perform(on: self.mainView))
             }),
             ("Add Rotating Center View Animation", { [unowned self] in
                 var animation = Animation<View>()

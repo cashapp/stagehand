@@ -111,8 +111,6 @@ public struct Animation<ElementType: AnyObject> {
 
     internal var keyframeSeriesByProperty: [PartialKeyPath<ElementType>: AnyKeyframeSeries] = [:]
 
-    internal private(set) var collectionKeyframeSeriesByProperty: [CollectionKeyframeSeriesKey: AnyCollectionKeyframeSeries] = [:]
-
     internal private(set) var assignments: [Assignment] = []
 
     internal private(set) var executionBlocks: [ExecutionBlock] = []
@@ -181,68 +179,6 @@ public struct Animation<ElementType: AnyObject> {
                 ]
             )
             keyframeSeriesByProperty[property] = keyframeSeries
-        }
-    }
-
-    /// Add a keyframe for the given `property` of each element in the given `collection` with a fixed value.
-    ///
-    /// - Note: Collection keyframes are still a work in progress, and so are currently `internal`. Once they have been
-    /// fully implemented and documented, this method will be changed to be `public`.
-    ///
-    /// - parameter property: The key path for the property to be animated.
-    /// - parameter collection: The key path for the collection containing the elements to be animated.
-    /// - parameter relativeTimestamp: The relative timestamp at which this should be the value of the property. Must
-    /// be in the range [0,1], where 0 is the beginning of the animation and 1 is the end.
-    /// - parameter value: The value of the property at this keyframe.
-    internal mutating func addKeyframe<CollectionType: Collection, PropertyType: AnimatableProperty>(
-        for property: WritableKeyPath<CollectionType.Element, PropertyType>,
-        ofElementsIn collection: KeyPath<ElementType, CollectionType>,
-        at relativeTimestamp: Double,
-        value: PropertyType
-    ) {
-        addKeyframe(
-            for: property,
-            ofElementsIn: collection,
-            at: { _, _ in relativeTimestamp },
-            value: value
-        )
-    }
-
-    /// Add a keyframe for the given `property` of each element in the given `collection` with a fixed value.
-    ///
-    /// - Note: Collection keyframes are still a work in progress, and so are currently `internal`. Once they have been
-    /// fully implemented and documented, this method will be changed to be `public`.
-    ///
-    /// - parameter property: The key path for the property to be animated.
-    /// - parameter collection: The key path for the collection containing the elements to be animated.
-    /// - parameter relativeTimestamp: A block to calculate the relative timestamp at which this should be the value of
-    /// the property, based on the element's position in the collection. The return value of this block must be in the
-    /// range [0,1], where 0 is the beginning of the animation and 1 is the end.
-    /// - parameter value: The value of the property at this keyframe.
-    internal mutating func addKeyframe<CollectionType: Collection, PropertyType: AnimatableProperty>(
-        for property: WritableKeyPath<CollectionType.Element, PropertyType>,
-        ofElementsIn collection: KeyPath<ElementType, CollectionType>,
-        at relativeTimestamp: @escaping (_ index: Int, _ count: Int) -> Double,
-        value: PropertyType
-    ) {
-        let key = CollectionKeyframeSeriesKey(collection: collection, property: property)
-
-        let keyframe = CollectionKeyframeSeries<CollectionType, PropertyType>.Keyframe(
-            relativeTimestamp: relativeTimestamp,
-            value: value
-        )
-
-        if var keyframeSeries = collectionKeyframeSeriesByProperty[key] as? CollectionKeyframeSeries<CollectionType, PropertyType> {
-            keyframeSeries.keyframes.append(keyframe)
-            collectionKeyframeSeriesByProperty[key] = keyframeSeries
-
-        } else {
-            let keyframeSeries = CollectionKeyframeSeries(
-                collection: collection,
-                property: property,
-                keyframes: [keyframe]
-            )
-            collectionKeyframeSeriesByProperty[key] = keyframeSeries
         }
     }
 
@@ -364,17 +300,6 @@ public struct Animation<ElementType: AnyObject> {
             let (property, keyframeSeries) = childKeyframeSeries.mapForParentElement(subelement)
 
             child.animation.keyframeSeriesByProperty[property] = keyframeSeries
-        }
-
-        // Map the child's collection keyframes into the child animation.
-        for (_, childKeyframeSeries) in childAnimation.collectionKeyframeSeriesByProperty {
-            let (key, keyframeSeries) = childKeyframeSeries.mapForParentElement(
-                subelement,
-                relativeStartTimestamp: relativeStartTimestamp,
-                relativeDuration: relativeDuration
-            )
-
-            child.animation.collectionKeyframeSeriesByProperty[key] = keyframeSeries
         }
 
         // Map the child's property assignments into the child animation.
@@ -522,13 +447,6 @@ public struct Animation<ElementType: AnyObject> {
                 &element,
                 at: adjustedRelativeTimestamp,
                 initialValue: initialValues[series.key]!
-            )
-        }
-
-        for collectionSeries in self.collectionKeyframeSeriesByProperty {
-            collectionSeries.value.applyToElement(
-                &element,
-                at: adjustedRelativeTimestamp
             )
         }
     }
@@ -697,150 +615,6 @@ internal protocol AnyKeyframeSeries {
     func mapForParentElement<ParentElementType: AnyObject>(
         _ subelementPath: PartialKeyPath<ParentElementType>
     ) -> (PartialKeyPath<ParentElementType>, AnyKeyframeSeries)
-
-}
-
-// MARK: -
-
-extension Animation {
-
-    private struct CollectionKeyframeSeries<CollectionType: Collection, PropertyType: AnimatableProperty>: AnyCollectionKeyframeSeries {
-
-        // MARK: - Public Types
-
-        struct Keyframe {
-
-            var relativeTimestamp: (Int, Int) -> Double
-
-            var value: PropertyType
-
-        }
-
-        // MARK: - Public Properties
-
-        var collection: KeyPath<ElementType, CollectionType>
-
-        var property: WritableKeyPath<CollectionType.Element, PropertyType>
-
-        var keyframes: [Keyframe]
-
-        // MARK: - Public Methods
-
-        func apply(to element: inout ElementType, at relativeTimestamp: Double) {
-            let collection = element[keyPath: self.collection]
-            for (index, var item) in collection.enumerated() {
-                let valuesByRelativeTimestamp = Dictionary(
-                    keyframes.map { ($0.relativeTimestamp(index, collection.count), $0.value) },
-                    uniquingKeysWith: { $1 }
-                )
-
-                if let value = valuesByRelativeTimestamp[relativeTimestamp] {
-                    item[keyPath: property] = value
-
-                } else {
-                    let values = valuesByRelativeTimestamp.sorted { $0.key < $1.key }
-
-                    guard let previousIndex = values.lastIndex(where: { $0.key < relativeTimestamp }) else {
-                        item[keyPath: property] = values.first!.value
-                        continue
-                    }
-
-                    let (previousTimestamp, previousValue) = values[previousIndex]
-
-                    let nextIndex = values.index(after: previousIndex)
-                    guard nextIndex != values.endIndex else {
-                        item[keyPath: property] = previousValue
-                        continue
-                    }
-
-                    let (nextTimestamp, nextValue) = values[nextIndex]
-
-                    item[keyPath: property] = PropertyType.value(
-                        between: previousValue,
-                        and: nextValue,
-                        at: ((relativeTimestamp - previousTimestamp) / (nextTimestamp - previousTimestamp))
-                    )
-                }
-            }
-        }
-
-        func mapForParent<ParentElementType>(
-            _ subelementPath: WritableKeyPath<ParentElementType, ElementType>,
-            relativeStartTimestamp: Double,
-            relativeDuration: Double
-        ) -> (Animation<ParentElementType>.CollectionKeyframeSeriesKey, Animation<ParentElementType>.CollectionKeyframeSeries<CollectionType, PropertyType>) {
-            let reinterpolatedKeyframes = keyframes.map { keyframe in
-                return Animation<ParentElementType>.CollectionKeyframeSeries<CollectionType, PropertyType>.Keyframe(
-                    relativeTimestamp: { index, count in
-                        let initialRelativeTimestamp = keyframe.relativeTimestamp(index, count)
-                        return (relativeStartTimestamp + (initialRelativeTimestamp * relativeDuration))
-                    },
-                    value: keyframe.value
-                )
-            }
-
-            let mappedCollectionPath: KeyPath<ParentElementType, CollectionType> = subelementPath.appending(path: collection)
-
-            return (
-                .init(
-                    collection: mappedCollectionPath,
-                    property: property
-                ),
-                .init(
-                    collection: mappedCollectionPath,
-                    property: property,
-                    keyframes: reinterpolatedKeyframes
-                )
-            )
-        }
-
-        // MARK: - AnyCollectionKeyframeSeries
-
-        var collectionPath: AnyKeyPath {
-            return collection
-        }
-
-        func applyToElement(_ element: inout AnyObject, at relativeTimestamp: Double) {
-            var element = element as! ElementType
-            apply(to: &element, at: relativeTimestamp)
-        }
-
-        func mapForParentElement<ParentElementType: AnyObject>(
-            _ subelementPath: PartialKeyPath<ParentElementType>,
-            relativeStartTimestamp: Double,
-            relativeDuration: Double
-        ) -> (Animation<ParentElementType>.CollectionKeyframeSeriesKey, AnyCollectionKeyframeSeries) {
-            let (key, keyframeSeries) = mapForParent(
-                subelementPath as! WritableKeyPath<ParentElementType, ElementType>,
-                relativeStartTimestamp: relativeStartTimestamp,
-                relativeDuration: relativeDuration
-            )
-            return (key, keyframeSeries)
-        }
-
-    }
-
-    internal struct CollectionKeyframeSeriesKey: Hashable {
-
-        var collection: PartialKeyPath<ElementType>
-
-        var property: AnyKeyPath
-
-    }
-
-}
-
-internal protocol AnyCollectionKeyframeSeries {
-
-    var collectionPath: AnyKeyPath { get }
-
-    func applyToElement(_ element: inout AnyObject, at relativeTimestamp: Double)
-
-    func mapForParentElement<ParentElementType: AnyObject>(
-        _ subelementPath: PartialKeyPath<ParentElementType>,
-        relativeStartTimestamp: Double,
-        relativeDuration: Double
-    ) -> (Animation<ParentElementType>.CollectionKeyframeSeriesKey, AnyCollectionKeyframeSeries)
 
 }
 

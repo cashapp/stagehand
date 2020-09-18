@@ -32,7 +32,6 @@
 		3D8E3D8222F17D3B00D70FCB /* AnimationCancelationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8E3D8122F17D3B00D70FCB /* AnimationCancelationViewController.swift */; };
 		3D8E3D8422F2BC9300D70FCB /* RepeatingAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8E3D8322F2BC9300D70FCB /* RepeatingAnimationsViewController.swift */; };
 		3DA3997C230FCFAC00DE41A0 /* ExecutionBlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */; };
-		3DA5EB7C2318E64A001DF944 /* CollectionKeyframesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5EB7B2318E64A001DF944 /* CollectionKeyframesViewController.swift */; };
 		3DB3927D23249D680009E8B3 /* ColorAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */; };
 		3DBFEE422400B2460086D61C /* ChildAnimationProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBFEE412400B2460086D61C /* ChildAnimationProgressViewController.swift */; };
 		3DC75494232D82FD00402BD9 /* ChildAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC75492232D819700402BD9 /* ChildAnimationTests.swift */; };
@@ -103,7 +102,6 @@
 		3D8E3D8122F17D3B00D70FCB /* AnimationCancelationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCancelationViewController.swift; sourceTree = "<group>"; };
 		3D8E3D8322F2BC9300D70FCB /* RepeatingAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingAnimationsViewController.swift; sourceTree = "<group>"; };
 		3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionBlockViewController.swift; sourceTree = "<group>"; };
-		3DA5EB7B2318E64A001DF944 /* CollectionKeyframesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionKeyframesViewController.swift; sourceTree = "<group>"; };
 		3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAnimationsViewController.swift; sourceTree = "<group>"; };
 		3DBFEE412400B2460086D61C /* ChildAnimationProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAnimationProgressViewController.swift; sourceTree = "<group>"; };
 		3DC75492232D819700402BD9 /* ChildAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAnimationTests.swift; sourceTree = "<group>"; };
@@ -200,7 +198,6 @@
 				3D8E3D8322F2BC9300D70FCB /* RepeatingAnimationsViewController.swift */,
 				3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */,
 				3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */,
-				3DA5EB7B2318E64A001DF944 /* CollectionKeyframesViewController.swift */,
 				3D875EFF2323542500670803 /* PerformanceBenchmarkViewController.swift */,
 				3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */,
 				3D2C05902489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift */,
@@ -601,7 +598,6 @@
 				607FACD81AFB9204008FA782 /* RootViewController.swift in Sources */,
 				B3C4CA092459F75800893CB5 /* ShapeLayerUtils.swift in Sources */,
 				3DBFEE422400B2460086D61C /* ChildAnimationProgressViewController.swift in Sources */,
-				3DA5EB7C2318E64A001DF944 /* CollectionKeyframesViewController.swift in Sources */,
 				3DA3997C230FCFAC00DE41A0 /* ExecutionBlockViewController.swift in Sources */,
 				3D2712EE236A17C5001D3B4B /* AnimationQueueViewController.swift in Sources */,
 				3D8E3D8222F17D3B00D70FCB /* AnimationCancelationViewController.swift in Sources */,
