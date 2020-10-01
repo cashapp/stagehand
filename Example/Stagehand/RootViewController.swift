@@ -33,28 +33,43 @@ final class RootViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    private let demoScreens: [(name: String, viewControllerFactory: () -> UIViewController)] = [
-        ("Simple Animations", { SimpleAnimationsViewController() }),
-        ("Relative Animations", { RelativeAnimationsViewController() }),
-        ("Color Animations", { ColorAnimationsViewController() }),
+    private typealias RowModel = (name: String, viewControllerFactory: () -> UIViewController)
+
+    /// Screens that show an example of a complete animation.
+    private let demoScreens: [RowModel] = [
+    ]
+
+    /// Screens that show how a specific feature can be used.
+    private let featureScreens: [RowModel] = [
+        ("Simple Keyframe Animations", { SimpleAnimationsViewController() }),
+        ("Relative Keyframe Animations", { RelativeAnimationsViewController() }),
+        ("Color Keyframe Animations", { ColorAnimationsViewController() }),
         ("Child Animations", { ChildAnimationsViewController() }),
         ("Animation Curves", { AnimationCurveViewController() }),
         ("Child Animations with Curves", { ChildAnimationsWithCurvesViewController() }),
-        ("Child Animation Progress", { ChildAnimationProgressViewController() }),
         ("Animation Cancellation", { AnimationCancelationViewController() }),
         ("Property Assignments", { PropertyAssignmentViewController() }),
         ("Repeating Animations", { RepeatingAnimationsViewController() }),
         ("Execution Blocks", { ExecutionBlockViewController() }),
         ("Animation Groups", { AnimationGroupViewController() }),
-        ("Performance Benchmark", { PerformanceBenchmarkViewController() }),
         ("Animation Queues", { AnimationQueueViewController() }),
+    ]
+
+    /// Screens that are used for debugging specific functionality.
+    private let debuggingScreens: [RowModel] = [
+        ("Child Animation Progress", { ChildAnimationProgressViewController() }),
+        ("Performance Benchmark", { PerformanceBenchmarkViewController() }),
         ("CGAffineTransform Debugging", { CGAffineTransformDebuggingViewController() }),
     ]
 
     // MARK: - UITableViewController
 
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return Section.allCases.count
+    }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return demoScreens.count
+        return rows(for: Section(rawValue: section)!).count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,14 +77,46 @@ final class RootViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let screen = demoScreens[indexPath.row]
+        let screen = rows(for: Section(rawValue: indexPath.section)!)[indexPath.row]
         cell.textLabel?.text = screen.name
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let screen = demoScreens[indexPath.row]
+        let screen = rows(for: Section(rawValue: indexPath.section)!)[indexPath.row]
         navigationController?.pushViewController(screen.viewControllerFactory(), animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch Section(rawValue: section)! {
+        case .integrationDemos:
+            return "Sample Animations"
+        case .featureDemos:
+            return "Feature Explorations"
+        case .debuggingTools:
+            return "Debugging Tools"
+        }
+    }
+
+    // MARK: - Private Methods
+
+    private func rows(for section: Section) -> [RowModel] {
+        switch section {
+        case .integrationDemos:
+            return demoScreens
+        case .featureDemos:
+            return featureScreens
+        case .debuggingTools:
+            return debuggingScreens
+        }
+    }
+
+    // MARK: - Private Types
+
+    private enum Section: Int, CaseIterable {
+        case integrationDemos
+        case featureDemos
+        case debuggingTools
     }
 
 }
