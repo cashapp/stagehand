@@ -48,7 +48,7 @@ jobs:
       - name: Lint Stagehand Podspec
         run: bundle exec --gemfile=Example/Gemfile pod lib lint --verbose --fail-fast Stagehand.podspec
       - name: Lint StagehandTesting Podspec
-        run: bundle exec --gemfile=Example/Gemfile pod lib lint --verbose --fail-fast --external-podspecs=Stagehand.podspec StagehandTesting.podspec
+        run: bundle exec --gemfile=Example/Gemfile pod lib lint --verbose --fail-fast --include-podspecs=Stagehand.podspec StagehandTesting.podspec
   spm:
     name: SPM Build
     runs-on: macOS-latest
