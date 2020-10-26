@@ -42,7 +42,7 @@ propertyAssignmentAnimation.addAssignment(for: \.clipsToBounds, at: 0.5, value: 
 
  */
 
-propertyAssignmentAnimation.implicitRepeatStyle = .infinitlyRepeating(autoreversing: true)
+propertyAssignmentAnimation.implicitRepeatStyle = .infinitelyRepeating(autoreversing: true)
 
 let view = ExpandedBoundsView(frame: .init(x: 0, y: 0, width: 100, height: 100))
 PlaygroundPage.current.liveView = WrapperView(wrappedView: view)

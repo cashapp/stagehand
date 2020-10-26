@@ -16,7 +16,7 @@ import Stagehand
 var animation = Animation<UIView>()
 
 // The default style is to not repeat.
-animation.Animation.implicitRepeatStyle = .none
+animation.implicitRepeatStyle = .noRepeat
 
 /*:
 
@@ -25,7 +25,7 @@ animation.Animation.implicitRepeatStyle = .none
 
  */
 
-animation.Animation.implicitRepeatStyle = .repeating(count: 2, autoreversing: false)
+animation.implicitRepeatStyle = .repeating(count: 2, autoreversing: false)
 
 /*:
 
@@ -34,7 +34,7 @@ animation.Animation.implicitRepeatStyle = .repeating(count: 2, autoreversing: fa
 
  */
 
-animation.Animation.implicitRepeatStyle = .infinitelyRepeating(autoreversing: false)
+animation.implicitRepeatStyle = .infinitelyRepeating(autoreversing: false)
 
 /*:
 
