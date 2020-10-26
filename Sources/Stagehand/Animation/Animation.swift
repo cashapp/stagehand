@@ -62,23 +62,23 @@ public struct Animation<ElementType: AnyObject> {
     /// The duration of the animation.
     ///
     /// More specifically, this is the duration of one cycle of the animation. An animation that repeats will take a
-    /// total duration equal to the duration of one cycle (the animation's `duration`) multiplied by the number of
-    /// cycles (as specified by the animation's `repeatStyle`).
+    /// total duration equal to the duration of one cycle (the animation's `implicitDuration`) multiplied by the number
+    /// of cycles (as specified by the animation's `implicitRepeatStyle`).
     ///
-    /// When animations are composed, the duration is controlled by the top-most parent animation. The `duration` of any
-    /// child animations are ignored.
-    public var duration: TimeInterval = 1
+    /// When animations are composed, the duration is controlled by the top-most parent animation. This means that the
+    /// `implicitDuration` of any child animations are ignored.
+    public var implicitDuration: TimeInterval = 1
 
     /// The way in which the animation should repeat.
     ///
-    /// When animations are composed, the repeat style is controlled by the top-most parent animation. The `repeatStyle`
-    /// of any child animations are ignored.
-    public var repeatStyle: AnimationRepeatStyle = .none
+    /// When animations are composed, the repeat style is controlled by the top-most parent animation. This means that
+    /// the `implicitRepeatStyle` of any child animations are ignored.
+    public var implicitRepeatStyle: AnimationRepeatStyle = .noRepeat
 
     /// The curve applied to the animation.
     ///
-    /// Curves in child animations are applied on top of the curve(s) already applied by their parent(s). This allows
-    /// each child animation to have a different animation curve.
+    /// Curves in child animations are applied on top of the curve already applied by their parent. This allows each
+    /// child animation to have a different animation curve.
     public var curve: AnimationCurve = LinearAnimationCurve()
 
     // MARK: - Internal Computed Properties
@@ -270,7 +270,7 @@ public struct Animation<ElementType: AnyObject> {
 
     /// Add a child animation.
     ///
-    /// The `childAnimation`'s `duration` and `repeatStyle` will be ignored.
+    /// The `childAnimation`'s `implicitDuration` and `implicitRepeatStyle` will be ignored.
     ///
     /// Keyframes in a child animation for the same property as keyframes in the parent will be overridden by the values
     /// of the keyframes in the parent.
@@ -376,20 +376,33 @@ public struct Animation<ElementType: AnyObject> {
 
     /// Perform the animation on the given `element`.
     ///
+    /// The duration for each cycle of the animation will be determined in order of preference by:
+    /// 1. An explicit duration, if provided via the `duration` parameter
+    /// 2. The animation's implicit duration, as specified by the `implicitDuration` property
+    ///
+    /// The repeat style for the animation will be determined in order of preference by:
+    /// 1. An explicit repeat style, if provided via the `repeatStyle` parameter
+    /// 2. The animation's implicit repeat style, as specified by the `implicitRepeatStyle` property
+    ///
     /// - parameter element: The element to be animated.
     /// - parameter delay: The time interval to wait before performing the animation.
+    /// - parameter duration: The duration to use for each cycle the animation.
+    /// - parameter repeatStyle: The repeat style to use for the animation.
     /// - parameter completion: The completion block to call when the animation has concluded, with a parameter
     /// indicated whether the animation completed (as opposed to being cancelled).
+    /// - returns: An animation instance that can be used to check the status of or cancel the animation.
     @discardableResult
     public func perform(
         on element: ElementType,
         delay: TimeInterval = 0,
+        duration: TimeInterval? = nil,
+        repeatStyle: AnimationRepeatStyle? = nil,
         completion: ((_ finished: Bool) -> Void)? = nil
     ) -> AnimationInstance {
         let driver = DisplayLinkDriver(
             delay: delay,
-            duration: duration,
-            repeatStyle: repeatStyle,
+            duration: duration ?? implicitDuration,
+            repeatStyle: repeatStyle ?? implicitRepeatStyle,
             completion: completion
         )
 
@@ -507,7 +520,7 @@ public enum AnimationRepeatStyle: Equatable {
     case repeating(count: UInt, autoreversing: Bool)
 
     /// Animation will execute once.
-    public static let none: AnimationRepeatStyle = .repeating(count: 1, autoreversing: false)
+    public static let noRepeat: AnimationRepeatStyle = .repeating(count: 1, autoreversing: false)
 
     /// Animation will execute indefinitely (until canceled).
     /// - parameter autoreversing: Whether or not the animation should alternative direction on each cycle. The first
@@ -663,7 +676,7 @@ extension Animation {
         /// only to store the keyframe series associated with it, since collapsing these into the parent would lose
         /// any animation curve applied to the child.
         ///
-        /// This animation's `duration` and `repeatStyle` can be ignored.
+        /// This animation's `implicitDuration` and `implicitRepeatStyle` can be ignored.
         var animation: Animation<ElementType>
 
         var relativeStartTimestamp: Double

@@ -86,7 +86,7 @@ extension FBSnapshotTestCase {
         )
 
         let includeReverseCycle: Bool
-        switch animation.repeatStyle {
+        switch animation.implicitRepeatStyle {
         case let .repeating(count: count, autoreversing: autoreversing):
             includeReverseCycle = (count != 1 && autoreversing)
         }
@@ -94,7 +94,7 @@ extension FBSnapshotTestCase {
         SnapshotVerify(
             animationInstance: animationInstance,
             using: element,
-            animationDuration: animation.duration,
+            animationDuration: animation.implicitDuration,
             includeReverseCycle: includeReverseCycle,
             fps: fps,
             bookendFrameDuration: bookendFrameDuration,
@@ -146,7 +146,7 @@ extension FBSnapshotTestCase {
         )
 
         let includeReverseCycle: Bool
-        switch animation.repeatStyle {
+        switch animation.implicitRepeatStyle {
         case let .repeating(count: count, autoreversing: autoreversing):
             includeReverseCycle = (count != 1 && autoreversing)
         }
@@ -154,7 +154,7 @@ extension FBSnapshotTestCase {
         SnapshotVerify(
             animationInstance: animationInstance,
             using: view,
-            animationDuration: animation.duration,
+            animationDuration: animation.implicitDuration,
             includeReverseCycle: includeReverseCycle,
             fps: fps,
             bookendFrameDuration: bookendFrameDuration,
@@ -206,7 +206,7 @@ extension FBSnapshotTestCase {
         )
 
         let includeReverseCycle: Bool
-        switch animationGroup.repeatStyle {
+        switch animationGroup.implicitRepeatStyle {
         case let .repeating(count: count, autoreversing: autoreversing):
             includeReverseCycle = (count != 1 && autoreversing)
         }
@@ -214,7 +214,7 @@ extension FBSnapshotTestCase {
         SnapshotVerify(
             animationInstance: animationInstance,
             using: view,
-            animationDuration: animationGroup.duration,
+            animationDuration: animationGroup.implicitDuration,
             includeReverseCycle: includeReverseCycle,
             fps: fps,
             bookendFrameDuration: bookendFrameDuration,

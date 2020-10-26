@@ -9,14 +9,14 @@ import Stagehand
  By default, animations will run once before completing. Sometimes, though, we want our animation to loop through
  multiple times, sometimes even indefinitely.
 
- Using the `Animation.repeatStyle` property, we can control how our animation repeats.
+ Using the `Animation.implicitRepeatStyle` property, we can control how our animation repeats.
 
  */
 
 var animation = Animation<UIView>()
 
 // The default style is to not repeat.
-animation.repeatStyle = .none
+animation.implicitRepeatStyle = .noRepeat
 
 /*:
 
@@ -25,7 +25,7 @@ animation.repeatStyle = .none
 
  */
 
-animation.repeatStyle = .repeating(count: 2, autoreversing: false)
+animation.implicitRepeatStyle = .repeating(count: 2, autoreversing: false)
 
 /*:
 
@@ -34,7 +34,7 @@ animation.repeatStyle = .repeating(count: 2, autoreversing: false)
 
  */
 
-animation.repeatStyle = .infinitelyRepeating(autoreversing: false)
+animation.implicitRepeatStyle = .infinitelyRepeating(autoreversing: false)
 
 /*:
 

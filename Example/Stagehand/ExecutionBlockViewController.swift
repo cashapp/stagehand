@@ -66,10 +66,13 @@ final class ExecutionBlockViewController: DemoViewController {
                     },
                     at: 1
                 )
-                animation.repeatStyle = .repeating(count: 2, autoreversing: true)
 
                 feedbackGenerator.prepare()
-                self.animationInstance = animation.perform(on: self.mainView.animatableView)
+                self.animationInstance = animation.perform(
+                    on: self.mainView.animatableView,
+                    duration: 2,
+                    repeatStyle: .repeating(count: 2, autoreversing: true)
+                )
             }),
         ]
     }
@@ -86,7 +89,6 @@ final class ExecutionBlockViewController: DemoViewController {
         var animation = Animation<UIView>()
         animation.addKeyframe(for: \.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.transform, at: 1, value: .init(translationX: mainView.bounds.width - 100, y: 0))
-        animation.duration = 2
         return animation
     }
 

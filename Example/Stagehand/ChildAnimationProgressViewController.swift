@@ -246,7 +246,7 @@ final class ChildAnimationProgressViewController: DemoViewController {
 
         parentAnimation.addChild(childAnimation, for: \.self, startingAt: 0.25, relativeDuration: 0.5)
 
-        parentAnimation.duration = 4
+        parentAnimation.implicitDuration = 4
         return parentAnimation
     }
 

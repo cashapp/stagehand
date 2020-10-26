@@ -24,7 +24,8 @@ animationGroup.addAnimation(secondAnimation, for: secondElement, startingAt: 0, 
 
 /*:
 
- Like normal `Animation`s, we can change the `duration`, `curve`, and `repeatStyle` of our animation group as a whole.
+ Like normal `Animation`s, we can change the `implicitDuration`, `curve`, and `implicitRepeatStyle` of our animation
+ group as a whole.
 
  When we're ready to perform the animation, we call the `perform(delay:completion:)` method.
 

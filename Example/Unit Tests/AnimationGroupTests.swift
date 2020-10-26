@@ -160,7 +160,7 @@ final class AnimationGroupTests: XCTestCase {
 
     func testCompletionCalledOnComplete() {
         var animationGroup = AnimationGroup()
-        animationGroup.duration = 0.05
+        animationGroup.implicitDuration = 0.05
 
         let completionExpectation = expectation(description: "Calls completion handler")
         animationGroup.addCompletionHandler { finished in
@@ -175,7 +175,7 @@ final class AnimationGroupTests: XCTestCase {
 
     func testCompletionCalledOnCancel() {
         var animationGroup = AnimationGroup()
-        animationGroup.duration = 1
+        animationGroup.implicitDuration = 1
 
         let completionExpectation = expectation(description: "Calls completion handler")
         animationGroup.addCompletionHandler { finished in
@@ -195,22 +195,22 @@ final class AnimationGroupTests: XCTestCase {
         var animationGroup = AnimationGroup()
 
         // The duration should default to 1 second.
-        XCTAssertEqual(animationGroup.duration, 1)
+        XCTAssertEqual(animationGroup.implicitDuration, 1)
 
-        animationGroup.duration = 3
-        XCTAssertEqual(animationGroup.duration, 3)
-        XCTAssertEqual(animationGroup.animation.duration, 3)
+        animationGroup.implicitDuration = 3
+        XCTAssertEqual(animationGroup.implicitDuration, 3)
+        XCTAssertEqual(animationGroup.animation.implicitDuration, 3)
     }
 
     func testRepeatStyle() {
         var animationGroup = AnimationGroup()
 
         // The repeat style should default to not repeating.
-        XCTAssertEqual(animationGroup.repeatStyle, .none)
+        XCTAssertEqual(animationGroup.implicitRepeatStyle, .noRepeat)
 
-        animationGroup.repeatStyle = .infinitelyRepeating(autoreversing: true)
-        XCTAssertEqual(animationGroup.repeatStyle, .infinitelyRepeating(autoreversing: true))
-        XCTAssertEqual(animationGroup.animation.repeatStyle, .infinitelyRepeating(autoreversing: true))
+        animationGroup.implicitRepeatStyle = .infinitelyRepeating(autoreversing: true)
+        XCTAssertEqual(animationGroup.implicitRepeatStyle, .infinitelyRepeating(autoreversing: true))
+        XCTAssertEqual(animationGroup.animation.implicitRepeatStyle, .infinitelyRepeating(autoreversing: true))
     }
 
     func testCurve() {

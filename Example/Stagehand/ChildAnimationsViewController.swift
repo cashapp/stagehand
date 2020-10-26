@@ -119,9 +119,7 @@ final class ChildAnimationsViewController: DemoViewController {
                 animation.addChild(fadeOutAnimation, for: \.self, startingAt: 0, relativeDuration: 0.5)
                 animation.addChild(fadeInAnimation, for: \.self, startingAt: 0.5, relativeDuration: 0.5)
 
-                animation.duration = 2
-
-                animation.perform(on: self.mainView)
+                animation.perform(on: self.mainView, duration: 2)
             }),
         ]
     }

@@ -66,7 +66,7 @@ final class AnimationQueueViewController: DemoViewController {
 
     private func makeTranslationAnimation(x: CGFloat, y: CGFloat) -> Animation<View> {
         var animation = Animation<View>()
-        animation.duration = 2
+        animation.implicitDuration = 2
 
         animation.addKeyframe(for: \.animatableView.transform, at: 0, relativeValue: { $0 })
         animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: x, y: y))

@@ -35,22 +35,26 @@ public struct AnimationGroup {
     // MARK: - Public Properties
 
     /// The duration of the animation group.
-    public var duration: TimeInterval {
+    ///
+    /// More specifically, this is the duration of one cycle of the animation group. An animation group that repeats
+    /// will take a total duration equal to the duration of one cycle (the animation group's `implicitDuration`)
+    /// multiplied by the number of cycles (as specified by the `implicitRepeatStyle`).
+    public var implicitDuration: TimeInterval {
         get {
-            return animation.duration
+            return animation.implicitDuration
         }
         set {
-            animation.duration = newValue
+            animation.implicitDuration = newValue
         }
     }
 
     /// The way in which the animation group should repeat.
-    public var repeatStyle: AnimationRepeatStyle {
+    public var implicitRepeatStyle: AnimationRepeatStyle {
         get {
-            return animation.repeatStyle
+            return animation.implicitRepeatStyle
         }
         set {
-            animation.repeatStyle = newValue
+            animation.implicitRepeatStyle = newValue
         }
     }
 
@@ -78,7 +82,7 @@ public struct AnimationGroup {
 
     /// Add an animation to the group.
     ///
-    /// The `elementAnimation`'s `duration` and `repeatStyle` will be ignored.
+    /// The `elementAnimation`'s `implicitDuration` and `implicitRepeatStyle` will be ignored.
     ///
     /// - parameter elementAnimation: The animation to be performed on the `element`.
     /// - parameter element: The element to be animated.
@@ -111,17 +115,32 @@ public struct AnimationGroup {
 
     /// Perform the animations in the group.
     ///
+    /// The duration for each cycle of the animation group will be determined in order of preference by:
+    /// 1. An explicit duration, if provided via the `duration` parameter
+    /// 2. The animation group's implicit duration, as specified by the `implicitDuration` property
+    ///
+    /// The repeat style for the animation group will be determined in order of preference by:
+    /// 1. An explicit repeat style, if provided via the `repeatStyle` parameter
+    /// 2. The animation group's implicit repeat style, as specified by the `implicitRepeatStyle` property
+    ///
     /// - parameter delay: The time interval to wait before performing the animation.
-    /// - parameter completion: The completion block to call when the animation has concluded, with a parameter
+    /// - parameter duration: The duration to use for each cycle the animation group.
+    /// - parameter repeatStyle: The repeat style to use for the animation group.
+    /// - parameter groupCompletion: The completion block to call when the animation has concluded, with a parameter
     /// indicated whether the animation completed (as opposed to being cancelled).
+    /// - returns: An animation instance that can be used to check the status of or cancel the animation group.
     @discardableResult
     public func perform(
         delay: TimeInterval = 0,
+        duration: TimeInterval? = nil,
+        repeatStyle: AnimationRepeatStyle? = nil,
         completion groupCompletion: ((_ finished: Bool) -> Void)? = nil
     ) -> AnimationInstance {
         return animation.perform(
             on: elementContainer,
             delay: delay,
+            duration: duration,
+            repeatStyle: repeatStyle,
             completion: { finished in
                 self.completions.forEach { $0(finished) }
                 groupCompletion?(finished)

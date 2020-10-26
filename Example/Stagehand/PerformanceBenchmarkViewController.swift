@@ -41,8 +41,8 @@ final class PerformanceBenchmarkViewController: DemoViewController {
                 animation.addKeyframe(for: \.centerView.transform, at: 0.75, value: .init(rotationAngle: .pi * 3 / 2))
                 animation.addKeyframe(for: \.centerView.transform, at: 1.00, value: .identity)
 
-                animation.duration = 4
-                animation.repeatStyle = .infinitelyRepeating(autoreversing: true)
+                animation.implicitDuration = 4
+                animation.implicitRepeatStyle = .infinitelyRepeating(autoreversing: true)
 
                 self.animationInstances.append(animation.perform(on: self.mainView))
             }),
@@ -68,8 +68,8 @@ final class PerformanceBenchmarkViewController: DemoViewController {
                     )
                 }
 
-                animation.duration = 3.5
-                animation.repeatStyle = .infinitelyRepeating(autoreversing: false)
+                animation.implicitDuration = 3.5
+                animation.implicitRepeatStyle = .infinitelyRepeating(autoreversing: false)
 
                 self.animationInstances.append(animation.perform(on: self.mainView))
             }),

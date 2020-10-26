@@ -104,7 +104,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         var animation = Animation<View>()
         animation.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 160, y: 0))
-        animation.duration = 2
+        animation.implicitDuration = 2
 
         SnapshotVerify(animation: animation, on: view)
     }
@@ -115,7 +115,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         var animation = Animation<View>()
         animation.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 160, y: 0))
-        animation.repeatStyle = .infinitelyRepeating(autoreversing: true)
+        animation.implicitRepeatStyle = .infinitelyRepeating(autoreversing: true)
 
         SnapshotVerify(animation: animation, on: view, bookendFrameDuration: .matchIntermediateFrames)
     }
@@ -146,7 +146,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
             onReverse: { $0.animatableView.backgroundColor = .red },
             at: 0.5
         )
-        animation.repeatStyle = .infinitelyRepeating(autoreversing: true)
+        animation.implicitRepeatStyle = .infinitelyRepeating(autoreversing: true)
 
         SnapshotVerify(animation: animation, on: view)
     }

@@ -31,7 +31,7 @@ final class DisplayLinkAnimator {
 
     // MARK: - Private Properties
 
-    private let displayLink: CADisplayLink!
+    private var displayLink: CADisplayLink!
 
     private let startTime: CFTimeInterval
 

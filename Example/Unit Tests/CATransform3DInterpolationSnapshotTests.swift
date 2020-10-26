@@ -149,7 +149,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
             animation.addKeyframe(for: \.layer.transform, at: Double(index + 1) * segmentDuration, value: transform)
         }
 
-        animation.duration = TimeInterval(transforms.count)
+        animation.implicitDuration = TimeInterval(transforms.count)
 
         SnapshotVerify(
             animation: animation,

@@ -33,7 +33,6 @@ final class ChildAnimationsWithCurvesViewController: DemoViewController {
             }),
             ("Linear / Ease In Ease Out", { [unowned self] in
                 var animation = Animation<View>()
-                animation.duration = 2
 
                 var topAnimation = self.makeAnimation()
                 topAnimation.curve = LinearAnimationCurve()
@@ -43,7 +42,7 @@ final class ChildAnimationsWithCurvesViewController: DemoViewController {
                 bottomAnimation.curve = SinusoidalEaseInEaseOutAnimationCurve()
                 animation.addChild(bottomAnimation, for: \View.bottomView, startingAt: 0, relativeDuration: 1)
 
-                animation.perform(on: self.mainView)
+                animation.perform(on: self.mainView, duration: 2)
             }),
         ]
     }
@@ -58,7 +57,6 @@ final class ChildAnimationsWithCurvesViewController: DemoViewController {
         var animation = Animation<UIView>()
         animation.addKeyframe(for: \.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.transform, at: 1, value: .init(translationX: mainView.bounds.width - 100, y: 0))
-        animation.duration = 2
         return animation
     }
 
