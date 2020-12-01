@@ -86,7 +86,7 @@ final class InteractiveAnimationViewController: DemoViewController {
                 .translatedBy(x: mainView.bounds.width - 100, y: 0)
                 .rotated(by: .pi / 2)
         )
-        animation.duration = 2.5
+        animation.implicitDuration = 2.5
         animation.curve = animationCurve
 
         animation.addPerFrameExecution { context in

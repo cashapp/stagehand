@@ -46,7 +46,7 @@ public final class InteractiveAnimationInstance: AnimationInstance {
         animation: Animation<ElementType>,
         element: ElementType
     ) {
-        let driver = InteractiveDriver(duration: animation.duration)
+        let driver = InteractiveDriver(duration: animation.implicitDuration)
 
         self.interactiveDriver = driver
 
