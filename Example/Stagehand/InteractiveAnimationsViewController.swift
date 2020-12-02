@@ -28,10 +28,12 @@ final class InteractiveAnimationViewController: DemoViewController {
 
         animationRows = [
             ("Animate to Beginning (Linear)", { [unowned self] in
-                self.animationInstance?.animateToBeginning()
+                let animationInstance = self.createAnimationInstanceIfNeeded()
+                animationInstance.animateToBeginning()
             }),
             ("Animate to End (Linear)", { [unowned self] in
-                self.animationInstance?.animateToEnd()
+                let animationInstance = self.createAnimationInstanceIfNeeded()
+                animationInstance.animateToEnd()
             }),
             ("Cancel (Halt)", { [unowned self] in
                 self.animationInstance?.cancel()
@@ -59,7 +61,7 @@ final class InteractiveAnimationViewController: DemoViewController {
 
     private var mainView: View = .init()
 
-    private var animationInstance: InteractiveAnimationInstance?
+    private weak var animationInstance: InteractiveAnimationInstance?
 
     private var animationCurve: AnimationCurve = LinearAnimationCurve()
 
@@ -96,12 +98,19 @@ final class InteractiveAnimationViewController: DemoViewController {
         return animation
     }
 
-    @objc private func progressUpdateDidBegin() {
-        guard animationInstance == nil else {
-            return
+    @discardableResult
+    private func createAnimationInstanceIfNeeded() -> InteractiveAnimationInstance {
+        if let existingInstance = animationInstance {
+            return existingInstance
         }
 
-        self.animationInstance = makeAnimation().performInteractive(on: mainView.animatableView)
+        let animationInstance = makeAnimation().performInteractive(on: mainView.animatableView)
+        self.animationInstance = animationInstance
+        return animationInstance
+    }
+
+    @objc private func progressUpdateDidBegin() {
+        createAnimationInstanceIfNeeded()
     }
 
     @objc private func progressValueChanged() {

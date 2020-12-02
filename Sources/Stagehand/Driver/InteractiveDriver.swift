@@ -21,10 +21,8 @@ internal final class InteractiveDriver: Driver {
 
     // MARK: - Life Cycle
 
-    internal init(
-        duration: TimeInterval
-    ) {
-        self.totalDuration = duration
+    internal init(duration: TimeInterval) {
+        self.endToEndDuration = duration
     }
 
     // MARK: - Private Types
@@ -39,22 +37,28 @@ internal final class InteractiveDriver: Driver {
 
     private struct AutomaticContext {
 
+        /// The display link that's driving the current context.
         var displayLink: CADisplayLink
 
+        /// The time at which the display link was added to the run loop.
         var startTime: TimeInterval
 
-        var animationCurve: AnimationCurve
+        /// The duration of the segment between the `startRelativeTimestamp` and `endRelativeTimestamp`.
+        var segmentDuration: TimeInterval
+
+        /// The animation curve applied on top of the segment between the `startRelativeTimestamp` and
+        /// `endRelativeTimestamp`.
+        var segmentCurve: AnimationCurve
 
         var startRelativeTimestamp: Double
 
         var endRelativeTimestamp: Double
 
-        /// The current progress, based on the display link's timestamp, with the `animationCurve` applied.
-        func currentRelativeTimestamp(totalDuration: TimeInterval) -> Double {
+        /// The current progress, based on the display link's timestamp, with the `segmentCurve` applied.
+        func currentRelativeTimestamp() -> Double {
             let relativeDuration = (endRelativeTimestamp - startRelativeTimestamp)
-            let duration = abs(relativeDuration * totalDuration)
-            let progress = (displayLink.timestamp - startTime) / duration
-            let curvedProgress = animationCurve.adjustedProgress(for: progress)
+            let progress = (displayLink.timestamp - startTime) / segmentDuration
+            let curvedProgress = segmentCurve.adjustedProgress(for: progress)
             let rawRelativeTimestamp = (relativeDuration * curvedProgress + startRelativeTimestamp)
             return rawRelativeTimestamp.clamped(in: 0...1)
         }
@@ -69,20 +73,32 @@ internal final class InteractiveDriver: Driver {
 
     }
 
+    private enum Status {
+
+        case active
+
+        case completed(success: Bool)
+
+    }
+
     // MARK: - Private Properties
 
-    private let totalDuration: TimeInterval
+    private let endToEndDuration: TimeInterval
 
     private var lastRenderedFrame: Frame?
 
     private var mode: Mode = .manual(relativeTimestamp: 0)
 
+    private var status: Status = .active
+
     // MARK: - Driver
 
-    // Note that the animation instance is held strongly here. This creates a retain cycle between the driver and the
-    // animation instance. This allows the pair to continue animating even when the consumer discards the result of
-    // `Animation.perform(...)` and doesn't hold a reference to the animation instance. Once the animation completes,
-    // this reference will be set to `nil` and the retain cycle will be broken.
+    /// The animation instance that owns this driver.
+    ///
+    /// Note that the animation instance is held strongly here. This creates a retain cycle between the driver and the
+    /// animation instance. This allows the pair to continue animating even when the consumer discards the result of
+    /// `Animation.performInteractive(...)` and doesn't hold a reference to the animation instance. Once the animation
+    /// completes, this reference will be set to `nil` and the retain cycle will be broken.
     var animationInstance: DrivenAnimationInstance!
 
     func animationInstanceDidInitialize() {
@@ -90,6 +106,15 @@ internal final class InteractiveDriver: Driver {
     }
 
     func animationInstanceDidCancel(behavior: AnimationInstance.CancelationBehavior) {
+        switch status {
+        case .active:
+            break
+
+        case .completed:
+            // We're already complete. Nothing to do here.
+            return
+        }
+
         switch behavior {
         case .revert:
             mode = .manual(relativeTimestamp: 0)
@@ -100,7 +125,7 @@ internal final class InteractiveDriver: Driver {
                 break // No-op.
 
             case let .automatic(context):
-                mode = .manual(relativeTimestamp: context.currentRelativeTimestamp(totalDuration: totalDuration))
+                mode = .manual(relativeTimestamp: context.currentRelativeTimestamp())
 
                 context.displayLink.invalidate()
             }
@@ -108,41 +133,44 @@ internal final class InteractiveDriver: Driver {
         case .complete:
             mode = .manual(relativeTimestamp: 1)
         }
+
+        renderCurrentFrame()
+        status = .completed(success: false)
+        animationInstance = nil
     }
 
     // MARK: - Public Methods
 
-    func animateToBeginning(using curve: AnimationCurve) {
+    func animate(
+        to targetRelativeTimestamp: Double,
+        using curve: AnimationCurve,
+        duration: TimeInterval?
+    ) {
+        switch status {
+        case .active:
+            break
+
+        case .completed:
+            // The animation has already completed, so there's nothing to animate.
+            return
+        }
+
         // Invalidate any in-progress automatic animation.
         if case let .automatic(context) = mode {
             context.displayLink.invalidate()
         }
 
-        let context = AutomaticContext(
-            displayLink: .init(target: self, selector: #selector(renderCurrentFrame)),
-            startTime: CACurrentMediaTime(),
-            animationCurve: curve,
-            startRelativeTimestamp: lastRenderedFrame?.relativeTimestamp ?? 0,
-            endRelativeTimestamp: 0
-        )
-
-        mode = .automatic(context)
-
-        context.displayLink.add(to: .current, forMode: .common)
-    }
-
-    func animateToEnd(using curve: AnimationCurve) {
-        // Invalidate any in-progress automatic animation.
-        if case let .automatic(context) = mode {
-            context.displayLink.invalidate()
-        }
+        let startRelativeTimestamp = lastRenderedFrame?.relativeTimestamp ?? 0
+        let segmentRelativeDuration = (targetRelativeTimestamp - startRelativeTimestamp)
+        let segmentDuration = duration ?? abs(segmentRelativeDuration * endToEndDuration)
 
         let context = AutomaticContext(
             displayLink: .init(target: self, selector: #selector(renderCurrentFrame)),
             startTime: CACurrentMediaTime(),
-            animationCurve: curve,
-            startRelativeTimestamp: lastRenderedFrame?.relativeTimestamp ?? 0,
-            endRelativeTimestamp: 1
+            segmentDuration: segmentDuration,
+            segmentCurve: curve,
+            startRelativeTimestamp: startRelativeTimestamp,
+            endRelativeTimestamp: targetRelativeTimestamp
         )
 
         mode = .automatic(context)
@@ -151,6 +179,14 @@ internal final class InteractiveDriver: Driver {
     }
 
     func updateProgress(to relativeTimestamp: Double) {
+        switch status {
+        case .active:
+            break
+
+        case .completed:
+            return
+        }
+
         // Invalidate any in-progress automatic animation.
         if case let .automatic(context) = mode {
             context.displayLink.invalidate()
@@ -164,13 +200,21 @@ internal final class InteractiveDriver: Driver {
     // MARK: - Private Methods
 
     @objc private func renderCurrentFrame() {
+        switch status {
+        case .active:
+            break
+
+        case .completed:
+            return
+        }
+
         let relativeTimestamp: Double
         switch mode {
         case let .manual(relativeTimestamp: manualTimestamp):
             relativeTimestamp = manualTimestamp
 
         case let .automatic(context):
-            relativeTimestamp = context.currentRelativeTimestamp(totalDuration: totalDuration)
+            relativeTimestamp = context.currentRelativeTimestamp()
         }
 
         if let lastRenderedFrame = lastRenderedFrame {
