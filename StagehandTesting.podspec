@@ -11,14 +11,21 @@ Pod::Spec.new do |s|
 
   s.swift_version = '5.0.1'
 
-  s.source_files = 'Sources/StagehandTesting/**/*'
-
   # The dependency on Stagehand is pinned to the same version as StagehandTesting. This is because
   # StagehandTesting depends on internal methods inside Stagehand, so the normal rules of semantic
   # versioning don't apply.
   s.dependency 'Stagehand', s.version.to_s
 
-  s.dependency 'iOSSnapshotTestCase', '~> 6.1'
+  s.default_subspec = 'iOSSnapshotTestCase'
+
+  s.subspec 'iOSSnapshotTestCase' do |ss|
+    ss.source_files = [
+      'Sources/StagehandTesting/Core/**/*.swift',
+      'Sources/StagehandTesting/iOSSnapshotTestCase/**/*.swift',
+    ]
+
+    ss.dependency 'iOSSnapshotTestCase', '~> 6.1'
+  end
 
   s.frameworks = 'XCTest'
   s.weak_framework = 'XCTest'
