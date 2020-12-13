@@ -27,6 +27,15 @@ Pod::Spec.new do |s|
     ss.dependency 'iOSSnapshotTestCase', '~> 6.1'
   end
 
+  s.subspec 'SnapshotTesting' do |ss|
+    ss.source_files = [
+      'Sources/StagehandTesting/Core/**/*.swift',
+      'Sources/StagehandTesting/SnapshotTesting/**/*.swift',
+    ]
+
+    ss.dependency 'SnapshotTesting', '~> 1.0'
+  end
+
   s.frameworks = 'XCTest'
   s.weak_framework = 'XCTest'
 end
