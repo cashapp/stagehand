@@ -17,8 +17,11 @@
 import SnapshotTesting
 import Stagehand
 import StagehandTesting
+import XCTest
 
-final class SnapshotTestingTests: SnapshotTestCase {
+final class SnapshotTestingFrameImageTests: XCTestCase {
+
+    // MARK: - Tests
 
     func testSimpleAnimationSnapshot() {
         let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
@@ -27,13 +30,13 @@ final class SnapshotTestingTests: SnapshotTestCase {
         animation.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 160, y: 0))
 
-        assertSnapshot(matching: animation, as: .frameImage(on: view, at: 0.0), named: "start")
-        assertSnapshot(matching: animation, as: .frameImage(on: view, at: 0.5), named: "middle")
-        assertSnapshot(matching: animation, as: .frameImage(on: view, at: 1.0), named: "end")
+        assertSnapshot(matching: animation, as: .frameImage(on: view, at: 0.0), named: nameForDevice(baseName: "start"))
+        assertSnapshot(matching: animation, as: .frameImage(on: view, at: 0.5), named: nameForDevice(baseName: "middle"))
+        assertSnapshot(matching: animation, as: .frameImage(on: view, at: 1.0), named: nameForDevice(baseName: "end"))
 
         // This intentionally uses the same identifier as the animation at 0 to ensure that the view is restored to its
         // original state after snapshotting.
-        assertSnapshot(matching: view, as: .image, named: "start")
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
     }
 
     func testAnimationWithNonViewElementSnapshot() {
@@ -45,13 +48,13 @@ final class SnapshotTestingTests: SnapshotTestCase {
         animation.addKeyframe(for: \.animatableViewTransform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableViewTransform, at: 1, value: .init(translationX: 160, y: 0))
 
-        assertSnapshot(matching: animation, as: .frameImage(on: element, using: view, at: 0.0), named: "start")
-        assertSnapshot(matching: animation, as: .frameImage(on: element, using: view, at: 0.5), named: "middle")
-        assertSnapshot(matching: animation, as: .frameImage(on: element, using: view, at: 1.0), named: "end")
+        assertSnapshot(matching: animation, as: .frameImage(on: element, using: view, at: 0.0), named: nameForDevice(baseName: "start"))
+        assertSnapshot(matching: animation, as: .frameImage(on: element, using: view, at: 0.5), named: nameForDevice(baseName: "middle"))
+        assertSnapshot(matching: animation, as: .frameImage(on: element, using: view, at: 1.0), named: nameForDevice(baseName: "end"))
 
         // This intentionally uses the same identifier as the animation at 0 to ensure that the view is restored to its
         // original state after snapshotting.
-        assertSnapshot(matching: view, as: .image, named: "start")
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
     }
 
     func testAnimationGroupSnapshot() {
@@ -64,20 +67,33 @@ final class SnapshotTestingTests: SnapshotTestCase {
         var animationGroup = AnimationGroup()
         animationGroup.addAnimation(animation, for: view, startingAt: 0, relativeDuration: 1)
 
-        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 0.0), named: "start")
-        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 0.5), named: "middle")
-        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 1.0), named: "end")
+        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 0.0), named: nameForDevice(baseName: "start"))
+        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 0.5), named: nameForDevice(baseName: "middle"))
+        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 1.0), named: nameForDevice(baseName: "end"))
 
         // This intentionally uses the same identifier as the animation at 0 to ensure that the view is restored to its
         // original state after snapshotting.
-        assertSnapshot(matching: view, as: .image, named: "start")
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
+    }
+
+    // MARK: - Private Methods
+
+    private func nameForDevice(baseName: String? = nil) -> String {
+        let size = UIScreen.main.bounds.size
+        let scale = UIScreen.main.scale
+        let version = UIDevice.current.systemVersion
+        let deviceName = "\(Int(size.width))x\(Int(size.height))-\(version)-\(Int(scale))x"
+
+        return [baseName, deviceName]
+            .compactMap { $0 }
+            .joined(separator: "-")
     }
 
 }
 
 // MARK: -
 
-extension SnapshotTestingTests {
+extension SnapshotTestingFrameImageTests {
 
     final class View: UIView {
 
@@ -112,7 +128,7 @@ extension SnapshotTestingTests {
 
 // MARK: -
 
-extension SnapshotTestingTests {
+extension SnapshotTestingFrameImageTests {
 
     final class Proxy {
 
