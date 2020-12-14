@@ -54,6 +54,25 @@ final class SnapshotTestingTests: SnapshotTestCase {
         assertSnapshot(matching: view, as: .image, named: "start")
     }
 
+    func testAnimationGroupSnapshot() {
+        let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
+
+        var animation = Animation<View>()
+        animation.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
+        animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 160, y: 0))
+
+        var animationGroup = AnimationGroup()
+        animationGroup.addAnimation(animation, for: view, startingAt: 0, relativeDuration: 1)
+
+        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 0.0), named: "start")
+        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 0.5), named: "middle")
+        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 1.0), named: "end")
+
+        // This intentionally uses the same identifier as the animation at 0 to ensure that the view is restored to its
+        // original state after snapshotting.
+        assertSnapshot(matching: view, as: .image, named: "start")
+    }
+
 }
 
 // MARK: -

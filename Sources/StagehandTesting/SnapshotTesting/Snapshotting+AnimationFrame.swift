@@ -105,3 +105,31 @@ extension Snapshotting where Value: SnapshotableAnimation, Format == UIImage {
     }
 
 }
+
+// MARK: -
+
+extension Snapshotting where Value == AnimationGroup, Format == UIImage {
+
+    public static func frameImage(
+        using view: UIView,
+        at relativeTimestamp: Double
+    ) -> Snapshotting {
+        Snapshotting<UIView, UIImage>.image.asyncPullback { animationGroup in
+            let animation = animationGroup.animation
+            return Async { (snapshot: (UIView) -> Void) in
+                let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
+
+                let animationInstance = AnimationInstance(
+                    animation: animation,
+                    element: animationGroup.elementContainer,
+                    driver: driver
+                )
+
+                snapshot(view)
+
+                animationInstance.cancel(behavior: .revert)
+            }
+        }
+    }
+
+}
