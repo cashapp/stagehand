@@ -19,7 +19,7 @@ import Stagehand
 import StagehandTesting
 import XCTest
 
-final class SnapshotTestingFrameImageTests: XCTestCase {
+final class SnapshotTestingFrameImageTests: SnapshotTestCase {
 
     // MARK: - Tests
 
