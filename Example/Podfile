@@ -10,6 +10,10 @@ target 'Stagehand_Example' do
 
     pod 'StagehandTesting', :path => '../'
     pod 'StagehandTesting/SnapshotTesting', :path => '../'
+
+    # SnapshotTesting dropped support for building with Xcode 10 in 1.8.0, so pin the version to 1.7.0 in order to
+    # run our tests against Xcode 10.
+    pod 'SnapshotTesting', '= 1.7.0'
   end
 
   target 'Stagehand-PerformanceTests' do

@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
       'Sources/StagehandTesting/SnapshotTesting/**/*.swift',
     ]
 
-    ss.dependency 'SnapshotTesting', '~> 1.0'
+    ss.dependency 'SnapshotTesting', '~> 1.7'
   end
 
   s.frameworks = 'XCTest'
