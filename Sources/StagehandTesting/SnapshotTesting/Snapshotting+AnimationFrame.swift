@@ -25,13 +25,13 @@ import UIKit
 /// resolved in the future with the introduction of parameterized extensions.
 ///
 /// See <https://github.com/apple/swift/blob/main/docs/GenericsManifesto.md#parameterized-extensions>.
-public protocol SnapshotableViewAnimation {
+public protocol SnapshottableViewAnimation {
 
     associatedtype ElementType: UIView
 
 }
 
-extension Animation: SnapshotableViewAnimation where ElementType: UIView {}
+extension Animation: SnapshottableViewAnimation where ElementType: UIView {}
 
 // MARK: -
 
@@ -41,17 +41,17 @@ extension Animation: SnapshotableViewAnimation where ElementType: UIView {}
 /// resolved in the future with the introduction of parameterized extensions.
 ///
 /// See <https://github.com/apple/swift/blob/main/docs/GenericsManifesto.md#parameterized-extensions>.
-public protocol SnapshotableAnimation {
+public protocol SnapshottableAnimation {
 
     associatedtype ElementType: AnyObject
 
 }
 
-extension Animation: SnapshotableAnimation {}
+extension Animation: SnapshottableAnimation {}
 
 // MARK: -
 
-extension Snapshotting where Value: SnapshotableViewAnimation, Format == UIImage {
+extension Snapshotting where Value: SnapshottableViewAnimation, Format == UIImage {
 
     public static func frameImage(
         on element: Value.ElementType,
@@ -83,7 +83,7 @@ extension Snapshotting where Value: SnapshotableViewAnimation, Format == UIImage
 
 // MARK: -
 
-extension Snapshotting where Value: SnapshotableAnimation, Format == UIImage {
+extension Snapshotting where Value: SnapshottableAnimation, Format == UIImage {
 
     public static func frameImage(
         on element: Value.ElementType,
