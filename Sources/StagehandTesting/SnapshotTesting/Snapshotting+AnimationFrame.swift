@@ -55,24 +55,28 @@ extension Snapshotting where Value: SnapshotableViewAnimation, Format == UIImage
 
     public static func frameImage(
         on element: Value.ElementType,
-        at relativeTimestamp: Double
+        at relativeTimestamp: Double,
+        drawHierarchyInKeyWindow: Bool = false,
+        precision: Float = 1
     ) -> Snapshotting {
-        return Snapshotting<UIView, UIImage>.image.asyncPullback { animation in
-            let animation = animation as! Animation<Value.ElementType>
-            return Async { (snapshot: (UIView) -> Void) in
-                let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
+        return Snapshotting<UIView, UIImage>
+            .image(drawHierarchyInKeyWindow: drawHierarchyInKeyWindow, precision: precision)
+            .asyncPullback { animation in
+                let animation = animation as! Animation<Value.ElementType>
+                return Async { (snapshot: (UIView) -> Void) in
+                    let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
 
-                let animationInstance = AnimationInstance(
-                    animation: animation,
-                    element: element,
-                    driver: driver
-                )
+                    let animationInstance = AnimationInstance(
+                        animation: animation,
+                        element: element,
+                        driver: driver
+                    )
 
-                snapshot(element)
+                    snapshot(element)
 
-                animationInstance.cancel(behavior: .revert)
+                    animationInstance.cancel(behavior: .revert)
+                }
             }
-        }
     }
 
 }
@@ -84,24 +88,28 @@ extension Snapshotting where Value: SnapshotableAnimation, Format == UIImage {
     public static func frameImage(
         on element: Value.ElementType,
         using view: UIView,
-        at relativeTimestamp: Double
+        at relativeTimestamp: Double,
+        drawHierarchyInKeyWindow: Bool = false,
+        precision: Float = 1
     ) -> Snapshotting {
-        return Snapshotting<UIView, UIImage>.image.asyncPullback { animation in
-            let animation = animation as! Animation<Value.ElementType>
-            return Async { (snapshot: (UIView) -> Void) in
-                let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
+        return Snapshotting<UIView, UIImage>
+            .image(drawHierarchyInKeyWindow: drawHierarchyInKeyWindow, precision: precision)
+            .asyncPullback { animation in
+                let animation = animation as! Animation<Value.ElementType>
+                return Async { (snapshot: (UIView) -> Void) in
+                    let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
 
-                let animationInstance = AnimationInstance(
-                    animation: animation,
-                    element: element,
-                    driver: driver
-                )
+                    let animationInstance = AnimationInstance(
+                        animation: animation,
+                        element: element,
+                        driver: driver
+                    )
 
-                snapshot(view)
+                    snapshot(view)
 
-                animationInstance.cancel(behavior: .revert)
+                    animationInstance.cancel(behavior: .revert)
+                }
             }
-        }
     }
 
 }
@@ -112,24 +120,28 @@ extension Snapshotting where Value == AnimationGroup, Format == UIImage {
 
     public static func frameImage(
         using view: UIView,
-        at relativeTimestamp: Double
+        at relativeTimestamp: Double,
+        drawHierarchyInKeyWindow: Bool = false,
+        precision: Float = 1
     ) -> Snapshotting {
-        return Snapshotting<UIView, UIImage>.image.asyncPullback { animationGroup in
-            let animation = animationGroup.animation
-            return Async { (snapshot: (UIView) -> Void) in
-                let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
+        return Snapshotting<UIView, UIImage>
+            .image(drawHierarchyInKeyWindow: drawHierarchyInKeyWindow, precision: precision)
+            .asyncPullback { animationGroup in
+                let animation = animationGroup.animation
+                return Async { (snapshot: (UIView) -> Void) in
+                    let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
 
-                let animationInstance = AnimationInstance(
-                    animation: animation,
-                    element: animationGroup.elementContainer,
-                    driver: driver
-                )
+                    let animationInstance = AnimationInstance(
+                        animation: animation,
+                        element: animationGroup.elementContainer,
+                        driver: driver
+                    )
 
-                snapshot(view)
+                    snapshot(view)
 
-                animationInstance.cancel(behavior: .revert)
+                    animationInstance.cancel(behavior: .revert)
+                }
             }
-        }
     }
 
 }
