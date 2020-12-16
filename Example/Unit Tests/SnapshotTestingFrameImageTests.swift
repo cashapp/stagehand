@@ -24,9 +24,9 @@ final class SnapshotTestingFrameImageTests: SnapshotTestCase {
     // MARK: - Tests
 
     func testSimpleAnimationSnapshot() {
-        let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
+        let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
-        var animation = Animation<View>()
+        var animation = Animation<AnimatableContainerView>()
         animation.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 160, y: 0))
 
@@ -52,11 +52,11 @@ final class SnapshotTestingFrameImageTests: SnapshotTestCase {
     }
 
     func testAnimationWithNonViewElementSnapshot() {
-        let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
+        let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
-        let element = Proxy(view: view)
+        let element = AnimatableContainerView.Proxy(view: view)
 
-        var animation = Animation<Proxy>()
+        var animation = Animation<AnimatableContainerView.Proxy>()
         animation.addKeyframe(for: \.animatableViewTransform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableViewTransform, at: 1, value: .init(translationX: 160, y: 0))
 
@@ -82,9 +82,9 @@ final class SnapshotTestingFrameImageTests: SnapshotTestCase {
     }
 
     func testAnimationGroupSnapshot() {
-        let view = View(frame: .init(x: 0, y: 0, width: 200, height: 40))
+        let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
-        var animation = Animation<View>()
+        var animation = Animation<AnimatableContainerView>()
         animation.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 160, y: 0))
 
@@ -123,72 +123,6 @@ final class SnapshotTestingFrameImageTests: SnapshotTestCase {
         return [baseName, deviceName]
             .compactMap { $0 }
             .joined(separator: "-")
-    }
-
-}
-
-// MARK: -
-
-extension SnapshotTestingFrameImageTests {
-
-    final class View: UIView {
-
-        // MARK: - Life Cycle
-
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-
-            animatableView.backgroundColor = .red
-            addSubview(animatableView)
-        }
-
-        @available(*, unavailable)
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-
-        // MARK: - Public Properties
-
-        let animatableView: UIView = .init()
-
-        // MARK: - UIView
-
-        override func layoutSubviews() {
-            animatableView.bounds.size = .init(width: 20, height: 20)
-            animatableView.center = .init(x: 20, y: bounds.midY)
-        }
-
-    }
-
-}
-
-// MARK: -
-
-extension SnapshotTestingFrameImageTests {
-
-    final class Proxy {
-
-        // MARK: - Life Cycle
-
-        init(view: View) {
-            self.view = view
-        }
-
-        // MARK: - Public Properties
-
-        public var animatableViewTransform: CGAffineTransform {
-            get {
-                return view.animatableView.transform
-            }
-            set {
-                view.animatableView.transform = newValue
-            }
-        }
-
-        // MARK: - Private Properties
-
-        private let view: View
-
     }
 
 }
