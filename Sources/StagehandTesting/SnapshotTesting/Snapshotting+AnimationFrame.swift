@@ -57,7 +57,7 @@ extension Snapshotting where Value: SnapshotableViewAnimation, Format == UIImage
         on element: Value.ElementType,
         at relativeTimestamp: Double
     ) -> Snapshotting {
-        Snapshotting<UIView, UIImage>.image.asyncPullback { animation in
+        return Snapshotting<UIView, UIImage>.image.asyncPullback { animation in
             let animation = animation as! Animation<Value.ElementType>
             return Async { (snapshot: (UIView) -> Void) in
                 let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
@@ -86,7 +86,7 @@ extension Snapshotting where Value: SnapshotableAnimation, Format == UIImage {
         using view: UIView,
         at relativeTimestamp: Double
     ) -> Snapshotting {
-        Snapshotting<UIView, UIImage>.image.asyncPullback { animation in
+        return Snapshotting<UIView, UIImage>.image.asyncPullback { animation in
             let animation = animation as! Animation<Value.ElementType>
             return Async { (snapshot: (UIView) -> Void) in
                 let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
@@ -114,7 +114,7 @@ extension Snapshotting where Value == AnimationGroup, Format == UIImage {
         using view: UIView,
         at relativeTimestamp: Double
     ) -> Snapshotting {
-        Snapshotting<UIView, UIImage>.image.asyncPullback { animationGroup in
+        return Snapshotting<UIView, UIImage>.image.asyncPullback { animationGroup in
             let animation = animationGroup.animation
             return Async { (snapshot: (UIView) -> Void) in
                 let driver = SnapshotTestDriver(relativeTimestamp: relativeTimestamp)
