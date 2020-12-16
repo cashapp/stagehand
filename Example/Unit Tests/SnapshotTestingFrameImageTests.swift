@@ -30,9 +30,21 @@ final class SnapshotTestingFrameImageTests: SnapshotTestCase {
         animation.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 160, y: 0))
 
-        assertSnapshot(matching: animation, as: .frameImage(on: view, at: 0.0), named: nameForDevice(baseName: "start"))
-        assertSnapshot(matching: animation, as: .frameImage(on: view, at: 0.5), named: nameForDevice(baseName: "middle"))
-        assertSnapshot(matching: animation, as: .frameImage(on: view, at: 1.0), named: nameForDevice(baseName: "end"))
+        assertSnapshot(
+            matching: animation,
+            as: .frameImage(on: view, at: 0.0),
+            named: nameForDevice(baseName: "start")
+        )
+        assertSnapshot(
+            matching: animation,
+            as: .frameImage(on: view, at: 0.5),
+            named: nameForDevice(baseName: "middle")
+        )
+        assertSnapshot(
+            matching: animation,
+            as: .frameImage(on: view, at: 1.0),
+            named: nameForDevice(baseName: "end")
+        )
 
         // This intentionally uses the same identifier as the animation at 0 to ensure that the view is restored to its
         // original state after snapshotting.
@@ -48,9 +60,21 @@ final class SnapshotTestingFrameImageTests: SnapshotTestCase {
         animation.addKeyframe(for: \.animatableViewTransform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableViewTransform, at: 1, value: .init(translationX: 160, y: 0))
 
-        assertSnapshot(matching: animation, as: .frameImage(on: element, using: view, at: 0.0), named: nameForDevice(baseName: "start"))
-        assertSnapshot(matching: animation, as: .frameImage(on: element, using: view, at: 0.5), named: nameForDevice(baseName: "middle"))
-        assertSnapshot(matching: animation, as: .frameImage(on: element, using: view, at: 1.0), named: nameForDevice(baseName: "end"))
+        assertSnapshot(
+            matching: animation,
+            as: .frameImage(on: element, using: view, at: 0.0),
+            named: nameForDevice(baseName: "start")
+        )
+        assertSnapshot(
+            matching: animation,
+            as: .frameImage(on: element, using: view, at: 0.5),
+            named: nameForDevice(baseName: "middle")
+        )
+        assertSnapshot(
+            matching: animation,
+            as: .frameImage(on: element, using: view, at: 1.0),
+            named: nameForDevice(baseName: "end")
+        )
 
         // This intentionally uses the same identifier as the animation at 0 to ensure that the view is restored to its
         // original state after snapshotting.
@@ -67,9 +91,21 @@ final class SnapshotTestingFrameImageTests: SnapshotTestCase {
         var animationGroup = AnimationGroup()
         animationGroup.addAnimation(animation, for: view, startingAt: 0, relativeDuration: 1)
 
-        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 0.0), named: nameForDevice(baseName: "start"))
-        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 0.5), named: nameForDevice(baseName: "middle"))
-        assertSnapshot(matching: animationGroup, as: .frameImage(using: view, at: 1.0), named: nameForDevice(baseName: "end"))
+        assertSnapshot(
+            matching: animationGroup,
+            as: .frameImage(using: view, at: 0.0),
+            named: nameForDevice(baseName: "start")
+        )
+        assertSnapshot(
+            matching: animationGroup,
+            as: .frameImage(using: view, at: 0.5),
+            named: nameForDevice(baseName: "middle")
+        )
+        assertSnapshot(
+            matching: animationGroup,
+            as: .frameImage(using: view, at: 1.0),
+            named: nameForDevice(baseName: "end")
+        )
 
         // This intentionally uses the same identifier as the animation at 0 to ensure that the view is restored to its
         // original state after snapshotting.
