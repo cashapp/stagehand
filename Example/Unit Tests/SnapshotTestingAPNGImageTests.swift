@@ -33,6 +33,18 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
         assertSnapshot(matching: animation, as: .animatedImage(on: view), named: nameForDevice())
     }
 
+    func testAnimationWithNonViewElementSnapshot() {
+        let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
+
+        let element = AnimatableContainerView.Proxy(view: view)
+
+        var animation = Animation<AnimatableContainerView.Proxy>()
+        animation.addKeyframe(for: \.animatableViewTransform, at: 0, value: .identity)
+        animation.addKeyframe(for: \.animatableViewTransform, at: 1, value: .init(translationX: 160, y: 0))
+
+        assertSnapshot(matching: animation, as: .animatedImage(on: element, using: view), named: nameForDevice())
+    }
+
     // MARK: - Private Methods
 
     private func nameForDevice(baseName: String? = nil) -> String {

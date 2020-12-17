@@ -71,6 +71,58 @@ extension Snapshotting where Value: SnapshottableViewAnimation, Format == Data {
 
 // MARK: -
 
+extension Snapshotting where Value: SnapshottableAnimation, Format == Data {
+
+    public static func animatedImage(
+        on element: Value.ElementType,
+        using view: UIView,
+        fps: Double = AnimationSnapshotting.defaultAnimationSnapshotFPS,
+        bookendFrameDuration: AnimationSnapshotting.BookendFrameDuration = .default
+    ) -> Snapshotting {
+        return SimplySnapshotting<Data>
+            .apngData
+            .asyncPullback { animation in
+                let animation = animation as! Animation<Value.ElementType>
+                return Async { (snapshot: (Data) -> Void) in
+                    let driver = NoOpDriver()
+
+                    let animationInstance = AnimationInstance(
+                        animation: animation,
+                        element: element,
+                        driver: driver
+                    )
+
+                    defer {
+                        animationInstance.cancel(behavior: .revert)
+                    }
+
+                    let includeReverseCycle: Bool
+                    switch animation.implicitRepeatStyle {
+                    case let .repeating(count: count, autoreversing: autoreversing):
+                        includeReverseCycle = (count != 1 && autoreversing)
+                    }
+
+                    guard let imageURL = AnimationSnapshotting.generateAnimatedSnapshot(
+                        of: animationInstance,
+                        using: view,
+                        animationDuration: animation.implicitDuration,
+                        includeReverseCycle: includeReverseCycle,
+                        fps: fps,
+                        bookendFrameDuration: bookendFrameDuration
+                    ) else {
+                        snapshot(Data())
+                        return
+                    }
+
+                    snapshot((try? Data(contentsOf: imageURL)) ?? Data())
+                }
+            }
+    }
+
+}
+
+// MARK: -
+
 extension Snapshotting where Value == Data, Format == Data {
 
     fileprivate static var apngData: Snapshotting {
