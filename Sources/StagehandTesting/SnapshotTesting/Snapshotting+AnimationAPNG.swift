@@ -40,14 +40,17 @@ extension Snapshotting where Value: SnapshottableViewAnimation, Format == Data {
                         driver: driver
                     )
 
-                    defer {
-                        animationInstance.cancel(behavior: .revert)
-                    }
-
                     let includeReverseCycle: Bool
                     switch animation.implicitRepeatStyle {
                     case let .repeating(count: count, autoreversing: autoreversing):
                         includeReverseCycle = (count != 1 && autoreversing)
+                    }
+
+                    defer {
+                        if !includeReverseCycle {
+                            animationInstance.executeBlocks(from: 1, .inclusive, to: 0)
+                            animationInstance.renderFrame(at: 0)
+                        }
                     }
 
                     guard let imageURL = AnimationSnapshotting.generateAnimatedSnapshot(
@@ -92,14 +95,17 @@ extension Snapshotting where Value: SnapshottableAnimation, Format == Data {
                         driver: driver
                     )
 
-                    defer {
-                        animationInstance.cancel(behavior: .revert)
-                    }
-
                     let includeReverseCycle: Bool
                     switch animation.implicitRepeatStyle {
                     case let .repeating(count: count, autoreversing: autoreversing):
                         includeReverseCycle = (count != 1 && autoreversing)
+                    }
+
+                    defer {
+                        if !includeReverseCycle {
+                            animationInstance.executeBlocks(from: 1, .inclusive, to: 0)
+                            animationInstance.renderFrame(at: 0)
+                        }
                     }
 
                     guard let imageURL = AnimationSnapshotting.generateAnimatedSnapshot(
@@ -143,14 +149,17 @@ extension Snapshotting where Value == AnimationGroup, Format == Data {
                         driver: driver
                     )
 
-                    defer {
-                        animationInstance.cancel(behavior: .revert)
-                    }
-
                     let includeReverseCycle: Bool
                     switch animation.implicitRepeatStyle {
                     case let .repeating(count: count, autoreversing: autoreversing):
                         includeReverseCycle = (count != 1 && autoreversing)
+                    }
+
+                    defer {
+                        if !includeReverseCycle {
+                            animationInstance.executeBlocks(from: 1, .inclusive, to: 0)
+                            animationInstance.renderFrame(at: 0)
+                        }
                     }
 
                     guard let imageURL = AnimationSnapshotting.generateAnimatedSnapshot(

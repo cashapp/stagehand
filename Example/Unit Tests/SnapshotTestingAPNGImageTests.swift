@@ -30,7 +30,13 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
         animation.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 160, y: 0))
 
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
+
         assertSnapshot(matching: animation, as: .animatedImage(on: view), named: nameForDevice())
+
+        // This intentionally uses the same identifier as the snapshot from before the animation to ensure that the view
+        // is restored to its original state after snapshotting.
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
     }
 
     func testAnimationSnapshotWithRepeatingAnimation() {
@@ -58,7 +64,13 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
         animation.addKeyframe(for: \.animatableViewTransform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableViewTransform, at: 1, value: .init(translationX: 160, y: 0))
 
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
+
         assertSnapshot(matching: animation, as: .animatedImage(on: element, using: view), named: nameForDevice())
+
+        // This intentionally uses the same identifier as the snapshot from before the animation to ensure that the view
+        // is restored to its original state after snapshotting.
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
     }
 
     func testAnimationGroupSnapshot() {
@@ -71,7 +83,13 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
         var animationGroup = AnimationGroup()
         animationGroup.addAnimation(animation, for: view, startingAt: 0, relativeDuration: 1)
 
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
+
         assertSnapshot(matching: animationGroup, as: .animatedImage(using: view), named: nameForDevice())
+
+        // This intentionally uses the same identifier as the snapshot from before the animation to ensure that the view
+        // is restored to its original state after snapshotting.
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
     }
 
     // MARK: - Private Methods
