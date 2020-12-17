@@ -39,6 +39,11 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
         var animation = Animation<AnimatableContainerView>()
         animation.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
         animation.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 160, y: 0))
+        animation.addExecution(
+            onForward: { $0.animatableView.backgroundColor = .green },
+            onReverse: { $0.animatableView.backgroundColor = .blue },
+            at: 0.5
+        )
         animation.implicitRepeatStyle = .infinitelyRepeating(autoreversing: true)
 
         assertSnapshot(matching: animation, as: .animatedImage(on: view), named: nameForDevice())
