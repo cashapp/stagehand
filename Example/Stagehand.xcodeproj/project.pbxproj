@@ -14,6 +14,8 @@
 		3D2C05912489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2C05902489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift */; };
 		3D32EF4623404F98001144B3 /* AnimationCurvePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D32EF362340449B001144B3 /* AnimationCurvePerformanceTests.swift */; };
 		3D32EF4B234058C7001144B3 /* AnimationOptimizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */; };
+		3D41A9252589E63800C80169 /* AnimatableContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D41A9242589E63800C80169 /* AnimatableContainerView.swift */; };
+		3D43CDE32586155D00FE50A0 /* SnapshotTestingFrameImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D43CDE22586155D00FE50A0 /* SnapshotTestingFrameImageTests.swift */; };
 		3D595522247D0B3D00284D45 /* CATransform3DDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D595521247D0B3D00284D45 /* CATransform3DDecompositionTests.swift */; };
 		3D5E5D9024DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5E5D8F24DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift */; };
 		3D5F2D3B23E63E3600EEFA89 /* AnimationGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */; };
@@ -84,6 +86,8 @@
 		3D32EF3C23404F6A001144B3 /* Stagehand-PerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Stagehand-PerformanceTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D32EF4023404F6A001144B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationOptimizationTests.swift; sourceTree = "<group>"; };
+		3D41A9242589E63800C80169 /* AnimatableContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableContainerView.swift; sourceTree = "<group>"; };
+		3D43CDE22586155D00FE50A0 /* SnapshotTestingFrameImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTestingFrameImageTests.swift; sourceTree = "<group>"; };
 		3D595521247D0B3D00284D45 /* CATransform3DDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CATransform3DDecompositionTests.swift; sourceTree = "<group>"; };
 		3D5E5D8F24DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CATransform3DInterpolationSnapshotTests.swift; sourceTree = "<group>"; };
 		3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationGroupTests.swift; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 			children = (
 				3D89B4E724E74B89001C7CC3 /* CATransform3D+Additions.swift */,
 				3DFE460324F4F0D000A460AC /* QuadrantView.swift */,
+				3D41A9242589E63800C80169 /* AnimatableContainerView.swift */,
 				3DC75496232F6D5500402BD9 /* TestDriver.swift */,
 			);
 			name = Utilities;
@@ -320,6 +325,7 @@
 				3D89890E2450DEB3006824FC /* ExecutorTests.swift */,
 				3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */,
 				607FACEB1AFB9204008FA782 /* AnimationSnapshotTests.swift */,
+				3D43CDE22586155D00FE50A0 /* SnapshotTestingFrameImageTests.swift */,
 				3DC75492232D819700402BD9 /* ChildAnimationTests.swift */,
 				3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */,
 				3D7E79AA239FC1F8008BF8FF /* DisplayLinkDriverTests.swift */,
@@ -644,6 +650,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D41A9252589E63800C80169 /* AnimatableContainerView.swift in Sources */,
 				3DD79B712488D51600954004 /* SnapshotTestCase.swift in Sources */,
 				B3C4CA0D2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift in Sources */,
 				3DD79B732488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift in Sources */,
@@ -660,6 +667,7 @@
 				B3C4CA0A2459F75800893CB5 /* ShapeLayerUtils.swift in Sources */,
 				3DC75494232D82FD00402BD9 /* ChildAnimationTests.swift in Sources */,
 				3D7E79AB239FC1F8008BF8FF /* DisplayLinkDriverTests.swift in Sources */,
+				3D43CDE32586155D00FE50A0 /* SnapshotTestingFrameImageTests.swift in Sources */,
 				3D32EF4B234058C7001144B3 /* AnimationOptimizationTests.swift in Sources */,
 				3D595522247D0B3D00284D45 /* CATransform3DDecompositionTests.swift in Sources */,
 			);
