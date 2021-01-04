@@ -40,7 +40,7 @@ To install Stagehand via [Swift Package Manager](https://github.com/apple/swift-
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/cashapp/stagehand", from: "3.0.0"),
+    .package(url: "https://github.com/cashapp/stagehand", from: "4.0.0"),
 ],
 ```
 
