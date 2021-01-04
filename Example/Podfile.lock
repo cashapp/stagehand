@@ -6,6 +6,9 @@ PODS:
     - iOSSnapshotTestCase/Core
   - Stagehand (3.0.0)
   - StagehandTesting (3.0.0):
+    - Stagehand (= 3.0.0)
+    - StagehandTesting/iOSSnapshotTestCase (= 3.0.0)
+  - StagehandTesting/iOSSnapshotTestCase (3.0.0):
     - iOSSnapshotTestCase (~> 6.1)
     - Stagehand (= 3.0.0)
 
@@ -26,7 +29,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
   Stagehand: 84db8f40d1f54dc9da7bcef48ba5f98507771795
-  StagehandTesting: 378c9358ea2f05bc40fdd80a5aac2bcef2871469
+  StagehandTesting: 57989220f531f6faf04122e674279e91acae67ff
 
 PODFILE CHECKSUM: 173375f1acbf2252960e65313179a78d4c4e11d7
 
