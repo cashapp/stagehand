@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   # versioning don't apply.
   s.dependency 'Stagehand', s.version.to_s
 
-  s.default_subspec = 'iOSSnapshotTestCase'
+  s.default_subspec = 'SnapshotTesting'
 
   s.subspec 'iOSSnapshotTestCase' do |ss|
     ss.source_files = [

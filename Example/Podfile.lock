@@ -6,9 +6,6 @@ PODS:
     - iOSSnapshotTestCase/Core
   - SnapshotTesting (1.7.0)
   - Stagehand (3.0.0)
-  - StagehandTesting (3.0.0):
-    - Stagehand (= 3.0.0)
-    - StagehandTesting/iOSSnapshotTestCase (= 3.0.0)
   - StagehandTesting/iOSSnapshotTestCase (3.0.0):
     - iOSSnapshotTestCase (~> 6.1)
     - Stagehand (= 3.0.0)
@@ -19,7 +16,7 @@ PODS:
 DEPENDENCIES:
   - SnapshotTesting (= 1.7.0)
   - Stagehand (from `../`)
-  - StagehandTesting (from `../`)
+  - StagehandTesting/iOSSnapshotTestCase (from `../`)
   - StagehandTesting/SnapshotTesting (from `../`)
 
 SPEC REPOS:
@@ -37,8 +34,8 @@ SPEC CHECKSUMS:
   iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
   SnapshotTesting: 273b614fcc60fac7d9f613f6648afa91a7da36be
   Stagehand: 84db8f40d1f54dc9da7bcef48ba5f98507771795
-  StagehandTesting: 3363809a312a2323909f7ba46f1859cce26a16e6
+  StagehandTesting: f343da4ba18ce7d144aef0592d194d1dcc1d5b4e
 
-PODFILE CHECKSUM: 101cbe13296a2390e8139fcb638f261ab7ee9cc3
+PODFILE CHECKSUM: b4841bd82e57283ff97d83f4bb89137cc01f6102
 
 COCOAPODS: 1.10.0
