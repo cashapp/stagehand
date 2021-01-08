@@ -28,7 +28,7 @@ To install StagehandTesting, the animation snapshot testing utilities, add the f
 pod 'StagehandTesting'
 ```
 
-By default, this will use [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) to record snapshots and perform comparisons. To instead use [iOSSnapshotTestCase](https://github.com/uber/ios-snapshot-test-case) as the snapshotting engine, set your test target dependency to use the `iOSSnapshotTestCase` subspec.
+By default, this will use Point-Free's [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) to record snapshots and perform comparisons. To instead use Uber's [iOSSnapshotTestCase](https://github.com/uber/ios-snapshot-test-case) as the snapshotting engine, set your test target dependency to use the `iOSSnapshotTestCase` subspec.
 
 ```ruby
 pod 'StagehandTesting/iOSSnapshotTestCase'
