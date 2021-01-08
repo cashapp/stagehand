@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Stagehand'
-  s.version          = '3.0.0'
+  s.version          = '4.0.0'
   s.summary          = 'Modern, type-safe API for building animations on iOS'
   s.homepage         = 'https://github.com/CashApp/Stagehand'
   s.license          = { :type => 'Apache License, Version 2.0', :file => 'LICENSE' }
