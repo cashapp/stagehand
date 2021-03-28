@@ -9,7 +9,7 @@ on:
 jobs:
   xcode-build:
     name: Xcode Build
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
     strategy:
       matrix:
         include:
@@ -37,7 +37,7 @@ jobs:
           path: .build/derivedData/**/Logs/Test/*.xcresult
   pod-lint:
     name: Pod Lint
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -51,7 +51,7 @@ jobs:
         run: bundle exec --gemfile=Example/Gemfile pod lib lint --verbose --fail-fast --include-podspecs=Stagehand.podspec StagehandTesting.podspec
   spm:
     name: SPM Build
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
     strategy:
       matrix:
         include:
