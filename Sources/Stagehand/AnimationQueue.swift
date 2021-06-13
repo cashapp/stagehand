@@ -29,7 +29,7 @@ public final class AnimationQueue<ElementType: AnyObject> {
 
     private let element: ElementType
 
-    private var queue: [(instance: AnimationInstance, driver: DisplayLinkDriver)] = []
+    private let queue: AnimationInstanceQueue = .init()
 
     // MARK: - Public Methods
 
@@ -69,69 +69,14 @@ public final class AnimationQueue<ElementType: AnyObject> {
             driver: driver
         )
 
-        queue.append((instance, driver))
-
-        advanceToNextAnimationIfReady()
+        queue.enqueue(instance: instance, driver: driver)
 
         return instance
     }
 
     /// Cancels all pending animations currently in the queue.
     public func cancelPendingAnimations() {
-        queue.forEach { (instance, _) in
-            if case .pending = instance.status {
-                instance.cancel()
-            }
-        }
-
-        purgeCompletedAndCanceledAnimations()
-    }
-
-    // MARK: - Private Methods
-
-    private func advanceToNextAnimationIfReady() {
-        guard let currentAnimation = queue.first else {
-            return
-        }
-
-        switch currentAnimation.instance.status {
-        case .pending:
-            // The current animation hasn't started yet. It will be started below.
-            break
-
-        case .animating:
-            // The current animation isn't complete yet.
-            return
-
-        case .complete, .canceled:
-            // The current animation is complete. It will be purged below, then the next animation (if one is enqueued)
-            // wil be started.
-            break
-        }
-
-        purgeCompletedAndCanceledAnimations()
-
-        guard let nextAnimation = queue.first else {
-            // We've emptied the queue, nothing to do now.
-            return
-        }
-
-        nextAnimation.driver.addCompletion { [weak self] _ in
-            self?.advanceToNextAnimationIfReady()
-        }
-
-        nextAnimation.driver.start()
-    }
-
-    private func purgeCompletedAndCanceledAnimations() {
-        queue.removeAll { (instance, _) -> Bool in
-            switch instance.status {
-            case .complete, .canceled:
-                return true
-            case .pending, .animating:
-                return false
-            }
-        }
+        queue.cancelPendingAnimations()
     }
 
 }

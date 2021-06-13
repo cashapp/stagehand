@@ -74,9 +74,7 @@ public struct AnimationGroup {
 
     internal let elementContainer: ElementContainer = .init()
 
-    // MARK: - Private Properties
-
-    private var completions: [(Bool) -> Void] = []
+    internal private(set) var completions: [(Bool) -> Void] = []
 
     // MARK: - Public Methods
 
