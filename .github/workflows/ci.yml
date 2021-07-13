@@ -14,9 +14,9 @@ jobs:
       matrix:
         include:
           - platform: 'iOS_13'
-            xcode-version: '11.3.1'
+            xcode-version: 'Xcode_11.3.1'
           - platform: 'iOS_12'
-            xcode-version: '10.3'
+            xcode-version: 'Xcode_10.3'
       fail-fast: false
     steps:
       - name: Checkout Repo
@@ -24,7 +24,7 @@ jobs:
       - name: Bundle Install
         run: bundle install --gemfile=Example/Gemfile
       - name: Select Xcode Version
-        run: sudo xcode-select --switch /Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer
+        run: sudo xcode-select --switch /Applications/${{ matrix.xcode-version }}.app/Contents/Developer
       - name: Pod Install
         run: bundle exec --gemfile=Example/Gemfile pod install --project-directory=Example
       - name: Build and Test
@@ -56,12 +56,12 @@ jobs:
       matrix:
         include:
           - platform: 'iOS_13'
-            xcode-version: '11.3.1'
+            xcode-version: 'Xcode_11.3.1'
       fail-fast: false
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: Select Xcode Version
-        run: sudo xcode-select --switch /Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer
+        run: sudo xcode-select --switch /Applications/${{ matrix.xcode-version }}.app/Contents/Developer
       - name: Build
         run: Scripts/build.swift spm ${{ matrix.platform }}
