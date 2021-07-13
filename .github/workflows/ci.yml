@@ -13,6 +13,8 @@ jobs:
     strategy:
       matrix:
         include:
+          - platform: 'iOS_14'
+            xcode-version: 'Xcode_12.4'
           - platform: 'iOS_13'
             xcode-version: 'Xcode_11.3.1'
           - platform: 'iOS_12'
