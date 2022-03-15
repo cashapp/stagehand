@@ -27,4 +27,6 @@ public protocol AnimationCurve {
 
     func adjustedProgress(for progress: Double) -> Double
 
+    func rawProgress(for adjustedProgress: Double) -> [Double]
+
 }

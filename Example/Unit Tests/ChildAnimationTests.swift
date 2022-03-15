@@ -182,6 +182,68 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
+    func testKeyframes_verifyFinalFrameIsRenderedInLinearParent() {
+        var childAnimation = Animation<Subelement>()
+        childAnimation.addKeyframe(for: \.propertyOne, at: 0, value: 1)
+        childAnimation.addKeyframe(for: \.propertyOne, at: 1, value: 0)
+
+        var animation = Animation<Element>()
+        animation.addChild(childAnimation, for: \.subelementOne, startingAt: 0, relativeDuration: 0.2)
+
+        // Add a keyframe so the child animation does not get collapsed into the parent during optimization.
+        animation.addKeyframe(for: \.subelementTwo.propertyOne, at: 0, value: 0)
+
+        let element = Element()
+
+        let driver = TestDriver()
+
+        let animationInstance = AnimationInstance(
+            animation: animation,
+            element: element,
+            driver: driver
+        )
+
+        driver.runForward(to: 0.1)
+        XCTAssertEqual(element.subelementOne.propertyOne, 0.5)
+
+        // When the parent animation specifies keyframes for a property, those keyframes should be preferred over that
+        // of the child animation (even when the child animation is added after the keyframes are defined).
+        driver.runForward(to: 0.25)
+        XCTAssertEqual(element.subelementOne.propertyOne, 0)
+
+        _ = animationInstance
+    }
+
+    func testKeyframes_verifyFinalFrameIsRenderedInNonLinearParent() {
+        var childAnimation = Animation<Subelement>()
+        childAnimation.addKeyframe(for: \.propertyOne, at: 0, value: 1)
+        childAnimation.addKeyframe(for: \.propertyOne, at: 1, value: 0)
+
+        var animation = Animation<Element>()
+        animation.curve = SinusoidalEaseInEaseOutAnimationCurve()
+        animation.addChild(childAnimation, for: \.subelementOne, startingAt: 0, relativeDuration: 0.2)
+
+        // Add a keyframe so the child animation does not get collapsed into the parent during optimization.
+        animation.addKeyframe(for: \.subelementTwo.propertyOne, at: 0, value: 0)
+
+        let element = Element()
+
+        let driver = TestDriver()
+
+        let animationInstance = AnimationInstance(
+            animation: animation,
+            element: element,
+            driver: driver
+        )
+
+        // When the parent animation specifies keyframes for a property, those keyframes should be preferred over that
+        // of the child animation (even when the child animation is added after the keyframes are defined).
+        driver.runForward(to: 0.5)
+        XCTAssertEqual(element.subelementOne.propertyOne, 0)
+
+        _ = animationInstance
+    }
+
     // MARK: - Tests - Execution Blocks
 
     func testExecutionBlocks_fullDurationChild() {

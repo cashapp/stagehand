@@ -450,6 +450,10 @@ private struct ReverseAnimationCurve: AnimationCurve {
         return 1 - progress
     }
 
+    func rawProgress(for adjustedProgress: Double) -> [Double] {
+        return [1 - adjustedProgress]
+    }
+
 }
 
 // MARK: -

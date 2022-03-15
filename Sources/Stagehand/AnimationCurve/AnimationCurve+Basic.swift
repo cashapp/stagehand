@@ -24,6 +24,10 @@ public struct LinearAnimationCurve: AnimationCurve {
         return progress
     }
 
+    public func rawProgress(for adjustedProgress: Double) -> [Double] {
+        return [adjustedProgress]
+    }
+
 }
 
 // MARK: -
@@ -39,6 +43,10 @@ public struct ParabolicEaseInAnimationCurve: AnimationCurve {
 
     public func adjustedProgress(for progress: Double) -> Double {
         return pow(progress, 2.0)
+    }
+
+    public func rawProgress(for adjustedProgress: Double) -> [Double] {
+        return [sqrt(adjustedProgress)]
     }
 
 }
@@ -58,6 +66,10 @@ public struct ParabolicEaseOutAnimationCurve: AnimationCurve {
         return 1 - pow(1 - progress, 2.0)
     }
 
+    public func rawProgress(for adjustedProgress: Double) -> [Double] {
+        return [1 - sqrt(1 - adjustedProgress)]
+    }
+
 }
 
 // MARK: -
@@ -73,6 +85,10 @@ public struct SinusoidalEaseInEaseOutAnimationCurve: AnimationCurve {
 
     public func adjustedProgress(for progress: Double) -> Double {
         return 0.5 - cos(progress * .pi) * 0.5
+    }
+
+    public func rawProgress(for adjustedProgress: Double) -> [Double] {
+        return [acos(1 - 2 * adjustedProgress) / .pi]
     }
 
 }

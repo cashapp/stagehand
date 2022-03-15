@@ -93,14 +93,23 @@ public struct Animation<ElementType: AnyObject> {
         return properties
     }
 
+    /// The relative timestamps corresponding to keyframes in the animation, without any curves applied.
     internal var keyframeRelativeTimestamps: [Double] {
         var keyframeRelativeTimestamps = Set(keyframeSeriesByProperty.flatMap { $0.value.keyframeRelativeTimestamps })
 
         for child in children {
+            // The relative timestamps of child keyframes are relative to the child animation and are uncurved.
             let childKeyframeRelativeTimestamps = child.animation.keyframeRelativeTimestamps
-            let adjustedRelativeTimestamps = childKeyframeRelativeTimestamps.map { childRelativeTimestamp in
-                return child.relativeStartTimestamp + childRelativeTimestamp * child.relativeDuration
-            }
+
+            let adjustedRelativeTimestamps: [Double] = childKeyframeRelativeTimestamps
+                .flatMap { childRelativeTimestamp -> [Double] in
+                    /// Convert the timestamp to be relative to the curved progress of this animation by adjusting the
+                    /// range to the start timestamp and duration of the child.
+                    let timestampInParent = child.relativeStartTimestamp + childRelativeTimestamp * child.relativeDuration
+
+                    /// Convert the timestamp to be relative to the uncurved progress of this animation.
+                    return curve.rawProgress(for: timestampInParent)
+                }
             keyframeRelativeTimestamps.formUnion(Set(adjustedRelativeTimestamps))
         }
 
