@@ -4,6 +4,7 @@ PODS:
   - iOSSnapshotTestCase/Core (6.2.0)
   - iOSSnapshotTestCase/SwiftSupport (6.2.0):
     - iOSSnapshotTestCase/Core
+  - Paralayout (1.0.0-rc.2)
   - SnapshotTesting (1.7.0)
   - Stagehand (4.0.0)
   - StagehandTesting/iOSSnapshotTestCase (4.0.0):
@@ -14,6 +15,7 @@ PODS:
     - Stagehand (= 4.0.0)
 
 DEPENDENCIES:
+  - Paralayout (= 1.0.0-rc.2)
   - SnapshotTesting (= 1.7.0)
   - Stagehand (from `../`)
   - StagehandTesting/iOSSnapshotTestCase (from `../`)
@@ -22,6 +24,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - iOSSnapshotTestCase
+    - Paralayout
     - SnapshotTesting
 
 EXTERNAL SOURCES:
@@ -32,10 +35,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
+  Paralayout: 3551efa98808176cb4a63a572594c909dd948137
   SnapshotTesting: 273b614fcc60fac7d9f613f6648afa91a7da36be
   Stagehand: 29ee26a0690ebf90a5ea45e86fd88b865baf5403
   StagehandTesting: 3354a5300e7fc6d1ba9ab182762feff9e80cb6de
 
-PODFILE CHECKSUM: b4841bd82e57283ff97d83f4bb89137cc01f6102
+PODFILE CHECKSUM: bcfe990dbf7cb54c76ac42fabbd17601258c603f
 
 COCOAPODS: 1.10.0

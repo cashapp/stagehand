@@ -5,6 +5,8 @@ platform :ios, '12.0'
 target 'Stagehand_Example' do
   pod 'Stagehand', :path => '../'
 
+  pod 'Paralayout', '1.0.0-rc.2'
+
   target 'Stagehand-UnitTests' do
     inherit! :search_paths
 

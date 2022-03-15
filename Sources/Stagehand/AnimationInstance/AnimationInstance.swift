@@ -31,7 +31,8 @@ public final class AnimationInstance {
         element: ElementType,
         driver: Driver
     ) {
-        let animation = animation.optimized()
+        var animation = animation.optimized()
+        animation.computeKeyframeProperties(for: element)
 
         self.animationCurve = animation.curve
         self.keyframeRelativeTimestamps = animation.keyframeRelativeTimestamps

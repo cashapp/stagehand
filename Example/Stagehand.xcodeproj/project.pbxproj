@@ -7,15 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D11A48F276B122E00B82F7C /* NewsFeedTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D11A48E276B122E00B82F7C /* NewsFeedTransitioningDelegate.swift */; };
+		3D11A491276B126C00B82F7C /* NewsFeedDismissalTransitioningAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D11A490276B126C00B82F7C /* NewsFeedDismissalTransitioningAnimator.swift */; };
 		3D1D304A22F007B7003E392C /* ChildAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1D304922F007B7003E392C /* ChildAnimationsViewController.swift */; };
 		3D1D304C22F01136003E392C /* AnimationCurveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1D304B22F01136003E392C /* AnimationCurveViewController.swift */; };
 		3D2712EE236A17C5001D3B4B /* AnimationQueueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */; };
+		3D29A1F0273BC7CA00F92D46 /* NewsFeedImageHeadlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D29A1EF273BC7CA00F92D46 /* NewsFeedImageHeadlineView.swift */; };
+		3D29A1F5273E497000F92D46 /* NewsFeedSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D29A1F4273E497000F92D46 /* NewsFeedSnapshotTests.swift */; };
 		3D2C058F2489F281003F5A4B /* CGAffineTransformDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2C058E2489F281003F5A4B /* CGAffineTransformDecompositionTests.swift */; };
 		3D2C05912489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2C05902489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift */; };
 		3D32EF4623404F98001144B3 /* AnimationCurvePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D32EF362340449B001144B3 /* AnimationCurvePerformanceTests.swift */; };
 		3D32EF4B234058C7001144B3 /* AnimationOptimizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */; };
 		3D41A9252589E63800C80169 /* AnimatableContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D41A9242589E63800C80169 /* AnimatableContainerView.swift */; };
 		3D41A945258A035600C80169 /* SnapshotTestingAPNGImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D41A944258A035600C80169 /* SnapshotTestingAPNGImageTests.swift */; };
+		3D42395B27E3FF79006DF7DF /* NewsFeedTransitionListContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D42395A27E3FF79006DF7DF /* NewsFeedTransitionListContext.swift */; };
+		3D42395D27E3FF96006DF7DF /* NewsFeedTransitionDetailContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D42395C27E3FF96006DF7DF /* NewsFeedTransitionDetailContext.swift */; };
 		3D43CDE32586155D00FE50A0 /* SnapshotTestingFrameImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D43CDE22586155D00FE50A0 /* SnapshotTestingFrameImageTests.swift */; };
 		3D595522247D0B3D00284D45 /* CATransform3DDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D595521247D0B3D00284D45 /* CATransform3DDecompositionTests.swift */; };
 		3D5E5D9024DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5E5D8F24DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift */; };
@@ -36,7 +42,12 @@
 		3D8E3D8422F2BC9300D70FCB /* RepeatingAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8E3D8322F2BC9300D70FCB /* RepeatingAnimationsViewController.swift */; };
 		3DA3997C230FCFAC00DE41A0 /* ExecutionBlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */; };
 		3DB3927D23249D680009E8B3 /* ColorAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */; };
+		3DBF31BD273271D4004A5C05 /* NewsFeedPresentationTransitioningAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF31BC273271D4004A5C05 /* NewsFeedPresentationTransitioningAnimator.swift */; };
 		3DBFEE422400B2460086D61C /* ChildAnimationProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBFEE412400B2460086D61C /* ChildAnimationProgressViewController.swift */; };
+		3DC1EDA92727814B00E7710B /* NewsFeedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1EDA82727814B00E7710B /* NewsFeedListViewController.swift */; };
+		3DC1EDAB272781B100E7710B /* NewsFeedListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1EDAA272781B100E7710B /* NewsFeedListCell.swift */; };
+		3DC1EDAD27279DAE00E7710B /* NewsFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1EDAC27279DAE00E7710B /* NewsFeedItem.swift */; };
+		3DC1EDAF2727ACCD00E7710B /* NewsFeedItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1EDAE2727ACCD00E7710B /* NewsFeedItemViewController.swift */; };
 		3DC75494232D82FD00402BD9 /* ChildAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC75492232D819700402BD9 /* ChildAnimationTests.swift */; };
 		3DC75497232F6D5500402BD9 /* TestDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC75496232F6D5500402BD9 /* TestDriver.swift */; };
 		3DD79B712488D51600954004 /* SnapshotTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD79B702488D51600954004 /* SnapshotTestCase.swift */; };
@@ -78,9 +89,13 @@
 		1575429BE6BAD827FC19AE22 /* Pods_Stagehand_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stagehand_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CCC78EBA87C54F6184E964D /* Pods_Stagehand_PerformanceTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stagehand_PerformanceTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FA0E6FE8F29161EE1380A2 /* Pods-Stagehand_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand_Tests.release.xcconfig"; path = "Target Support Files/Pods-Stagehand_Tests/Pods-Stagehand_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		3D11A48E276B122E00B82F7C /* NewsFeedTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsFeedTransitioningDelegate.swift; path = NewsFeed/NewsFeedTransitioningDelegate.swift; sourceTree = "<group>"; };
+		3D11A490276B126C00B82F7C /* NewsFeedDismissalTransitioningAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsFeedDismissalTransitioningAnimator.swift; path = NewsFeed/NewsFeedDismissalTransitioningAnimator.swift; sourceTree = "<group>"; };
 		3D1D304922F007B7003E392C /* ChildAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAnimationsViewController.swift; sourceTree = "<group>"; };
 		3D1D304B22F01136003E392C /* AnimationCurveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCurveViewController.swift; sourceTree = "<group>"; };
 		3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationQueueViewController.swift; sourceTree = "<group>"; };
+		3D29A1EF273BC7CA00F92D46 /* NewsFeedImageHeadlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsFeedImageHeadlineView.swift; path = NewsFeed/NewsFeedImageHeadlineView.swift; sourceTree = "<group>"; };
+		3D29A1F4273E497000F92D46 /* NewsFeedSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedSnapshotTests.swift; sourceTree = "<group>"; };
 		3D2C058E2489F281003F5A4B /* CGAffineTransformDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformDecompositionTests.swift; sourceTree = "<group>"; };
 		3D2C05902489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformDebuggingViewController.swift; sourceTree = "<group>"; };
 		3D32EF362340449B001144B3 /* AnimationCurvePerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCurvePerformanceTests.swift; sourceTree = "<group>"; };
@@ -89,6 +104,8 @@
 		3D32EF49234058C7001144B3 /* AnimationOptimizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationOptimizationTests.swift; sourceTree = "<group>"; };
 		3D41A9242589E63800C80169 /* AnimatableContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatableContainerView.swift; sourceTree = "<group>"; };
 		3D41A944258A035600C80169 /* SnapshotTestingAPNGImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTestingAPNGImageTests.swift; sourceTree = "<group>"; };
+		3D42395A27E3FF79006DF7DF /* NewsFeedTransitionListContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedTransitionListContext.swift; sourceTree = "<group>"; };
+		3D42395C27E3FF96006DF7DF /* NewsFeedTransitionDetailContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedTransitionDetailContext.swift; sourceTree = "<group>"; };
 		3D43CDE22586155D00FE50A0 /* SnapshotTestingFrameImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTestingFrameImageTests.swift; sourceTree = "<group>"; };
 		3D595521247D0B3D00284D45 /* CATransform3DDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CATransform3DDecompositionTests.swift; sourceTree = "<group>"; };
 		3D5E5D8F24DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CATransform3DInterpolationSnapshotTests.swift; sourceTree = "<group>"; };
@@ -109,7 +126,12 @@
 		3D8E3D8322F2BC9300D70FCB /* RepeatingAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingAnimationsViewController.swift; sourceTree = "<group>"; };
 		3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionBlockViewController.swift; sourceTree = "<group>"; };
 		3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorAnimationsViewController.swift; sourceTree = "<group>"; };
+		3DBF31BC273271D4004A5C05 /* NewsFeedPresentationTransitioningAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsFeedPresentationTransitioningAnimator.swift; path = NewsFeed/NewsFeedPresentationTransitioningAnimator.swift; sourceTree = "<group>"; };
 		3DBFEE412400B2460086D61C /* ChildAnimationProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAnimationProgressViewController.swift; sourceTree = "<group>"; };
+		3DC1EDA82727814B00E7710B /* NewsFeedListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsFeedListViewController.swift; path = NewsFeed/NewsFeedListViewController.swift; sourceTree = "<group>"; };
+		3DC1EDAA272781B100E7710B /* NewsFeedListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsFeedListCell.swift; path = NewsFeed/NewsFeedListCell.swift; sourceTree = "<group>"; };
+		3DC1EDAC27279DAE00E7710B /* NewsFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsFeedItem.swift; path = NewsFeed/NewsFeedItem.swift; sourceTree = "<group>"; };
+		3DC1EDAE2727ACCD00E7710B /* NewsFeedItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsFeedItemViewController.swift; path = NewsFeed/NewsFeedItemViewController.swift; sourceTree = "<group>"; };
 		3DC75492232D819700402BD9 /* ChildAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAnimationTests.swift; sourceTree = "<group>"; };
 		3DC75496232F6D5500402BD9 /* TestDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDriver.swift; sourceTree = "<group>"; };
 		3DD79B702488D51600954004 /* SnapshotTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTestCase.swift; sourceTree = "<group>"; };
@@ -179,6 +201,14 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		3D29A1F3273E495300F92D46 /* Demo Screen Snapshots */ = {
+			isa = PBXGroup;
+			children = (
+				3D29A1F4273E497000F92D46 /* NewsFeedSnapshotTests.swift */,
+			);
+			name = "Demo Screen Snapshots";
+			sourceTree = "<group>";
+		};
 		3D32EF3D23404F6A001144B3 /* Performance Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +217,18 @@
 				3D32EF4023404F6A001144B3 /* Info.plist */,
 			);
 			path = "Performance Tests";
+			sourceTree = "<group>";
+		};
+		3D42395727E3FC03006DF7DF /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				3D11A48E276B122E00B82F7C /* NewsFeedTransitioningDelegate.swift */,
+				3D42395A27E3FF79006DF7DF /* NewsFeedTransitionListContext.swift */,
+				3D42395C27E3FF96006DF7DF /* NewsFeedTransitionDetailContext.swift */,
+				3DBF31BC273271D4004A5C05 /* NewsFeedPresentationTransitioningAnimator.swift */,
+				3D11A490276B126C00B82F7C /* NewsFeedDismissalTransitioningAnimator.swift */,
+			);
+			name = Transition;
 			sourceTree = "<group>";
 		};
 		3D75A7C42292891100743166 /* Demo View Controllers */ = {
@@ -202,8 +244,22 @@
 		3D763D0525252E6D00D9525C /* Demo Screens */ = {
 			isa = PBXGroup;
 			children = (
+				3DC1EDA7272780E000E7710B /* News Feed */,
 			);
 			name = "Demo Screens";
+			sourceTree = "<group>";
+		};
+		3DC1EDA7272780E000E7710B /* News Feed */ = {
+			isa = PBXGroup;
+			children = (
+				3D42395727E3FC03006DF7DF /* Transition */,
+				3DC1EDAC27279DAE00E7710B /* NewsFeedItem.swift */,
+				3DC1EDA82727814B00E7710B /* NewsFeedListViewController.swift */,
+				3DC1EDAA272781B100E7710B /* NewsFeedListCell.swift */,
+				3DC1EDAE2727ACCD00E7710B /* NewsFeedItemViewController.swift */,
+				3D29A1EF273BC7CA00F92D46 /* NewsFeedImageHeadlineView.swift */,
+			);
+			name = "News Feed";
 			sourceTree = "<group>";
 		};
 		3DC75495232F6D3800402BD9 /* Utilities */ = {
@@ -322,6 +378,7 @@
 		607FACE81AFB9204008FA782 /* Unit Tests */ = {
 			isa = PBXGroup;
 			children = (
+				3D29A1F3273E495300F92D46 /* Demo Screen Snapshots */,
 				B3C4CA0B2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift */,
 				3D7D4FFE23011C4600A468A7 /* AnimationInstanceTests.swift */,
 				3D89890E2450DEB3006824FC /* ExecutorTests.swift */,
@@ -626,16 +683,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D42395B27E3FF79006DF7DF /* NewsFeedTransitionListContext.swift in Sources */,
 				3D75A7C62292892B00743166 /* SimpleAnimationsViewController.swift in Sources */,
+				3DBF31BD273271D4004A5C05 /* NewsFeedPresentationTransitioningAnimator.swift in Sources */,
 				3D89F1E222FDEAAC008AC33E /* PropertyAssignmentViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* RootViewController.swift in Sources */,
 				B3C4CA092459F75800893CB5 /* ShapeLayerUtils.swift in Sources */,
+				3DC1EDAF2727ACCD00E7710B /* NewsFeedItemViewController.swift in Sources */,
+				3DC1EDAB272781B100E7710B /* NewsFeedListCell.swift in Sources */,
 				3DBFEE422400B2460086D61C /* ChildAnimationProgressViewController.swift in Sources */,
 				3DA3997C230FCFAC00DE41A0 /* ExecutionBlockViewController.swift in Sources */,
+				3DC1EDA92727814B00E7710B /* NewsFeedListViewController.swift in Sources */,
 				3D2712EE236A17C5001D3B4B /* AnimationQueueViewController.swift in Sources */,
 				3D8E3D8222F17D3B00D70FCB /* AnimationCancelationViewController.swift in Sources */,
+				3D11A48F276B122E00B82F7C /* NewsFeedTransitioningDelegate.swift in Sources */,
+				3D11A491276B126C00B82F7C /* NewsFeedDismissalTransitioningAnimator.swift in Sources */,
 				3DEE440A231331DD0057D796 /* AnimationGroupViewController.swift in Sources */,
+				3D42395D27E3FF96006DF7DF /* NewsFeedTransitionDetailContext.swift in Sources */,
 				3D1D304A22F007B7003E392C /* ChildAnimationsViewController.swift in Sources */,
+				3DC1EDAD27279DAE00E7710B /* NewsFeedItem.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				3D8E3D8422F2BC9300D70FCB /* RepeatingAnimationsViewController.swift in Sources */,
 				3D8E3D8022F16C1B00D70FCB /* ChildAnimationsWithCurvesViewController.swift in Sources */,
@@ -645,6 +711,7 @@
 				3D1D304C22F01136003E392C /* AnimationCurveViewController.swift in Sources */,
 				3D2C05912489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift in Sources */,
 				3D75A7C3229284C600743166 /* DemoViewController.swift in Sources */,
+				3D29A1F0273BC7CA00F92D46 /* NewsFeedImageHeadlineView.swift in Sources */,
 				3D75A7C82292910B00743166 /* RelativeAnimationsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -655,6 +722,7 @@
 			files = (
 				3D41A9252589E63800C80169 /* AnimatableContainerView.swift in Sources */,
 				3D41A945258A035600C80169 /* SnapshotTestingAPNGImageTests.swift in Sources */,
+				3D29A1F5273E497000F92D46 /* NewsFeedSnapshotTests.swift in Sources */,
 				3DD79B712488D51600954004 /* SnapshotTestCase.swift in Sources */,
 				B3C4CA0D2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift in Sources */,
 				3DD79B732488D6E600954004 /* CGAffineTransformInterpolationSnapshotTests.swift in Sources */,
@@ -898,6 +966,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9CF2FF630BA8BCCB209601B /* Pods-Stagehand-UnitTests.debug.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Stagehand_Example.app/Stagehand_Example";
 				DEVELOPMENT_TEAM = 6385SJ58J2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -920,6 +989,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FC42083017E18C3B5F030B47 /* Pods-Stagehand-UnitTests.release.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Stagehand_Example.app/Stagehand_Example";
 				DEVELOPMENT_TEAM = 6385SJ58J2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

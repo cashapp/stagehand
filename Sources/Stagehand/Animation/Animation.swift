@@ -178,6 +178,7 @@ public struct Animation<ElementType: AnyObject> {
     ) {
         if var keyframeSeries = keyframeSeriesByProperty[property] as? KeyframeSeries<PropertyType> {
             keyframeSeries.valuesByRelativeTimestamp[relativeTimestamp] = relativeValue
+            keyframeSeries.computedValuesByRelativeTimestamp[relativeTimestamp] = nil
             keyframeSeriesByProperty[property] = keyframeSeries
 
         } else {
@@ -185,6 +186,29 @@ public struct Animation<ElementType: AnyObject> {
                 property: property,
                 valuesByRelativeTimestamp: [
                     relativeTimestamp: relativeValue
+                ],
+                computedValuesByRelativeTimestamp: [:]
+            )
+            keyframeSeriesByProperty[property] = keyframeSeries
+        }
+    }
+
+    public mutating func addKeyframe<PropertyType: AnimatableProperty>(
+        for property: WritableKeyPath<ElementType, PropertyType>,
+        at relativeTimestamp: Double,
+        computedValue: @escaping (_ element: ElementType) -> PropertyType
+    ) {
+        if var keyframeSeries = keyframeSeriesByProperty[property] as? KeyframeSeries<PropertyType> {
+            keyframeSeries.computedValuesByRelativeTimestamp[relativeTimestamp] = computedValue
+            keyframeSeries.valuesByRelativeTimestamp[relativeTimestamp] = nil
+            keyframeSeriesByProperty[property] = keyframeSeries
+
+        } else {
+            let keyframeSeries = KeyframeSeries(
+                property: property,
+                valuesByRelativeTimestamp: [:],
+                computedValuesByRelativeTimestamp: [
+                    relativeTimestamp: computedValue
                 ]
             )
             keyframeSeriesByProperty[property] = keyframeSeries
@@ -491,6 +515,20 @@ public struct Animation<ElementType: AnyObject> {
         }
     }
 
+    internal mutating func computeKeyframeProperties(for element: ElementType) {
+        keyframeSeriesByProperty = keyframeSeriesByProperty.mapValues { series in
+            var series = series
+            series.computeProperties(for: element)
+            return series
+        }
+
+        children = children.map { child in
+            var child = child
+            child.animation.computeKeyframeProperties(for: element)
+            return child
+        }
+    }
+
     // MARK: - Private Methods
 
     private func keyframeSeries(for property: PartialKeyPath<ElementType>) -> (AnyKeyframeSeries, startingAt: Double)? {
@@ -552,6 +590,8 @@ extension Animation {
 
         var valuesByRelativeTimestamp: [Double: (PropertyType) -> PropertyType]
 
+        var computedValuesByRelativeTimestamp: [Double: (ElementType) -> PropertyType]
+
         // MARK: - Public Methods
 
         func apply(to element: inout ElementType, at relativeTimestamp: Double, initialValue: PropertyType) {
@@ -594,7 +634,12 @@ extension Animation {
 
             return (mappedProperty, .init(
                 property: mappedProperty,
-                valuesByRelativeTimestamp: valuesByRelativeTimestamp
+                valuesByRelativeTimestamp: valuesByRelativeTimestamp,
+                computedValuesByRelativeTimestamp: computedValuesByRelativeTimestamp.mapValues { computedValue in
+                    return { element in
+                        computedValue(element[keyPath: subelementPath])
+                    }
+                }
             ))
         }
 
@@ -622,6 +667,14 @@ extension Animation {
             return (keyPath, keyframeSeries)
         }
 
+        mutating func computeProperties(for element: AnyObject) {
+            let element = element as! ElementType
+            for (relativeTimestamp, computedValue) in computedValuesByRelativeTimestamp {
+                valuesByRelativeTimestamp[relativeTimestamp] = { _ in computedValue(element) }
+            }
+            computedValuesByRelativeTimestamp = [:]
+        }
+
     }
 
 }
@@ -637,6 +690,8 @@ internal protocol AnyKeyframeSeries {
     func mapForParentElement<ParentElementType: AnyObject>(
         _ subelementPath: PartialKeyPath<ParentElementType>
     ) -> (PartialKeyPath<ParentElementType>, AnyKeyframeSeries)
+
+    mutating func computeProperties(for element: AnyObject)
 
 }
 

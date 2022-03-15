@@ -106,6 +106,21 @@ public struct AnimationGroup {
         )
     }
 
+//    public mutating func addAnimationGroup(
+//        _ childGroup: AnimationGroup,
+//        startingAt relativeStartTimestamp: Double,
+//        relativeDuration: Double
+//    ) {
+//        let elementIndex = elementContainer.addElement(childGroup.elementContainer)
+//
+//        animation.addChild(
+//            childGroup.animation,
+//            for: \ElementContainer.[elementIndex],
+//            startingAt: relativeStartTimestamp,
+//            relativeDuration: relativeDuration
+//        )
+//    }
+
     /// Add a completion handler to be called when the animation completes.
     public mutating func addCompletionHandler(
         _ completion: @escaping (_ finished: Bool) -> Void
