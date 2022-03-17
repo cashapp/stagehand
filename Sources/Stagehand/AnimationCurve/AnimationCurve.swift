@@ -27,6 +27,10 @@ public protocol AnimationCurve {
 
     func adjustedProgress(for progress: Double) -> Double
 
+    /// The raw (uncurved) progress values that correspond to the specified adjusted (curved) progress.
+    ///
+    /// Note that unlike the raw -> adjusted calculation that always results in one value, there may be multiple raw
+    /// values corresponding to one adjusted value. In other words, X(t) is monotonic, but Y(t) is not.
     func rawProgress(for adjustedProgress: Double) -> [Double]
 
 }
