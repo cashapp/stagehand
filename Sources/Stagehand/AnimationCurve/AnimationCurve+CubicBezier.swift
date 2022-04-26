@@ -55,7 +55,7 @@ public struct CubicBezierAnimationCurve: AnimationCurve {
         //      = (-X₀ + 3 * X₁ - 3 * X₂ + X₃) * t^3 + (3 * X₀ - 6 * X₁ + 3 * X₂) * t^2 + (-3 * X₀ + 3 * X₁) * t + X₀
         //
         // The first point is always (0,0), so X₀ = 0.
-        // X₁ and X₂ are out control points, so `controlPoint1.x` and `controlPoint2.x`, respectively.
+        // X₁ and X₂ are our control points, so `controlPoint1.x` and `controlPoint2.x`, respectively.
         // The last point is always (1,1), so X₃ = 1.
         //
         // (3 * X₁ - 3 * X₂ + 1) * t^3 + (-6 * X₁ + 3 * X₂) * t^2 + (3 * X₁) * t - X(t) = 0
@@ -81,6 +81,56 @@ public struct CubicBezierAnimationCurve: AnimationCurve {
         let y2 = 3 * (1 - t) * t * t * controlPoint2.y
         let y3 = t * t * t
         return y1 + y2 + y3
+    }
+
+    public func rawProgress(for adjustedProgress: Double) -> [Double] {
+        // The animation curve is defined as a cubic bezier curve where the x-axis is the raw progress and the y-axis is
+        // the adjusted progress.
+
+        // First, we need to calculate the `t` of the curve given the `y` value.
+        //
+        // Y(t) = (1-t)^3 * Y₀ + 3*(1-t)^2 * t * Y₁ + 3*(1-t) * t^2 * Y₂ + t^3 * Y₃
+        //      = (-Y₀ + 3 * Y₁ - 3 * Y₂ + Y₃) * t^3 + (3 * Y₀ - 6 * Y₁ + 3 * Y₂) * t^2 + (-3 * Y₀ + 3 * Y₁) * t + Y₀
+        //
+        // The first point is always (0,0), so Y₀ = 0.
+        // Y₁ and Y₂ are our control points, so `controlPoint1.y` and `controlPoint2.y`, respectively.
+        // The last point is always (1,1), so Y₃ = 1.
+        //
+        // (3 * Y₁ - 3 * Y₂ + 1) * t^3 + (-6 * Y₁ + 3 * Y₂) * t^2 + (3 * Y₁) * t - Y(t) = 0
+
+        let ts = cubicRoots(
+            a: (3 * controlPoint1.y - 3 * controlPoint2.y + 1),
+            b: (-6 * controlPoint1.y + 3 * controlPoint2.y),
+            c: (3 * controlPoint1.y),
+            d: -adjustedProgress
+        )
+
+        var xs: [Double] = ts.map { t in
+            // Now that we have the value of `t`, we can calculate our raw progress by solving X(t).
+            //
+            // X(t) = (1-t)^3 * X₀ + 3*(1-t)^2 * t * X₁ + 3*(1-t) * t^2 * X₂ + t^3 * X₃
+            //      = 3 * (1-t)^2 * t * X₁ + 3 * (1-t) * t^2 * X₂ + t^3
+
+            let x1 = 3 * (1 - t) * (1 - t) * t * controlPoint1.x
+            let x2 = 3 * (1 - t) * t * t * controlPoint2.x
+            let x3 = t * t * t
+            return x1 + x2 + x3
+        }
+
+        // Since the curve always starts at `(0,0)` and ends at `(1,1)`, these values should always be the same. Early
+        // return with the appropriate values here to avoid extra work and potential for rounding error.
+        if adjustedProgress == 0 && !xs.contains(0) {
+            xs.append(0)
+        } else if adjustedProgress == 1 && !xs.contains(1) {
+            xs.append(1)
+        }
+
+        guard !xs.isEmpty else {
+            // We can't determine the roots of the curve, so fall back to a linear curve.
+            return [adjustedProgress]
+        }
+
+        return xs
     }
 
     // MARK: - Private Methods

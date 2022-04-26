@@ -97,6 +97,7 @@ public final class AnimationInstance {
 
     private let perFrameExecutionBlocks: [(Double) -> Void]
 
+    /// The relative timestamps corresponding to keyframes in the animation, without any curves applied.
     private let keyframeRelativeTimestamps: [Double]
 
     private var lastRenderedFrameRelativeTimestamp: Double?
@@ -144,6 +145,10 @@ public final class AnimationInstance {
         executor.executeBlocks(from: startingRelativeTimestamp, fromInclusivity, to: endingRelativeTimestamp)
     }
 
+    /// Renders the frame at the specific timestamp, including rendering any keyframes between the timestamp between the
+    /// previously rendered frame and the specific timestamp.
+    ///
+    /// - parameter relativeTimestamp: The relative timestamp to render, with no curves applied.
     func renderFrame(
         at relativeTimestamp: Double
     ) {
