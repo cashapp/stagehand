@@ -51,7 +51,7 @@ enum Platform: String, CustomStringConvertible {
 	var destination: String {
 		switch self {
 		case .iOS_13:
-			return "platform=iOS Simulator,OS=13.3,name=iPhone 11 Pro"
+			return "platform=iOS Simulator,OS=13.7,name=iPhone 11 Pro"
 		}
 	}
 
