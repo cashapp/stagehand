@@ -25,6 +25,21 @@ public final class AnimationQueue<ElementType: AnyObject> {
         self.element = element
     }
 
+    // MARK: - Public Properties
+
+    public var hasInProgressAnimation: Bool {
+        guard let currentAnimation = queue.first else {
+            return false
+        }
+
+        switch currentAnimation.instance.status {
+        case .pending, .animating:
+            return true
+        case .complete, .canceled:
+            return false
+        }
+    }
+
     // MARK: - Private Properties
 
     private let element: ElementType
