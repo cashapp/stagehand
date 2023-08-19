@@ -20,6 +20,7 @@
 		3D595522247D0B3D00284D45 /* CATransform3DDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D595521247D0B3D00284D45 /* CATransform3DDecompositionTests.swift */; };
 		3D5E5D9024DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5E5D8F24DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift */; };
 		3D5F2D3B23E63E3600EEFA89 /* AnimationGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */; };
+		3D6DCCDE2A8FE8C300BA5600 /* TextMorphAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6DCCDD2A8FE8C300BA5600 /* TextMorphAnimationViewController.swift */; };
 		3D75A7BD228FED9900743166 /* AnimationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75A7BC228FED9900743166 /* AnimationFactory.swift */; };
 		3D75A7C3229284C600743166 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75A7C2229284C600743166 /* DemoViewController.swift */; };
 		3D75A7C62292892B00743166 /* SimpleAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75A7C52292892B00743166 /* SimpleAnimationsViewController.swift */; };
@@ -93,6 +94,7 @@
 		3D595521247D0B3D00284D45 /* CATransform3DDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CATransform3DDecompositionTests.swift; sourceTree = "<group>"; };
 		3D5E5D8F24DFE141003AF155 /* CATransform3DInterpolationSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CATransform3DInterpolationSnapshotTests.swift; sourceTree = "<group>"; };
 		3D5F2D3923E63E1100EEFA89 /* AnimationGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationGroupTests.swift; sourceTree = "<group>"; };
+		3D6DCCDD2A8FE8C300BA5600 /* TextMorphAnimationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextMorphAnimationViewController.swift; sourceTree = "<group>"; };
 		3D75A7BC228FED9900743166 /* AnimationFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationFactory.swift; sourceTree = "<group>"; };
 		3D75A7C2229284C600743166 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		3D75A7C52292892B00743166 /* SimpleAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAnimationsViewController.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 		3D763D0525252E6D00D9525C /* Demo Screens */ = {
 			isa = PBXGroup;
 			children = (
+				3D6DCCDD2A8FE8C300BA5600 /* TextMorphAnimationViewController.swift */,
 			);
 			name = "Demo Screens";
 			sourceTree = "<group>";
@@ -643,6 +646,7 @@
 				3D875F002323542500670803 /* PerformanceBenchmarkViewController.swift in Sources */,
 				3D75A7BD228FED9900743166 /* AnimationFactory.swift in Sources */,
 				3D1D304C22F01136003E392C /* AnimationCurveViewController.swift in Sources */,
+				3D6DCCDE2A8FE8C300BA5600 /* TextMorphAnimationViewController.swift in Sources */,
 				3D2C05912489F807003F5A4B /* CGAffineTransformDebuggingViewController.swift in Sources */,
 				3D75A7C3229284C600743166 /* DemoViewController.swift in Sources */,
 				3D75A7C82292910B00743166 /* RelativeAnimationsViewController.swift in Sources */,

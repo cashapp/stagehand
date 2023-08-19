@@ -37,6 +37,7 @@ final class RootViewController: UITableViewController {
 
     /// Screens that show an example of a complete animation.
     private let demoScreens: [RowModel] = [
+        ("Text Morph", { TextMorphAnimationViewController() }),
     ]
 
     /// Screens that show how a specific feature can be used.
