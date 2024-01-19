@@ -9,14 +9,16 @@ on:
 jobs:
   xcode-build:
     name: Xcode Build
-    runs-on: macOS-11
+    runs-on: macOS-13
     strategy:
       matrix:
-        platform: ['iOS_13']
+        platform: ['iOS_17']
       fail-fast: false
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.1.app
       - name: Bundle Install
         run: bundle install --gemfile=Example/Gemfile
       - name: Prepare Simulator Runtimes
@@ -33,10 +35,12 @@ jobs:
           path: .build/derivedData/**/Logs/Test/*.xcresult
   pod-lint:
     name: Pod Lint
-    runs-on: macOS-11
+    runs-on: macOS-13
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.1.app
       - name: Bundle Install
         run: bundle install --gemfile=Example/Gemfile
       - name: Pod Install
@@ -47,14 +51,16 @@ jobs:
         run: bundle exec --gemfile=Example/Gemfile pod lib lint --verbose --fail-fast --include-podspecs=Stagehand.podspec StagehandTesting.podspec
   spm:
     name: SPM Build
-    runs-on: macOS-11
+    runs-on: macOS-13
     strategy:
       matrix:
-        platform: ['iOS_13']
+        platform: ['iOS_17']
       fail-fast: false
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.1.app
       - name: Prepare Simulator Runtimes
         run: Scripts/github/prepare-simulators.sh ${{ matrix.platform }}
       - name: Build
@@ -63,6 +69,8 @@ jobs:
     name: Bazel
     runs-on: macOS-13
     steps:
+        - name: Select Xcode
+          run: sudo xcode-select -s /Applications/Xcode_15.1.app
         - name: Checkout Repo
           uses: actions/checkout@v2
         - name: Build
