@@ -14,7 +14,13 @@
 //  limitations under the License.
 //
 
+#if BAZEL_PACKAGE
+@testable import StagehandTestingCore
+import iOSSnapshotTestCase
+#else
 import FBSnapshotTestCase
+#endif
+
 import ImageIO
 
 @testable import Stagehand
