@@ -35,3 +35,6 @@ timeline.xctimeline
 generated/
 .build/
 .swiftpm/
+
+# Bazel
+bazel-*
