@@ -1,4 +1,4 @@
-// swift-tools-version:5.0.1
+// swift-tools-version:5.8
 
 //
 //  Copyright 2020 Square Inc.
@@ -38,5 +38,3 @@ let package = Package(
 	],
 	swiftLanguageVersions: [.v5]
 )
-
-let version = Version(4, 0, 0)

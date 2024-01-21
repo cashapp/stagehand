@@ -1,17 +1,17 @@
 PODS:
-  - iOSSnapshotTestCase (6.2.0):
-    - iOSSnapshotTestCase/SwiftSupport (= 6.2.0)
-  - iOSSnapshotTestCase/Core (6.2.0)
-  - iOSSnapshotTestCase/SwiftSupport (6.2.0):
+  - iOSSnapshotTestCase (8.0.0):
+    - iOSSnapshotTestCase/SwiftSupport (= 8.0.0)
+  - iOSSnapshotTestCase/Core (8.0.0)
+  - iOSSnapshotTestCase/SwiftSupport (8.0.0):
     - iOSSnapshotTestCase/Core
   - SnapshotTesting (1.7.0)
-  - Stagehand (4.0.0)
-  - StagehandTesting/iOSSnapshotTestCase (4.0.0):
-    - iOSSnapshotTestCase (~> 6.1)
-    - Stagehand (= 4.0.0)
-  - StagehandTesting/SnapshotTesting (4.0.0):
+  - Stagehand (5.0.0)
+  - StagehandTesting/iOSSnapshotTestCase (5.0.0):
+    - iOSSnapshotTestCase (~> 8.0)
+    - Stagehand (= 5.0.0)
+  - StagehandTesting/SnapshotTesting (5.0.0):
     - SnapshotTesting (~> 1.7)
-    - Stagehand (= 4.0.0)
+    - Stagehand (= 5.0.0)
 
 DEPENDENCIES:
   - SnapshotTesting (= 1.7.0)
@@ -31,11 +31,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
+  iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
   SnapshotTesting: 273b614fcc60fac7d9f613f6648afa91a7da36be
-  Stagehand: 29ee26a0690ebf90a5ea45e86fd88b865baf5403
-  StagehandTesting: 3354a5300e7fc6d1ba9ab182762feff9e80cb6de
+  Stagehand: 868fc0e524c596cfd47476ef99ee8e95a1d62222
+  StagehandTesting: 50d682aa930bcd8c02858de3b57839839e1d3ff2
 
-PODFILE CHECKSUM: b4841bd82e57283ff97d83f4bb89137cc01f6102
+PODFILE CHECKSUM: 2d1b0e07675666ae7518e07f18a32914dd33978a
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.14.3
