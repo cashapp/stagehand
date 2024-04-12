@@ -148,6 +148,41 @@ public struct AnimationGroup {
         )
     }
 
+    /// Perform the animations in the group.
+    ///
+    /// The duration for each cycle of the animation group will be determined in order of preference by:
+    /// 1. An explicit duration, if provided via the `duration` parameter
+    /// 2. The animation group's implicit duration, as specified by the `implicitDuration` property
+    ///
+    /// The repeat style for the animation group will be determined in order of preference by:
+    /// 1. An explicit repeat style, if provided via the `repeatStyle` parameter
+    /// 2. The animation group's implicit repeat style, as specified by the `implicitRepeatStyle` property
+    ///
+    /// - parameter delay: The time interval to wait before performing the animation.
+    /// - parameter duration: The duration to use for each cycle the animation group.
+    /// - parameter repeatStyle: The repeat style to use for the animation group.
+    /// - parameter groupCompletion: The completion block to call when the animation has concluded, with a parameter
+    /// indicated whether the animation completed (as opposed to being cancelled).
+    /// - returns: An animation instance that can be used to check the status of or cancel the animation group.
+    @discardableResult
+    public func perform(
+        delay: TimeInterval = 0,
+        durationProvider: AnimationDurationProvider,
+        repeatStyle: AnimationRepeatStyle? = nil,
+        completion groupCompletion: ((_ finished: Bool) -> Void)? = nil
+    ) -> AnimationInstance {
+        return animation.perform(
+            on: elementContainer,
+            delay: delay,
+            durationProvider: durationProvider,
+            repeatStyle: repeatStyle,
+            completion: { finished in
+                self.completions.forEach { $0(finished) }
+                groupCompletion?(finished)
+            }
+        )
+    }
+
 }
 
 // MARK: -
