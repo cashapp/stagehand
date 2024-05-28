@@ -86,6 +86,12 @@ open Stagehand.xcworkspace
 
 From here, you can run the demo app and see a variety of examples for how to use the framework. In that workspace, there is also a playground that includes documentation and tutorials for how each feature works.
 
+## Requirements
+
+* iOS 13.0 or later
+* Xcode 15.0 or later
+* Swift 5.9
+
 ## Contributing
 
 We’re glad you’re interested in Stagehand, and we’d love to see where you take it. Please read our [contributing guidelines](CONTRIBUTING.md) prior to submitting a Pull Request.
