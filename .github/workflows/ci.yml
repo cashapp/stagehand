@@ -9,34 +9,36 @@ on:
 jobs:
   xcode-build:
     name: Xcode Build
-    runs-on: macOS-11
+    runs-on: macOS-14
     strategy:
       matrix:
-        platform: ['iOS_13']
+        platform: ['iOS_17']
       fail-fast: false
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+      - name: Select Xcode Version
+        run: sudo xcode-select --switch /Applications/Xcode_15.4.app/Contents/Developer
       - name: Bundle Install
         run: bundle install --gemfile=Example/Gemfile
-      - name: Prepare Simulator Runtimes
-        run: Scripts/github/prepare-simulators.sh ${{ matrix.platform }}
       - name: Pod Install
         run: bundle exec --gemfile=Example/Gemfile pod install --project-directory=Example
       - name: Build and Test
         run: Scripts/build.swift xcode ${{ matrix.platform }} `which xcpretty`
       - name: Upload Results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: Test Results
           path: .build/derivedData/**/Logs/Test/*.xcresult
   pod-lint:
     name: Pod Lint
-    runs-on: macOS-11
+    runs-on: macOS-14
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+      - name: Select Xcode Version
+        run: sudo xcode-select --switch /Applications/Xcode_15.4.app/Contents/Developer
       - name: Bundle Install
         run: bundle install --gemfile=Example/Gemfile
       - name: Pod Install
@@ -47,23 +49,25 @@ jobs:
         run: bundle exec --gemfile=Example/Gemfile pod lib lint --verbose --fail-fast --include-podspecs=Stagehand.podspec StagehandTesting.podspec
   spm:
     name: SPM Build
-    runs-on: macOS-11
+    runs-on: macOS-14
     strategy:
       matrix:
-        platform: ['iOS_13']
+        platform: ['iOS_17']
       fail-fast: false
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Prepare Simulator Runtimes
-        run: Scripts/github/prepare-simulators.sh ${{ matrix.platform }}
+        uses: actions/checkout@v4
+      - name: Select Xcode Version
+        run: sudo xcode-select --switch /Applications/Xcode_15.4.app/Contents/Developer
       - name: Build
         run: Scripts/build.swift spm ${{ matrix.platform }}
   bazel:
     name: Bazel
-    runs-on: macOS-13
+    runs-on: macOS-14
     steps:
-        - name: Checkout Repo
-          uses: actions/checkout@v2
-        - name: Build
-          run: bazel build //...
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Select Xcode Version
+        run: sudo xcode-select --switch /Applications/Xcode_15.4.app/Contents/Developer
+      - name: Build
+        run: bazel build //...
