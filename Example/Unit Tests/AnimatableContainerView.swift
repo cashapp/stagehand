@@ -49,6 +49,7 @@ final class AnimatableContainerView: UIView {
 
 extension AnimatableContainerView {
 
+    @MainActor
     final class Proxy {
 
         // MARK: - Life Cycle

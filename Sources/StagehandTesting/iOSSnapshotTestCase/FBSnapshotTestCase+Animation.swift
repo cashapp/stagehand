@@ -38,6 +38,7 @@ extension FBSnapshotTestCase {
     /// snapshot tests in a given test method. Defaults to no identifier.
     /// - parameter file: The file in which the test result should be attributed.
     /// - parameter line: The line in which the test result should be attributed.
+    @MainActor
     public func SnapshotVerify<ElementType: UIView>(
         animation: Animation<ElementType>,
         on element: ElementType,
@@ -74,6 +75,7 @@ extension FBSnapshotTestCase {
     /// snapshot tests in a given test method. Defaults to no identifier.
     /// - parameter file: The file in which the test result should be attributed.
     /// - parameter line: The line in which the test result should be attributed.
+    @MainActor
     public func SnapshotVerify<ElementType>(
         animation: Animation<ElementType>,
         on element: ElementType,
@@ -111,6 +113,7 @@ extension FBSnapshotTestCase {
     /// snapshot tests in a given test method. Defaults to no identifier.
     /// - parameter file: The file in which the test result should be attributed.
     /// - parameter line: The line in which the test result should be attributed.
+    @MainActor
     public func SnapshotVerify(
         animationGroup: AnimationGroup,
         using view: UIView,

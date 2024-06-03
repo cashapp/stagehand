@@ -23,6 +23,7 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
 
     // MARK: - Tests
 
+    @MainActor
     func testSimpleAnimationSnapshot() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -39,6 +40,7 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
         assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
     }
 
+    @MainActor
     func testAnimationSnapshotWithRepeatingAnimation() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -55,6 +57,7 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
         assertSnapshot(matching: animation, as: .animatedImage(on: view), named: nameForDevice())
     }
 
+    @MainActor
     func testAnimationWithNonViewElementSnapshot() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -73,6 +76,7 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
         assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
     }
 
+    @MainActor
     func testAnimationGroupSnapshot() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -94,6 +98,7 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
 
     // MARK: - Private Methods
 
+    @MainActor
     private func nameForDevice(baseName: String? = nil) -> String {
         let size = UIScreen.main.bounds.size
         let scale = UIScreen.main.scale

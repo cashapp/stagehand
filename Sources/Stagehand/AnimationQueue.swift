@@ -17,6 +17,7 @@
 import Foundation
 
 /// An `AnimationQueue` is a container for a set of animations that should be executed in sequence.
+@MainActor
 public final class AnimationQueue<ElementType: AnyObject> {
 
     // MARK: - Life Cycle

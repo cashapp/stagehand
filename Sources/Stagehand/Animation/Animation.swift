@@ -34,6 +34,7 @@ import UIKit
 ///
 /// Animations are composable. Complex animations can be composed of smaller logical pieces by constructing a hierarchy
 /// of child animations.
+@MainActor
 public struct Animation<ElementType: AnyObject> {
 
     // MARK: - Public Types
@@ -518,7 +519,7 @@ public struct Animation<ElementType: AnyObject> {
 
 // MARK: -
 
-public enum AnimationRepeatStyle: Equatable {
+public enum AnimationRepeatStyle: Equatable, Sendable {
 
     /// Animation will execute `count` times.
     ///

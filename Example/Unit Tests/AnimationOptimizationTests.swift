@@ -22,6 +22,7 @@ final class AnimationOptimizationTests: XCTestCase {
 
     // MARK: - Tests - Ubiquitous Bezier Curve
 
+    @MainActor
     func testUbiquitousBezierCurveElevation_singleChild() {
         var parentAnimation = Animation<UIView>()
 
@@ -36,6 +37,7 @@ final class AnimationOptimizationTests: XCTestCase {
         XCTAssert(optimizedAnimation.children.allSatisfy { $0.animation.curve is LinearAnimationCurve })
     }
 
+    @MainActor
     func testUbiquitousBezierCurveElevation_multipleChildren() {
         var parentAnimation = Animation<UIView>()
 
@@ -55,6 +57,7 @@ final class AnimationOptimizationTests: XCTestCase {
         XCTAssert(optimizedAnimation.children.allSatisfy { $0.animation.curve is LinearAnimationCurve })
     }
 
+    @MainActor
     func testUbiquitousBezierCurveElevation_grandchild() {
         var parentAnimation = Animation<UIView>()
 
@@ -75,6 +78,7 @@ final class AnimationOptimizationTests: XCTestCase {
         })
     }
 
+    @MainActor
     func testUbiquitousBezierCurveElevation_notElevatedWhenParentHasContent() {
         var parentAnimation = Animation<UIView>()
         parentAnimation.addKeyframe(for: \.alpha, at: 0, value: 1)
@@ -92,6 +96,7 @@ final class AnimationOptimizationTests: XCTestCase {
         })
     }
 
+    @MainActor
     func testUbiquitousBezierCurveElevation_notElevatedWhenParentCurveIsNotLinear() {
         var parentAnimation = Animation<UIView>()
         parentAnimation.curve = ParabolicEaseInAnimationCurve()
@@ -109,6 +114,7 @@ final class AnimationOptimizationTests: XCTestCase {
         })
     }
 
+    @MainActor
     func testUbiquitousBezierCurveElevation_notElevatedWhenAChildDoesNotCoverFullInterval() {
         var parentAnimation = Animation<UIView>()
 
@@ -130,6 +136,7 @@ final class AnimationOptimizationTests: XCTestCase {
         })
     }
 
+    @MainActor
     func testUbiquitousBezierCurveElevation_notElevatedWhenNotAllChildrenHaveSameCurve() {
         var parentAnimation = Animation<UIView>()
 
@@ -152,6 +159,7 @@ final class AnimationOptimizationTests: XCTestCase {
 
     // MARK: - Tests - Remove Obsolete Keyframes
 
+    @MainActor
     func testObsoleteKeyframeRemoval_selfProperty() {
         var parentAnimation = Animation<UIView>()
         parentAnimation.addKeyframe(for: \.alpha, at: 0, value: 1)
@@ -167,6 +175,7 @@ final class AnimationOptimizationTests: XCTestCase {
         XCTAssertEqual(Array(optimizedAnimation.children[0].animation.keyframeSeriesByProperty.keys), [\UIView.transform])
     }
 
+    @MainActor
     func testObsoleteKeyframeRemoval_subelementProperty() {
         var parentAnimation = Animation<Element>()
         parentAnimation.addKeyframe(for: \.subelement.propertyOne, at: 0, value: 1)
@@ -182,6 +191,7 @@ final class AnimationOptimizationTests: XCTestCase {
         XCTAssertEqual(Array(optimizedAnimation.children[0].animation.keyframeSeriesByProperty.keys), [\Element.subelement.propertyTwo])
     }
 
+    @MainActor
     func testObsoleteKeyframeRemoval_removesEmptyChildAfterRemovingKeyframes() {
         var parentAnimation = Animation<Element>()
         parentAnimation.addKeyframe(for: \.subelement.propertyOne, at: 0, value: 1)

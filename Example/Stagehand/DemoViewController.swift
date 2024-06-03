@@ -67,7 +67,7 @@ class DemoViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         let topInset = [
-            UIApplication.shared.statusBarFrame.height,
+            view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0,
             navigationController?.navigationBar.frame.height,
         ].compactMap { $0 }.reduce(0, +)
 

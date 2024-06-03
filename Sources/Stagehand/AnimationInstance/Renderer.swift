@@ -16,6 +16,7 @@
 
 import Foundation
 
+@MainActor
 internal final class Renderer<ElementType: AnyObject>: AnyRenderer {
 
     // MARK: - Life Cycle
@@ -70,6 +71,7 @@ internal final class Renderer<ElementType: AnyObject>: AnyRenderer {
 
 // MARK: -
 
+@MainActor
 internal protocol AnyRenderer {
 
     func canRenderFrame() -> Bool

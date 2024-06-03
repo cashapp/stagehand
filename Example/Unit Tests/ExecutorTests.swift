@@ -22,6 +22,7 @@ final class ExecutorTests: XCTestCase {
 
     // MARK: - Tests - Property Assignment
 
+    @MainActor
     func testPropertyAssignment() {
         let initialValue = "A"
         let midpointValue = "B"
@@ -60,6 +61,7 @@ final class ExecutorTests: XCTestCase {
         XCTAssertEqual(element.property, initialValue)
     }
 
+    @MainActor
     func testPropertyAssignmentOnExactFrame() {
         let initialValue = "A"
         let midpointValue = "B"
@@ -81,6 +83,7 @@ final class ExecutorTests: XCTestCase {
         XCTAssertEqual(element.property, midpointValue)
     }
 
+    @MainActor
     func testPropertyAssignmentSkippingFrames() {
         let initialValue = "A"
         let midpointValue = "B"
@@ -115,6 +118,7 @@ final class ExecutorTests: XCTestCase {
         XCTAssertEqual(element.property, initialValue)
     }
 
+    @MainActor
     func testPropertyAssignmentInChildAnimation() {
         let initialValue = "-"
         let startValue = "A"
@@ -171,6 +175,7 @@ final class ExecutorTests: XCTestCase {
         XCTAssertEqual(element.property, initialValue)
     }
 
+    @MainActor
     func testPropertyAssignmentWithCurvedAnimation() {
         let initialValue = "A"
         let midpointValue = "B"
@@ -213,6 +218,7 @@ final class ExecutorTests: XCTestCase {
         XCTAssertEqual(element.property, initialValue)
     }
 
+    @MainActor
     func testPropertyAssignmentInCurvedChildAnimation() {
         let initialValue = "-"
         let startValue = "A"
@@ -275,6 +281,7 @@ final class ExecutorTests: XCTestCase {
 
     // MARK: - Tests - Execution Blocks
 
+    @MainActor
     func testExecutionBlocks() {
         var executedBlocks: [String] = []
 
@@ -338,6 +345,7 @@ final class ExecutorTests: XCTestCase {
         XCTAssertEqual(executedBlocks, ["C'", "B'", "A'"])
     }
 
+    @MainActor
     func testExecutionBlocksInChildAnimation() {
         var executedBlocks: [String] = []
 
@@ -399,6 +407,7 @@ final class ExecutorTests: XCTestCase {
         XCTAssertEqual(executedBlocks, ["C'", "B'", "A'"])
     }
 
+    @MainActor
     func testExecutionBlocksWithCurvedAnimation() {
         var executedBlocks: [String] = []
 
@@ -440,6 +449,7 @@ final class ExecutorTests: XCTestCase {
         XCTAssertEqual(executedBlocks, [])
     }
 
+    @MainActor
     func testExecutionBlocksInCurvedChildAnimation() {
         var executedBlocks: [String] = []
 

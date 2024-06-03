@@ -1023,6 +1023,6 @@ private enum Factory {
     // differentiate between not being added to the run loop.
     static let startTime: CFTimeInterval = 1000
 
-    static let timeFactory: () -> CFTimeInterval = { Factory.startTime }
+    static let timeFactory: @Sendable () -> CFTimeInterval = { Factory.startTime }
 
 }

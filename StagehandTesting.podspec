@@ -7,9 +7,9 @@ Pod::Spec.new do |s|
   s.author           = 'Square'
   s.source           = { :git => 'https://github.com/CashApp/Stagehand.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '12.0'
+  s.ios.deployment_target = '13.0'
 
-  s.swift_version = '5.0.1'
+  s.swift_version = '5.9'
 
   # The dependency on Stagehand is pinned to the same version as StagehandTesting. This is because
   # StagehandTesting depends on internal methods inside Stagehand, so the normal rules of semantic

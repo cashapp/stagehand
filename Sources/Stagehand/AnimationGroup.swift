@@ -26,6 +26,7 @@ import Foundation
 /// Unlike normal animations, animation groups hold a strong reference to each of the elements they animate. This means
 /// that the animation group must be cancelled manually when all other strong references to the elements are removed if
 /// the elements should be deallocated.
+@MainActor
 public struct AnimationGroup {
 
     // MARK: - Life Cycle

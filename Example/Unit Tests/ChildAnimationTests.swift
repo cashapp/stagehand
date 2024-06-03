@@ -22,6 +22,7 @@ final class ChildAnimationTests: XCTestCase {
 
     // MARK: - Tests - Keyframes
 
+    @MainActor
     func testKeyframes_simpleConfiguration() {
         var childAnimation = Animation<Subelement>()
         childAnimation.addKeyframe(for: \.propertyOne, at: 0, value: 0)
@@ -48,6 +49,7 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframes_twoChildrenForSameSubelement() {
         var childAnimation1 = Animation<Subelement>()
         childAnimation1.addKeyframe(for: \.propertyOne, at: 0, value: 0)
@@ -78,6 +80,7 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframes_childOverPartialCycle() {
         var childAnimation = Animation<Subelement>()
         childAnimation.addKeyframe(for: \.propertyOne, at: 0, value: 0)
@@ -110,6 +113,7 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframes_childOverriddenByParent() {
         var childAnimation = Animation<Subelement>()
         childAnimation.addKeyframe(for: \.propertyOne, at: 0, value: 1)
@@ -141,6 +145,7 @@ final class ChildAnimationTests: XCTestCase {
 
     // This test is currently disabled because it doesn't handle delaying the start of the second child animation until
     // the first has finished.
+    @MainActor
     func testKeyframes_sequentialChildrenForSameProperty() {
         var downChildAnimation = Animation<Subelement>()
         downChildAnimation.addKeyframe(for: \.propertyOne, at: 0, value: 1)
@@ -182,6 +187,7 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframes_verifyFinalFrameIsRenderedInLinearParent() {
         var childAnimation = Animation<Subelement>()
         childAnimation.addKeyframe(for: \.propertyOne, at: 0, value: 1)
@@ -214,6 +220,7 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframes_verifyFinalFrameIsRenderedInNonLinearParent() {
         var childAnimation = Animation<Subelement>()
         childAnimation.addKeyframe(for: \.propertyOne, at: 0, value: 1)
@@ -246,6 +253,7 @@ final class ChildAnimationTests: XCTestCase {
 
     // MARK: - Tests - Execution Blocks
 
+    @MainActor
     func testExecutionBlocks_fullDurationChild() {
         var executedBlocks: [String] = []
 
@@ -288,6 +296,7 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testExecutionBlocks_partialDurationChildren() {
         var executedBlocks: [String] = []
 
@@ -355,6 +364,7 @@ final class ChildAnimationTests: XCTestCase {
 
     // MARK: - Tests - Property Assignments
 
+    @MainActor
     func testPropertyAssignments_fullDurationChild() {
         var child = Animation<Subelement>()
         child.addAssignment(for: \.propertyOne, at: 0, value: 0)
@@ -386,6 +396,7 @@ final class ChildAnimationTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testPropertyAssignments_partialDurationChildren() {
         var child = Animation<Subelement>()
         child.addAssignment(for: \.propertyOne, at: 0, value: 0)
