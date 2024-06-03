@@ -21,40 +21,49 @@ final class AnimationCurveSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests
 
+    @MainActor
     func testLinear() {
         verifyGraphView(for: LinearAnimationCurve())
     }
 
+    @MainActor
     func testParabolicEaseIn() {
         verifyGraphView(for: ParabolicEaseInAnimationCurve())
     }
 
+    @MainActor
     func testParabolicEaseOut() {
         verifyGraphView(for: ParabolicEaseOutAnimationCurve())
     }
 
+    @MainActor
     func testSinusoidalEaseInEaseOut() {
         verifyGraphView(for: SinusoidalEaseInEaseOutAnimationCurve())
     }
 
+    @MainActor
     func testCubicBezierEaseIn() {
         verifyGraphView(for: CubicBezierAnimationCurve.easeIn)
     }
 
+    @MainActor
     func testCubicBezierEaseOut() {
         verifyGraphView(for: CubicBezierAnimationCurve.easeOut)
     }
 
+    @MainActor
     func testCubicBezierEaseInEaseOut() {
         verifyGraphView(for: CubicBezierAnimationCurve.easeInEaseOut)
     }
 
+    @MainActor
     func testCubicBezierOvershoot() {
         verifyGraphView(for: CubicBezierAnimationCurve(controlPoints: (0.5, 0.0), (0.5, 1.3)))
     }
 
     // MARK: - Private Methods
 
+    @MainActor
     private func verifyGraphView(for curve: AnimationCurve, file: StaticString = #file, line: UInt = #line) {
         let graphSize: CGFloat = 200
         let margin: CGFloat = 20
@@ -72,6 +81,7 @@ final class AnimationCurveSnapshotTests: SnapshotTestCase {
         FBSnapshotVerifyView(containerView, file: file, line: line)
     }
 
+    @MainActor
     private func makeGridLayer(frame: CGRect) -> CAShapeLayer {
         let gridLayer: CAShapeLayer = .init()
         gridLayer.strokeColor = UIColor(white: 0.9, alpha: 1).cgColor
@@ -81,6 +91,7 @@ final class AnimationCurveSnapshotTests: SnapshotTestCase {
         return gridLayer
     }
 
+    @MainActor
     private func makeCurveLayer(frame: CGRect, curve: AnimationCurve) -> CAShapeLayer {
         let curveLayer: CAShapeLayer = .init()
         curveLayer.strokeColor = UIColor.black.cgColor

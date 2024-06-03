@@ -53,6 +53,7 @@ extension Animation: SnapshottableAnimation {}
 
 extension Snapshotting where Value: SnapshottableViewAnimation, Format == UIImage {
 
+    @MainActor
     public static func frameImage(
         on element: Value.ElementType,
         at relativeTimestamp: Double,
@@ -85,6 +86,7 @@ extension Snapshotting where Value: SnapshottableViewAnimation, Format == UIImag
 
 extension Snapshotting where Value: SnapshottableAnimation, Format == UIImage {
 
+    @MainActor
     public static func frameImage(
         on element: Value.ElementType,
         using view: UIView,
@@ -118,6 +120,7 @@ extension Snapshotting where Value: SnapshottableAnimation, Format == UIImage {
 
 extension Snapshotting where Value == AnimationGroup, Format == UIImage {
 
+    @MainActor
     public static func frameImage(
         using view: UIView,
         at relativeTimestamp: Double,

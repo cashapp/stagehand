@@ -21,6 +21,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests
 
+    @MainActor
     func testScale() {
         snapshotVerifyAnimation(
             transforms: [
@@ -30,6 +31,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testRotation() {
         snapshotVerifyAnimation(
             transforms: [
@@ -40,6 +42,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testRotationAcrossBoundary() {
         snapshotVerifyAnimation(
             transforms: [
@@ -49,6 +52,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testScaleAndRotation() {
         snapshotVerifyAnimation(
             transforms: [
@@ -64,6 +68,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testScaleAndRotationWithPerspective() {
         let perspectiveTransform = CATransform3DIdentity.withPerspective(eyePosition: 20)
 
@@ -84,6 +89,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testPerspective() {
         snapshotVerifyAnimation(
             transforms: [
@@ -102,6 +108,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testShear() {
         snapshotVerifyAnimation(
             transforms: [
@@ -116,6 +123,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testZeroScale() {
         snapshotVerifyAnimation(
             transforms: [
@@ -133,6 +141,7 @@ final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
 
     // MARK: - Private Methods
 
+    @MainActor
     private func snapshotVerifyAnimation(
         transforms: [CATransform3D],
         file: StaticString = #file,

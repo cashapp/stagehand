@@ -22,6 +22,7 @@ final class AnimationInstanceTests: XCTestCase {
 
     // MARK: - Tests - Keyframes
 
+    @MainActor
     func testKeyframesWithFixedValues() {
         let element = AnimatableElement(
             propertyOne: 0,
@@ -61,6 +62,7 @@ final class AnimationInstanceTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframesWithRelativeValues() {
         let element = AnimatableElement(
             propertyOne: 2,
@@ -98,6 +100,7 @@ final class AnimationInstanceTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframesWithMissingTerminalValues() {
         let element = AnimatableElement(
             propertyOne: 0
@@ -136,6 +139,7 @@ final class AnimationInstanceTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframesWithMultipleSegments() {
         let element = AnimatableElement(
             propertyOne: 0
@@ -173,6 +177,7 @@ final class AnimationInstanceTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframesOfOptionalProperty() {
         let element = AnimatableElement()
 
@@ -197,6 +202,7 @@ final class AnimationInstanceTests: XCTestCase {
 
     // MARK: - Tests - Property Assignments
 
+    @MainActor
     func testPropertyAssignment() {
         let initialValue = "Hello world"
         let midpointValue = "What's up world"
@@ -241,6 +247,7 @@ final class AnimationInstanceTests: XCTestCase {
 
     // MARK: - Tests - Execution Blocks
 
+    @MainActor
     func testExecutionBlocks() {
         let element = AnimatableElement()
 
@@ -314,6 +321,7 @@ final class AnimationInstanceTests: XCTestCase {
 
     // MARK: - Tests - Per-Frame Execution Blocks
 
+    @MainActor
     func testPerFrameExecutionBlocks() {
         let element = AnimatableElement()
 
@@ -366,6 +374,7 @@ final class AnimationInstanceTests: XCTestCase {
 
     // MARK: - Tests - Animation Curves
 
+    @MainActor
     func testAnimationCurves() {
         let element = AnimatableElement()
 

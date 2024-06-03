@@ -21,6 +21,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests - Frame Snapshots
 
+    @MainActor
     func testSimpleAnimationSnapshot() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -37,6 +38,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         FBSnapshotVerifyView(view, identifier: "start")
     }
 
+    @MainActor
     func testAnimationWithNonViewElementSnapshot() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -55,6 +57,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         FBSnapshotVerifyView(view, identifier: "start")
     }
 
+    @MainActor
     func testAnimationWithExecutionBlocksSnapshot() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -78,6 +81,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests - Animated PNG
 
+    @MainActor
     func testSimpleAnimationSnapshotAPNG() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -88,6 +92,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         SnapshotVerify(animation: animation, on: view)
     }
 
+    @MainActor
     func testSimpleAnimationSnapshotAPNGAtHighFPS() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -98,6 +103,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         SnapshotVerify(animation: animation, on: view, fps: 30)
     }
 
+    @MainActor
     func testLongAnimationSnapshotAPNG() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -109,6 +115,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         SnapshotVerify(animation: animation, on: view)
     }
 
+    @MainActor
     func testAutoreversingAnimationSnapshotAPNG() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -120,6 +127,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         SnapshotVerify(animation: animation, on: view, bookendFrameDuration: .matchIntermediateFrames)
     }
 
+    @MainActor
     func testAnimationWithExecutionBlocksSnapshotAPNG() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -135,6 +143,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         SnapshotVerify(animation: animation, on: view)
     }
 
+    @MainActor
     func testAutoreversingAnimationWithExecutionBlocksSnapshotAPNG() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -151,6 +160,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         SnapshotVerify(animation: animation, on: view)
     }
 
+    @MainActor
     func testAnimationWithNonViewElementSnapshotAPNG() {
         let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 40))
 
@@ -163,6 +173,7 @@ final class AnimationSnapshotTests: SnapshotTestCase {
         SnapshotVerify(animation: animation, on: element, using: view)
     }
 
+    @MainActor
     func testAnimationWithPartialTransparency() {
         let view = ColorGridView(frame: .init(x: 0, y: 0, width: 200, height: 200))
 

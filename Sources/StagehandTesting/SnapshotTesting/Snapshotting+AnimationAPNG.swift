@@ -22,6 +22,7 @@ import XCTest
 
 extension Snapshotting where Value: SnapshottableViewAnimation, Format == Data {
 
+    @MainActor
     public static func animatedImage(
         on element: Value.ElementType,
         fps: Double = AnimationSnapshotting.defaultAnimationSnapshotFPS,
@@ -76,6 +77,7 @@ extension Snapshotting where Value: SnapshottableViewAnimation, Format == Data {
 
 extension Snapshotting where Value: SnapshottableAnimation, Format == Data {
 
+    @MainActor
     public static func animatedImage(
         on element: Value.ElementType,
         using view: UIView,
@@ -131,6 +133,7 @@ extension Snapshotting where Value: SnapshottableAnimation, Format == Data {
 
 extension Snapshotting where Value == AnimationGroup, Format == Data {
 
+    @MainActor
     public static func animatedImage(
         using view: UIView,
         fps: Double = AnimationSnapshotting.defaultAnimationSnapshotFPS,

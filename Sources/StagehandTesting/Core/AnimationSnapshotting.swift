@@ -49,6 +49,7 @@ public enum AnimationSnapshotting {
 
     // MARK: - Internal Static Methods
 
+    @MainActor
     internal static func generateAnimatedSnapshot(
         of animationInstance: AnimationInstance,
         using view: UIView,

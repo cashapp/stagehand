@@ -22,6 +22,7 @@ final class AnimationGroupTests: XCTestCase {
 
     // MARK: - Tests - Keyframes
 
+    @MainActor
     func testKeyframes_twoElementsOfSameType() {
         var animationGroup = AnimationGroup()
 
@@ -54,6 +55,7 @@ final class AnimationGroupTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframes_twoElementsOfDifferentTypes() {
         var animationGroup = AnimationGroup()
 
@@ -86,6 +88,7 @@ final class AnimationGroupTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframes_twoAnimationsForSameElement() {
         var animationGroup = AnimationGroup()
 
@@ -116,6 +119,7 @@ final class AnimationGroupTests: XCTestCase {
         _ = animationInstance
     }
 
+    @MainActor
     func testKeyframes_offsetAnimations() {
         var animationGroup = AnimationGroup()
 
@@ -158,6 +162,7 @@ final class AnimationGroupTests: XCTestCase {
 
     // MARK: - Tests - Completion Handler
 
+    @MainActor
     func testCompletionCalledOnComplete() {
         var animationGroup = AnimationGroup()
         animationGroup.implicitDuration = 0.05
@@ -173,6 +178,7 @@ final class AnimationGroupTests: XCTestCase {
         waitForExpectations(timeout: 0.5, handler: nil)
     }
 
+    @MainActor
     func testCompletionCalledOnCancel() {
         var animationGroup = AnimationGroup()
         animationGroup.implicitDuration = 1
@@ -191,6 +197,7 @@ final class AnimationGroupTests: XCTestCase {
 
     // MARK: - Tests - Properties
 
+    @MainActor
     func testDuration() {
         var animationGroup = AnimationGroup()
 
@@ -202,6 +209,7 @@ final class AnimationGroupTests: XCTestCase {
         XCTAssertEqual(animationGroup.animation.implicitDuration, 3)
     }
 
+    @MainActor
     func testRepeatStyle() {
         var animationGroup = AnimationGroup()
 
@@ -213,6 +221,7 @@ final class AnimationGroupTests: XCTestCase {
         XCTAssertEqual(animationGroup.animation.implicitRepeatStyle, .infinitelyRepeating(autoreversing: true))
     }
 
+    @MainActor
     func testCurve() {
         var animationGroup = AnimationGroup()
 

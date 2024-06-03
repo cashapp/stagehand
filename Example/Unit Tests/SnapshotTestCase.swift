@@ -20,6 +20,7 @@ class SnapshotTestCase: FBSnapshotTestCase {
 
     // MARK: - Private Types
 
+    @MainActor
     private struct TestDeviceConfig {
 
         // MARK: - Public Properties
@@ -49,6 +50,7 @@ class SnapshotTestCase: FBSnapshotTestCase {
 
     // MARK: - FBSnapshotTestCase
 
+    @MainActor
     override func setUp() {
         super.setUp()
 

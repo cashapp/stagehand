@@ -47,6 +47,7 @@ extension FBSnapshotTestCase {
     /// - parameter suffixes: An ordered set of strings representing the platform suffixes.
     /// - parameter file: The file in which the test result should be attributed.
     /// - parameter line: The line in which the test result should be attributed.
+    @MainActor
     public func SnapshotVerify<ElementType: UIView>(
         animation: Animation<ElementType>,
         on element: ElementType,
@@ -106,6 +107,7 @@ extension FBSnapshotTestCase {
     /// - parameter suffixes: An ordered set of strings representing the platform suffixes.
     /// - parameter file: The file in which the test result should be attributed.
     /// - parameter line: The line in which the test result should be attributed.
+    @MainActor
     public func SnapshotVerify<ElementType>(
         animation: Animation<ElementType>,
         on element: ElementType,
@@ -167,6 +169,7 @@ extension FBSnapshotTestCase {
     /// - parameter suffixes: An ordered set of strings representing the platform suffixes.
     /// - parameter file: The file in which the test result should be attributed.
     /// - parameter line: The line in which the test result should be attributed.
+    @MainActor
     public func SnapshotVerify(
         animationGroup: AnimationGroup,
         using view: UIView,
@@ -209,6 +212,7 @@ extension FBSnapshotTestCase {
 
     // MARK: - Private Methods
 
+    @MainActor
     private func SnapshotVerify(
         animationInstance: AnimationInstance,
         using view: UIView,
@@ -251,6 +255,7 @@ extension FBSnapshotTestCase {
         }
     }
 
+    @MainActor
     private func recordSnapshot(
         of animationInstance: AnimationInstance,
         using view: UIView,
@@ -303,6 +308,7 @@ extension FBSnapshotTestCase {
         )
     }
 
+    @MainActor
     private func performComparisonToReferenceSnapshot(
         of animationInstance: AnimationInstance,
         using view: UIView,

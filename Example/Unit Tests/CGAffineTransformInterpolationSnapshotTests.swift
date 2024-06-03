@@ -21,6 +21,7 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests
 
+    @MainActor
     func testTranslation() {
         snapshotVerifyAnimation(
             transforms: [
@@ -31,6 +32,7 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testScale() {
         snapshotVerifyAnimation(
             transforms: [
@@ -42,6 +44,7 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testFlippedScaleResultsInRotation() {
         snapshotVerifyAnimation(
             transforms: [
@@ -55,6 +58,7 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testRotation() {
         snapshotVerifyAnimation(
             transforms: [
@@ -68,6 +72,7 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testMultipleFactorTransforms() {
         snapshotVerifyAnimation(
             transforms: [
@@ -88,6 +93,7 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testSkewedTransforms() {
         var positiveSkewTransform = CGAffineTransform.identity
         positiveSkewTransform.c = 4
@@ -104,6 +110,7 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
         )
     }
 
+    @MainActor
     func testTranslatingSkewedTransforms() {
         var skewTransform = CGAffineTransform.identity
         skewTransform.c = 2
@@ -118,6 +125,7 @@ final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
 
     // MARK: - Private Methods
 
+    @MainActor
     private func snapshotVerifyAnimation(
         transforms: [CGAffineTransform],
         file: StaticString = #file,
