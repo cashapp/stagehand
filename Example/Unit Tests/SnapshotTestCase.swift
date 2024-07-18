@@ -44,6 +44,10 @@ class SnapshotTestCase: FBSnapshotTestCase {
     // MARK: - Private Static Properties
 
     private static let testedDevices = [
+        // iPhone 13 Pro (iOS 15.2)
+        TestDeviceConfig(systemVersion: "15.2", screenSize: CGSize(width: 390, height: 844), screenScale: 3),
+
+        // iPhone 11 Pro (iOS 13.7)
         TestDeviceConfig(systemVersion: "13.7", screenSize: CGSize(width: 375, height: 812), screenScale: 3),
     ]
 
