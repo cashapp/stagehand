@@ -91,6 +91,32 @@ final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
         // is restored to its original state after snapshotting.
         assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
     }
+    
+    func testNestedAnimationGroupSnapshot() {
+        let view = AnimatableContainerView(frame: .init(x: 0, y: 0, width: 200, height: 100))
+        
+        var animation1 = Animation<AnimatableContainerView>()
+        animation1.addKeyframe(for: \.animatableView.transform, at: 0, value: .identity)
+        animation1.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 50, y: 0))
+        
+        var animation2 = Animation<AnimatableContainerView>()
+        animation2.addKeyframe(for: \.animatableView.transform, at: 0, value: .init(translationX: 50, y: 0))
+        animation2.addKeyframe(for: \.animatableView.transform, at: 1, value: .init(translationX: 100, y: 0))
+        
+        var nestedGroup = AnimationGroup()
+        nestedGroup.addAnimation(animation1, for: view, startingAt: 0, relativeDuration: 0.5)
+        nestedGroup.addAnimation(animation2, for: view, startingAt: 0.5, relativeDuration: 0.5)
+        
+        var parentGroup = AnimationGroup()
+        parentGroup.addAnimationGroup(nestedGroup, startingAt: 0, relativeDuration: 1)
+        
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
+        assertSnapshot(matching: parentGroup, as: .animatedImage(using: view), named: nameForDevice())
+        
+        // This intentionally uses the same identifier as the snapshot from before the animation to ensure that the view
+        // is restored to its original state after snapshotting.
+        assertSnapshot(matching: view, as: .image, named: nameForDevice(baseName: "start"))
+    }
 
     // MARK: - Private Methods
 

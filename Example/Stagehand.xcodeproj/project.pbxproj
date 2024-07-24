@@ -44,6 +44,7 @@
 		3DEA0C9624837CAB00F1ECE7 /* TransformPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEA0C9524837CAB00F1ECE7 /* TransformPerformanceTests.swift */; };
 		3DEE440A231331DD0057D796 /* AnimationGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */; };
 		3DFE460424F4F0D000A460AC /* QuadrantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFE460324F4F0D000A460AC /* QuadrantView.swift */; };
+		5033628B2C49DE3500AEF9F7 /* NestedAnimationGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5033628A2C49DE3500AEF9F7 /* NestedAnimationGroupViewController.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* RootViewController.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
@@ -120,6 +121,7 @@
 		3EEB62F0CC3F471BC6454D87 /* Pods-Stagehand_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand_Example.debug.xcconfig"; path = "Target Support Files/Pods-Stagehand_Example/Pods-Stagehand_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		472E62FC731AD89405017C59 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		4B84A3658CDA0BD762380354 /* Pods-Stagehand_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Stagehand_Tests/Pods-Stagehand_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		5033628A2C49DE3500AEF9F7 /* NestedAnimationGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedAnimationGroupViewController.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* Stagehand_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stagehand_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				3D8E3D8322F2BC9300D70FCB /* RepeatingAnimationsViewController.swift */,
 				3DA3997B230FCFAC00DE41A0 /* ExecutionBlockViewController.swift */,
 				3DEE4409231331DD0057D796 /* AnimationGroupViewController.swift */,
+				5033628A2C49DE3500AEF9F7 /* NestedAnimationGroupViewController.swift */,
 				3D2712ED236A17C5001D3B4B /* AnimationQueueViewController.swift */,
 			);
 			name = "Feature Screens";
@@ -630,6 +633,7 @@
 				3D89F1E222FDEAAC008AC33E /* PropertyAssignmentViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* RootViewController.swift in Sources */,
 				B3C4CA092459F75800893CB5 /* ShapeLayerUtils.swift in Sources */,
+				5033628B2C49DE3500AEF9F7 /* NestedAnimationGroupViewController.swift in Sources */,
 				3DBFEE422400B2460086D61C /* ChildAnimationProgressViewController.swift in Sources */,
 				3DA3997C230FCFAC00DE41A0 /* ExecutionBlockViewController.swift in Sources */,
 				3D2712EE236A17C5001D3B4B /* AnimationQueueViewController.swift in Sources */,
