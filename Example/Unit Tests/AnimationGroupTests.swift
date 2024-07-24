@@ -155,7 +155,70 @@ final class AnimationGroupTests: XCTestCase {
 
         _ = animationInstance
     }
-
+    
+    // MARK: - Tests - Add Animation Group
+    
+    func testAddAnimationGroup() {
+        var parentGroup = AnimationGroup()
+        
+        var leftGroup = AnimationGroup()
+        var rightGroup = AnimationGroup()
+        
+        var leftAnimation1 = Animation<ElementA>()
+        leftAnimation1.addKeyframe(for: \.propertyOne, at: 0, value: 0)
+        leftAnimation1.addKeyframe(for: \.propertyOne, at: 1, value: 1)
+        
+        var leftAnimation2 = Animation<ElementA>()
+        leftAnimation2.addKeyframe(for: \.propertyTwo, at: 0, value: 0)
+        leftAnimation2.addKeyframe(for: \.propertyTwo, at: 1, value: 1)
+        
+        var rightAnimation1 = Animation<ElementB>()
+        rightAnimation1.addKeyframe(for: \.property, at: 0, value: 1)
+        rightAnimation1.addKeyframe(for: \.property, at: 1, value: 0)
+        
+        var rightAnimation2 = Animation<ElementB>()
+        rightAnimation2.addKeyframe(for: \.property, at: 0, value: 0.5)
+        rightAnimation2.addKeyframe(for: \.property, at: 1, value: 1)
+        
+        let leftElement1 = ElementA()
+        let leftElement2 = ElementA()
+        let rightElement1 = ElementB()
+        let rightElement2 = ElementB()
+        
+        leftGroup.addAnimation(leftAnimation1, for: leftElement1, startingAt: 0, relativeDuration: 0.5)
+        leftGroup.addAnimation(leftAnimation2, for: leftElement2, startingAt: 0.5, relativeDuration: 0.5)
+        
+        rightGroup.addAnimation(rightAnimation1, for: rightElement1, startingAt: 0, relativeDuration: 0.5)
+        rightGroup.addAnimation(rightAnimation2, for: rightElement2, startingAt: 0.5, relativeDuration: 0.5)
+        
+        parentGroup.addAnimationGroup(leftGroup, startingAt: 0, relativeDuration: 1)
+        parentGroup.addAnimationGroup(rightGroup, startingAt: 0, relativeDuration: 1)
+        
+        let driver = TestDriver()
+        
+        let animationInstance = AnimationInstance(
+            animation: parentGroup.animation,
+            element: parentGroup.elementContainer,
+            driver: driver
+        )
+        
+        driver.runForward(to: 0.25)
+        XCTAssertEqual(leftElement1.propertyOne, 0.5)
+        XCTAssertEqual(rightElement1.property, 0.5)
+        
+        driver.runForward(to: 0.75)
+        XCTAssertEqual(leftElement2.propertyTwo, 0.5)
+        XCTAssertEqual(rightElement2.property, 0.75)
+        
+        driver.runForward(to: 1.0)
+        XCTAssertEqual(leftElement1.propertyOne, 1)
+        XCTAssertEqual(leftElement2.propertyTwo, 1)
+        XCTAssertEqual(rightElement1.property, 0)
+        XCTAssertEqual(rightElement2.property, 1)
+        
+        _ = animationInstance
+    }
+    
     // MARK: - Tests - Completion Handler
 
     func testCompletionCalledOnComplete() {

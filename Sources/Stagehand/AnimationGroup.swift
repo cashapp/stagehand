@@ -105,6 +105,30 @@ public struct AnimationGroup {
             relativeDuration: relativeDuration
         )
     }
+    
+    /// Add an animation group to the group.
+    ///
+    /// The `group`'s `implicitDuration` and `implicitRepeatStyle` will be ignored.
+    ///
+    /// - parameter group: The animation group to be added.
+    /// - parameter relativeStartTimestamp: The relative timestamp at which the animation group should begin. Must be in the
+    ///   range [0,1), where 0 is the beginning of the animation and 1 is the end.
+    /// - parameter relativeDuration: The relative duration over which the child animation group should be performed. Must be
+    ///   in the range (0,(1 - relativeStartTimestamp)], where 0 is the beginning of the animation and 1 is the end.
+    public mutating func addAnimationGroup(
+        _ group: AnimationGroup,
+        startingAt relativeStartTimestamp: Double,
+        relativeDuration: Double
+    ) {
+        let elementIndex = elementContainer.addElement(group.elementContainer)
+
+        animation.addChild(
+            group.animation,
+            for: \ElementContainer.[elementIndex],
+            startingAt: relativeStartTimestamp,
+            relativeDuration: relativeDuration
+        )
+    }
 
     /// Add a completion handler to be called when the animation completes.
     public mutating func addCompletionHandler(
