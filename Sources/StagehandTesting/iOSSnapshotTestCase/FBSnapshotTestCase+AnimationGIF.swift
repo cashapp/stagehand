@@ -14,8 +14,7 @@
 //  limitations under the License.
 //
 
-#if BAZEL_PACKAGE
-@testable import StagehandTestingCore
+#if SWIFT_PACKAGE
 import iOSSnapshotTestCase
 #else
 import FBSnapshotTestCase
