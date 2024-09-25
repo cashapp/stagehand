@@ -38,10 +38,8 @@ jobs:
             --triple "arm64-apple-ios13.0"
   xcode-build:
     name: Xcode Build
-    runs-on: macOS-11
+    runs-on: macOS-14
     strategy:
-      matrix:
-        platform: ['iOS_13']
       fail-fast: false
     steps:
       - name: Checkout Repo
@@ -52,6 +50,8 @@ jobs:
         run: Scripts/github/prepare-simulators.sh ${{ matrix.platform }}
       - name: Pod Install
         run: bundle exec --gemfile=Example/Gemfile pod install --project-directory=Example
+      - name: Select Xcode Version
+        run: xcode-select -s /Applications/Xcode_16.app
       - name: Build and Test
         run: |
           # run tests on the example app
@@ -59,7 +59,7 @@ jobs:
             -workspace Example/Stagehand.xcworkspace \
             -scheme "Stagehand Demo App" \
             -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,OS=13.7,name=iPhone 11 Pro"
+            -destination "platform=iOS Simulator,OS=18.0,name=iPhone 16 Pro"
       - name: Upload Results
         uses: actions/upload-artifact@v4
         if: failure()
