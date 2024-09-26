@@ -28,8 +28,8 @@ extension CGAffineTransform: AnimatableProperty {
         and finalValue: CGAffineTransform,
         at progress: Double
     ) -> CGAffineTransform {
-        var initialDecomposition = initialValue.decomposed()
-        var finalDecomposition = finalValue.decomposed()
+        var initialDecomposition: DecomposedMatrix = initialValue.decomposed()
+        var finalDecomposition: DecomposedMatrix = finalValue.decomposed()
 
         // Prefer rotating over scaling when possible.
         let flippedFromNegativeXToNegativeY = initialDecomposition.scaleX < 0 && finalDecomposition.scaleY < 0
