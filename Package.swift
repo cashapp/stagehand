@@ -1,4 +1,4 @@
-// swift-tools-version:5.0.1
+// swift-tools-version:5.8
 
 //
 //  Copyright 2020 Square Inc.
@@ -22,18 +22,36 @@ let package = Package(
 	name: "Stagehand",
 	platforms: [
 		.iOS(.v12),
+		.macOS(.v11),
 	],
 	products: [
 		.library(
 			name: "Stagehand",
 			targets: ["Stagehand"]
 		),
+		.library(
+			name: "StagehandTesting",
+			targets: ["StagehandTesting"]
+		),
+	],
+	dependencies: [
+		.package(
+            url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
+            .upToNextMajor(from: "1.8.0")
+        ),
 	],
 	targets: [
 		.target(
 			name: "Stagehand",
-			dependencies: [],
-			path: "Sources/Stagehand"
+			dependencies: []
+		),
+		.target(
+			name: "StagehandTesting",
+			dependencies: [
+				"Stagehand",
+				.product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+			],
+			exclude: ["iOSSnapshotTestCase"]
 		),
 	],
 	swiftLanguageVersions: [.v5]
