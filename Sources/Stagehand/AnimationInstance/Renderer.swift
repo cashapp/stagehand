@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import QuartzCore
 
 internal final class Renderer<ElementType: AnyObject>: AnyRenderer {
 
@@ -55,7 +56,13 @@ internal final class Renderer<ElementType: AnyObject>: AnyRenderer {
             return
         }
 
+        // Disable implicit layer animations while rendering the frame. Otherwise animations that include keyframes for animatable layer properties will not animate those properties in sync with the rest of the animation.
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+
         animation.apply(to: &element, at: relativeTimestamp, initialValues: initialValues)
+
+        CATransaction.commit()
     }
 
     func renderInitialFrame() {
