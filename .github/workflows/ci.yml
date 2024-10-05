@@ -9,7 +9,7 @@ on:
 jobs:
   pod-lint:
     name: Pod Lint
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -19,7 +19,7 @@ jobs:
         run: bundle exec --gemfile=Example/Gemfile pod lib lint --verbose --fail-fast --include-podspecs=Stagehand.podspec StagehandTesting.podspec
   spm:
     name: SPM Build
-    runs-on: macos-latest
+    runs-on: macos-15
     strategy:
       fail-fast: false
     steps:
@@ -28,16 +28,14 @@ jobs:
       - name: Build
         run: |
           # select minimum supported Xcode version
-          sudo xcode-select -s /Applications/Xcode_14.3.1.app
-          # TODO: add SPM test target, for now just run build on all products.
+          sudo xcode-select -s /Applications/Xcode_16.app
           xcodebuild build \
             -scheme Stagehand-Package \
-            -sdk iphonesimulator16.4 \
-            -destination "OS=16.4,name=iPhone 13 Pro"
-
+            -sdk iphonesimulator18.0 \
+            -destination "OS=18.0,name=iPhone 16 Pro"
   xcode-build:
     name: Xcode Build
-    runs-on: macOS-14
+    runs-on: macOS-15
     strategy:
       fail-fast: false
     steps:
