@@ -17,6 +17,7 @@
 import Foundation
 import MobileCoreServices
 import UIKit
+import UniformTypeIdentifiers
 
 @testable import Stagehand
 
@@ -159,7 +160,7 @@ public enum AnimationSnapshotting {
 
         guard let destination = CGImageDestinationCreateWithURL(
             url as CFURL,
-            kUTTypePNG,
+            UTType.png.identifier as CFString,
             images.count,
             nil
         ) else {
