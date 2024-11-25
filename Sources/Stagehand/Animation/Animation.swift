@@ -1,5 +1,5 @@
 //
-//  Copyright 2019 Square Inc.
+//  Copyright 2024 Block Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -408,9 +408,43 @@ public struct Animation<ElementType: AnyObject> {
         repeatStyle: AnimationRepeatStyle? = nil,
         completion: ((_ finished: Bool) -> Void)? = nil
     ) -> AnimationInstance {
+        return perform(
+            on: element,
+            delay: delay,
+            durationProvider: FixedDurationProvider(duration: duration ?? implicitDuration),
+            repeatStyle: repeatStyle,
+            completion: completion
+        )
+    }
+
+    /// Perform the animation on the given `element`.
+    ///
+    /// The duration for each cycle of the animation will be determined in order of preference by:
+    /// 1. An explicit duration, if provided via the `duration` parameter
+    /// 2. The animation's implicit duration, as specified by the `implicitDuration` property
+    ///
+    /// The repeat style for the animation will be determined in order of preference by:
+    /// 1. An explicit repeat style, if provided via the `repeatStyle` parameter
+    /// 2. The animation's implicit repeat style, as specified by the `implicitRepeatStyle` property
+    ///
+    /// - parameter element: The element to be animated.
+    /// - parameter delay: The time interval to wait before performing the animation.
+    /// - parameter durationProvider: The duration provider to use for the animation.
+    /// - parameter repeatStyle: The repeat style to use for the animation.
+    /// - parameter completion: The completion block to call when the animation has concluded, with a parameter
+    /// indicated whether the animation completed (as opposed to being cancelled).
+    /// - returns: An animation instance that can be used to check the status of or cancel the animation.
+    @discardableResult
+    public func perform(
+        on element: ElementType,
+        delay: TimeInterval = 0,
+        durationProvider: AnimationDurationProvider,
+        repeatStyle: AnimationRepeatStyle? = nil,
+        completion: ((_ finished: Bool) -> Void)? = nil
+    ) -> AnimationInstance {
         let driver = DisplayLinkDriver(
             delay: delay,
-            duration: duration ?? implicitDuration,
+            duration: durationProvider.nextInstanceDuration(),
             repeatStyle: repeatStyle ?? implicitRepeatStyle,
             completion: completion
         )
