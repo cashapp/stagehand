@@ -70,7 +70,12 @@ internal final class Renderer<ElementType: AnyObject>: AnyRenderer {
             return
         }
 
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+
         animation.applyInitialKeyframes(to: &element, initialValues: initialValues)
+
+        CATransaction.commit()
     }
 
 }
