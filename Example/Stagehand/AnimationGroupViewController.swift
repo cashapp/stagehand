@@ -38,6 +38,19 @@ final class AnimationGroupViewController: DemoViewController {
 
                 animationGroup.perform(duration: 2)
             }),
+            ("Move Both Views (Nested Groups)", { [unowned self] in
+                var animationGroup = AnimationGroup()
+
+                var topAnimationGroup = AnimationGroup()
+                topAnimationGroup.addAnimation(self.makeAnimation(), for: self.topView, startingAt: 0, relativeDuration: 1)
+                animationGroup.addAnimationGroup(topAnimationGroup, startingAt: 0, relativeDuration: 0.75)
+
+                var bottomAnimationGroup = AnimationGroup()
+                bottomAnimationGroup.addAnimation(self.makeAnimation(), for: self.bottomView, startingAt: 0, relativeDuration: 1)
+                animationGroup.addAnimationGroup(bottomAnimationGroup, startingAt: 0.25, relativeDuration: 0.75)
+
+                animationGroup.perform(duration: 2)
+            }),
         ]
     }
 
