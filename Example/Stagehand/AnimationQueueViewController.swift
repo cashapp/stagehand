@@ -53,6 +53,15 @@ final class AnimationQueueViewController: DemoViewController {
                 let animation = self.makeTranslationAnimation(x: 100, y: 100)
                 self.animationQueue.enqueue(animation: animation)
             }),
+            ("Pause Queue Before Next Animation", { [unowned self] in
+                self.animationQueue.pauseBeforeNextAnimation()
+            }),
+            ("Resume Queue", { [unowned self] in
+                self.animationQueue.resume()
+            }),
+            ("Half In Progress Animation", { [unowned self] in
+                self.animationQueue.cancelInProgressAnimation(behavior: .halt)
+            }),
         ]
     }
 

@@ -28,16 +28,7 @@ public final class AnimationQueue<ElementType: AnyObject> {
     // MARK: - Public Properties
 
     public var hasInProgressAnimation: Bool {
-        guard let currentAnimation = queue.first else {
-            return false
-        }
-
-        switch currentAnimation.instance.status {
-        case .pending, .animating:
-            return true
-        case .complete, .canceled:
-            return false
-        }
+        inProgressAnimationInstance != nil
     }
 
     // MARK: - Private Properties
@@ -91,6 +82,10 @@ public final class AnimationQueue<ElementType: AnyObject> {
         return instance
     }
 
+    public func cancelInProgressAnimation(behavior: AnimationInstance.CancelationBehavior = .halt) {
+        inProgressAnimationInstance?.cancel(behavior: behavior)
+    }
+
     /// Cancels all pending animations currently in the queue.
     public func cancelPendingAnimations() {
         queue.forEach { (instance, _) in
@@ -102,10 +97,34 @@ public final class AnimationQueue<ElementType: AnyObject> {
         purgeCompletedAndCanceledAnimations()
     }
 
+    public func pauseBeforeNextAnimation() {
+        pauseAdvancement = true
+    }
+
+    public func resume() {
+        pauseAdvancement = false
+        advanceToNextAnimationIfReady()
+    }
+
     // MARK: - Private Methods
 
+    private var pauseAdvancement = false
+
+    private var inProgressAnimationInstance: AnimationInstance? {
+        guard let currentAnimationInstance = queue.first?.instance else {
+            return nil
+        }
+
+        switch currentAnimationInstance.status {
+        case .pending, .animating:
+            return currentAnimationInstance
+        case .complete, .canceled:
+            return nil
+        }
+    }
+
     private func advanceToNextAnimationIfReady() {
-        guard let currentAnimation = queue.first else {
+        guard !pauseAdvancement, let currentAnimation = queue.first else {
             return
         }
 
