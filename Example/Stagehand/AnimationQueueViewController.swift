@@ -59,7 +59,7 @@ final class AnimationQueueViewController: DemoViewController {
             ("Resume Queue", { [unowned self] in
                 self.animationQueue.resume()
             }),
-            ("Half In Progress Animation", { [unowned self] in
+            ("Halt In Progress Animation", { [unowned self] in
                 self.animationQueue.cancelInProgressAnimation(behavior: .halt)
             }),
         ]
