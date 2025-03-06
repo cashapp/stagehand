@@ -55,6 +55,7 @@
 		B3C4CA092459F75800893CB5 /* ShapeLayerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4CA082459F75800893CB5 /* ShapeLayerUtils.swift */; };
 		B3C4CA0A2459F75800893CB5 /* ShapeLayerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4CA082459F75800893CB5 /* ShapeLayerUtils.swift */; };
 		B3C4CA0D2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4CA0B2459F76B00893CB5 /* AnimationCurveSnapshotTests.swift */; };
+		D2D9C9AD2D76DFAD00B247A5 /* SpringCurveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D9C9AC2D76DFAD00B247A5 /* SpringCurveViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +139,7 @@
 		B5D8077CC460626597AB790F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		B64913526970D210595894B7 /* Pods-Stagehand-PerformanceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand-PerformanceTests.debug.xcconfig"; path = "Target Support Files/Pods-Stagehand-PerformanceTests/Pods-Stagehand-PerformanceTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B657CC2F9B1F03D85F9BFF96 /* Pods-Stagehand_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand_Example.release.xcconfig"; path = "Target Support Files/Pods-Stagehand_Example/Pods-Stagehand_Example.release.xcconfig"; sourceTree = "<group>"; };
+		D2D9C9AC2D76DFAD00B247A5 /* SpringCurveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringCurveViewController.swift; sourceTree = "<group>"; };
 		F058A67C239ED37BC34BE76C /* Pods_Stagehand_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stagehand_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC42083017E18C3B5F030B47 /* Pods-Stagehand-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stagehand-UnitTests.release.xcconfig"; path = "Target Support Files/Pods-Stagehand-UnitTests/Pods-Stagehand-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -225,6 +227,7 @@
 				3DB3927C23249D680009E8B3 /* ColorAnimationsViewController.swift */,
 				3D1D304922F007B7003E392C /* ChildAnimationsViewController.swift */,
 				3D1D304B22F01136003E392C /* AnimationCurveViewController.swift */,
+				D2D9C9AC2D76DFAD00B247A5 /* SpringCurveViewController.swift */,
 				3D8E3D7F22F16C1B00D70FCB /* ChildAnimationsWithCurvesViewController.swift */,
 				3D8E3D8122F17D3B00D70FCB /* AnimationCancelationViewController.swift */,
 				3D89F1E122FDEAAC008AC33E /* PropertyAssignmentViewController.swift */,
@@ -640,6 +643,7 @@
 				3D8E3D8422F2BC9300D70FCB /* RepeatingAnimationsViewController.swift in Sources */,
 				3D8E3D8022F16C1B00D70FCB /* ChildAnimationsWithCurvesViewController.swift in Sources */,
 				3DB3927D23249D680009E8B3 /* ColorAnimationsViewController.swift in Sources */,
+				D2D9C9AD2D76DFAD00B247A5 /* SpringCurveViewController.swift in Sources */,
 				3D875F002323542500670803 /* PerformanceBenchmarkViewController.swift in Sources */,
 				3D75A7BD228FED9900743166 /* AnimationFactory.swift in Sources */,
 				3D1D304C22F01136003E392C /* AnimationCurveViewController.swift in Sources */,

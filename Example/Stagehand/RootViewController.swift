@@ -46,6 +46,7 @@ final class RootViewController: UITableViewController {
         ("Color Keyframe Animations", { ColorAnimationsViewController() }),
         ("Child Animations", { ChildAnimationsViewController() }),
         ("Animation Curves", { AnimationCurveViewController() }),
+        ("Spring Curves", { SpringCurveViewController() }),
         ("Child Animations with Curves", { ChildAnimationsWithCurvesViewController() }),
         ("Animation Cancellation", { AnimationCancelationViewController() }),
         ("Property Assignments", { PropertyAssignmentViewController() }),
