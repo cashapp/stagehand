@@ -23,6 +23,7 @@ import Foundation
 ///
 /// This will also allow for drivers to control interactive animations in the future, where the driver converts its
 /// input (for example, a gesture recognizer) into the corresponding progress of an animation.
+@MainActor
 protocol Driver: AnyObject {
 
     var animationInstance: DrivenAnimationInstance! { get set }
@@ -35,6 +36,7 @@ protocol Driver: AnyObject {
 
 // MARK: -
 
+@MainActor
 protocol DrivenAnimationInstance: AnyObject {
 
     func executeBlocks(

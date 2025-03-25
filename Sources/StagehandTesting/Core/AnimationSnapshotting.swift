@@ -20,6 +20,7 @@ import UIKit
 
 @testable import Stagehand
 
+@MainActor
 public enum AnimationSnapshotting {
 
     // MARK: - Public Types
@@ -27,7 +28,7 @@ public enum AnimationSnapshotting {
     /// Definition of the how the duration of the first and last frame of the APNG should be determined. The duration of
     /// intermediate frames is based on the rate at which the frames are captured (`fps`) so that the recording will
     /// play in real time with the animation.
-    public enum BookendFrameDuration {
+    public enum BookendFrameDuration: Sendable {
 
         /// The first and last frame should have the same duration as the intermediate frames (based on the `fps` of the
         /// recording). When snapshotting a looping animation, it is recommended to use `.matchIntermediateFrames` so

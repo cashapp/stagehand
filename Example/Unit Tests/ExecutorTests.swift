@@ -18,6 +18,7 @@ import XCTest
 
 @testable import Stagehand
 
+@MainActor
 final class ExecutorTests: XCTestCase {
 
     // MARK: - Tests - Property Assignment

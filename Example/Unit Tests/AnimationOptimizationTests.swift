@@ -18,6 +18,7 @@ import XCTest
 
 @testable import Stagehand
 
+@MainActor
 final class AnimationOptimizationTests: XCTestCase {
 
     // MARK: - Tests - Ubiquitous Bezier Curve

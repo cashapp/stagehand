@@ -17,6 +17,7 @@
 import Stagehand
 import StagehandTesting
 
+@MainActor
 final class CGAffineTransformInterpolationSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests

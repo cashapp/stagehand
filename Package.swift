@@ -1,4 +1,4 @@
-// swift-tools-version:5.8
+// swift-tools-version:6.0
 
 //
 //  Copyright 2020 Square Inc.
@@ -43,7 +43,10 @@ let package = Package(
 	targets: [
 		.target(
 			name: "Stagehand",
-			dependencies: []
+			dependencies: [],
+			swiftSettings: [
+				.swiftLanguageMode(.v6),
+			]
 		),
 		.target(
 			name: "StagehandTesting",
@@ -51,10 +54,13 @@ let package = Package(
 				"Stagehand",
 				.product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
 			],
-			exclude: ["iOSSnapshotTestCase"]
+			exclude: ["iOSSnapshotTestCase"],
+			swiftSettings: [
+				.swiftLanguageMode(.v6),
+			]
 		),
 	],
-	swiftLanguageVersions: [.v5]
+	swiftLanguageVersions: [.v6]
 )
 
 let version = Version(4, 0, 0)

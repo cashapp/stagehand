@@ -18,6 +18,7 @@ import QuartzCore
 
 internal typealias DisplayLinkFactory = (_ target: Any, _ selector: Selector) -> DisplayLinkDriverDisplayLink
 
+@MainActor
 internal protocol DisplayLinkDriverDisplayLink: AnyObject {
 
     var timestamp: CFTimeInterval { get }

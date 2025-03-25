@@ -18,6 +18,7 @@ import XCTest
 
 @testable import Stagehand
 
+@MainActor
 final class DisplayLinkDriverTests: XCTestCase {
 
     // MARK: - Tests - Rendering
@@ -986,6 +987,7 @@ private final class TestAnimationInstance: DrivenAnimationInstance {
 
 // MARK: -
 
+@MainActor
 private final class TestDisplayLink: DisplayLinkDriverDisplayLink {
 
     // MARK: - DisplayLinkDriverDisplayLink
@@ -1018,6 +1020,7 @@ private final class TestDisplayLink: DisplayLinkDriverDisplayLink {
 
 // MARK: -
 
+@MainActor
 private enum Factory {
     // An arbitrarily selected start time for the display link to begin, which must be greater than zero to
     // differentiate between not being added to the run loop.

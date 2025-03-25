@@ -23,7 +23,7 @@ import Foundation
 /// The domain of the function is strictly bounded to `[0,1]`. The range of the function is technically unbounded, but
 /// in most cases will also be `[0,1]`. In any case, the function should be defined such that `f(0) = 0` and `f(1) = 1`;
 /// otherwise the animation will not end on the specified final keyframes.
-public protocol AnimationCurve {
+public protocol AnimationCurve: Sendable {
 
     func adjustedProgress(for progress: Double) -> Double
 

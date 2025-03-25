@@ -16,10 +16,12 @@
 
 import FBSnapshotTestCase
 
+@MainActor
 class SnapshotTestCase: FBSnapshotTestCase {
 
     // MARK: - Private Types
 
+    @MainActor
     private struct TestDeviceConfig {
 
         // MARK: - Public Properties
@@ -43,6 +45,7 @@ class SnapshotTestCase: FBSnapshotTestCase {
 
     // MARK: - Private Static Properties
 
+    @MainActor
     private static let testedDevices = [
         // iPhone 16 Pro - iOS 18.2
         TestDeviceConfig(systemVersion: "18.2", screenSize: CGSize(width: 402, height: 874), screenScale: 3),
@@ -53,8 +56,10 @@ class SnapshotTestCase: FBSnapshotTestCase {
     override func setUp() {
         super.setUp()
 
-        guard SnapshotTestCase.testedDevices.contains(where: { $0.matchesCurrentDevice() }) else {
-            fatalError("Attempting to run tests on a device for which we have not collected test data")
+        executeOnMainActor {
+            guard SnapshotTestCase.testedDevices.contains(where: { $0.matchesCurrentDevice() }) else {
+                fatalError("Attempting to run tests on a device for which we have not collected test data")
+            }
         }
 
         guard ProcessInfo.processInfo.environment["FB_REFERENCE_IMAGE_DIR"] != nil else {
@@ -64,6 +69,21 @@ class SnapshotTestCase: FBSnapshotTestCase {
         fileNameOptions = [.OS, .screenSize, .screenScale]
 
         recordMode = false
+    }
+
+    nonisolated
+    private func executeOnMainActor(_ block: @escaping @MainActor () -> Void) {
+        if Thread.isMainThread {
+            MainActor.assumeIsolated {
+                block()
+            }
+        } else {
+            DispatchQueue.main.sync {
+                MainActor.assumeIsolated {
+                    block()
+                }
+            }
+        }
     }
 
 }

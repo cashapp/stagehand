@@ -16,6 +16,7 @@
 
 import Foundation
 
+@MainActor
 internal final class Executor {
 
     // MARK: - Life Cycle

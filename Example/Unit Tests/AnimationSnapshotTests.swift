@@ -17,6 +17,7 @@
 import Stagehand
 import StagehandTesting
 
+@MainActor
 final class AnimationSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests - Frame Snapshots

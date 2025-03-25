@@ -182,7 +182,7 @@ extension PerformanceBenchmarkViewController {
         private(set) var rotatingChildViews: [UIView] = [] {
             didSet {
                 oldValue.forEach { $0.removeFromSuperview() }
-                rotatingChildViews.forEach(animatedSubviewsContainer.addSubview)
+                rotatingChildViews.forEach { animatedSubviewsContainer.addSubview($0) }
                 setNeedsLayout()
             }
         }

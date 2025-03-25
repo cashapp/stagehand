@@ -20,7 +20,7 @@ import Foundation
 /// points.
 ///
 /// The control points must be positioned such that X(t₂) > X(t₁) when t₂ > t₁.
-public struct CubicBezierAnimationCurve: AnimationCurve {
+public struct CubicBezierAnimationCurve: AnimationCurve, Sendable {
 
     // MARK: - Life Cycle
 

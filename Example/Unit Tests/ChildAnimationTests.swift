@@ -18,6 +18,7 @@ import XCTest
 
 @testable import Stagehand
 
+@MainActor
 final class ChildAnimationTests: XCTestCase {
 
     // MARK: - Tests - Keyframes

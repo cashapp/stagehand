@@ -18,6 +18,7 @@ import QuartzCore
 
 /// An animation driver that is controlled by a `CADisplayLink`. This driver is intended for use with non-interactive
 /// animations that have a specified duration.
+@MainActor
 internal final class DisplayLinkDriver: Driver {
 
     // MARK: - Life Cycle
@@ -148,7 +149,7 @@ internal final class DisplayLinkDriver: Driver {
     // MARK: - Internal Methods
 
     func start(timeFactory: () -> CFTimeInterval = CACurrentMediaTime) {
-        displayLink?.add(to: .current, forMode: .common)
+        displayLink?.add(to: .main, forMode: .common)
         startTime = timeFactory()
 
         // If there's no delay, render the first frame immediately rather than waiting until the next run loop. This

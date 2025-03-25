@@ -22,6 +22,7 @@ import Foundation
 /// `perform(on:delay:duration:repeatStyle:completion:)` method to begin the animation. That method will return an
 /// instance of this class. The `AnimationInstance` can then be used to track the `status` of the animation, or to
 /// cancel it.
+@MainActor
 public final class AnimationInstance {
 
     // MARK: - Life Cycle

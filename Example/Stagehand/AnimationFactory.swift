@@ -16,6 +16,7 @@
 
 import Stagehand
 
+@MainActor
 enum AnimationFactory {
 
     static func makeFadeOutAnimation() -> Animation<UIView> {

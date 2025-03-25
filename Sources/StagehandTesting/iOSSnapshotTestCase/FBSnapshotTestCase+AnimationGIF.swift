@@ -24,6 +24,7 @@ import ImageIO
 
 @testable import Stagehand
 
+@MainActor
 extension FBSnapshotTestCase {
 
     // MARK: - Public Methods

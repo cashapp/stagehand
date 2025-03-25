@@ -19,6 +19,7 @@ import Stagehand
 import StagehandTesting
 import XCTest
 
+@MainActor
 final class SnapshotTestingAPNGImageTests: SnapshotTestCase {
 
     // MARK: - Tests

@@ -17,6 +17,7 @@
 import Stagehand
 import StagehandTesting
 
+@MainActor
 final class AnimationCurveSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests

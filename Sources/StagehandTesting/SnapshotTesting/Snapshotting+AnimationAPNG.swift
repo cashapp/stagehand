@@ -20,6 +20,7 @@ import XCTest
 
 @testable import Stagehand
 
+@MainActor
 extension Snapshotting where Value: SnapshottableViewAnimation, Format == Data {
 
     public static func animatedImage(
@@ -74,6 +75,7 @@ extension Snapshotting where Value: SnapshottableViewAnimation, Format == Data {
 
 // MARK: -
 
+@MainActor
 extension Snapshotting where Value: SnapshottableAnimation, Format == Data {
 
     public static func animatedImage(
@@ -129,6 +131,7 @@ extension Snapshotting where Value: SnapshottableAnimation, Format == Data {
 
 // MARK: -
 
+@MainActor
 extension Snapshotting where Value == AnimationGroup, Format == Data {
 
     public static func animatedImage(

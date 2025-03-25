@@ -17,6 +17,7 @@
 import Stagehand
 import StagehandTesting
 
+@MainActor
 final class CATransform3DInterpolationSnapshotTests: SnapshotTestCase {
 
     // MARK: - Tests

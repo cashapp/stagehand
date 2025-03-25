@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '12.0'
 
-  s.swift_version = '5.0.1'
+  s.swift_version = '6.0'
 
   # The dependency on Stagehand is pinned to the same version as StagehandTesting. This is because
   # StagehandTesting depends on internal methods inside Stagehand, so the normal rules of semantic

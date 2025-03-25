@@ -22,6 +22,7 @@ import FBSnapshotTestCase
 
 @testable import Stagehand
 
+@MainActor
 extension FBSnapshotTestCase {
 
     /// Snapshots the `element` with the `animation` performed on it and run forward up to the `relativeTimestamp`.
