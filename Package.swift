@@ -53,8 +53,5 @@ let package = Package(
 			],
 			exclude: ["iOSSnapshotTestCase"]
 		),
-	],
-	swiftLanguageVersions: [.v5]
+	]
 )
-
-let version = Version(4, 0, 0)
