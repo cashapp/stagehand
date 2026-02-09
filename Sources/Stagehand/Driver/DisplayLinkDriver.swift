@@ -30,7 +30,22 @@ internal final class DisplayLinkDriver: Driver {
         displayLinkFactory: DisplayLinkFactory = CADisplayLink.init(target:selector:)
     ) {
         self.delay = delay
-        self.duration = (duration * systemAnimationCoefficient())
+        self._duration = Lazy(wrappedValue: duration * systemAnimationCoefficient())
+        self.repeatStyle = repeatStyle
+        self.completions = [completion].compactMap { $0 }
+
+        self.displayLink = displayLinkFactory(self, #selector(renderCurrentFrame))
+    }
+
+    internal init(
+        delay: TimeInterval,
+        durationProvider: AnimationDurationProvider,
+        repeatStyle: AnimationRepeatStyle,
+        completion: ((Bool) -> Void)?,
+        displayLinkFactory: DisplayLinkFactory = CADisplayLink.init(target:selector:)
+    ) {
+        self.delay = delay
+        self._duration = Lazy(wrappedValue: durationProvider.nextInstanceDuration() * systemAnimationCoefficient())
         self.repeatStyle = repeatStyle
         self.completions = [completion].compactMap { $0 }
 
@@ -59,7 +74,8 @@ internal final class DisplayLinkDriver: Driver {
 
     private let delay: TimeInterval
 
-    private let duration: TimeInterval
+    @Lazy
+    private var duration: TimeInterval
 
     private let repeatStyle: AnimationRepeatStyle
 
